@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "382695232237",
+    "project_id": "paradox-2021",
+    "storage_bucket": "paradox-2021.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382695232237:android:f90741d6d158f9ff9132e4",
+        "android_client_info": {
+          "package_name": "com.example.paradox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382695232237-tlafvsrftqa4fp6qufcsvn8mrn5oaf36.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.paradox",
+            "certificate_hash": "57350a5ad158b3ed8338889479896768d91652bc"
+          }
+        },
+        {
+          "client_id": "382695232237-galh6cc4f8hs3o4kotrpvmnr8p3n84ip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3kpI8nKZitJ0hD72TpJSmW-tBJkPnVFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382695232237-galh6cc4f8hs3o4kotrpvmnr8p3n84ip.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
