@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hover_effect/hover_effect.dart';
-import 'package:paradox/screens/home_screen.dart';
 import '../authentication/google_sign_in.dart';
+import '../screens/home_screen.dart';
 
 class SignIn extends StatelessWidget {
   static String routeName = '/sign_in';

@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:paradox/providers/api_authentication.dart';
 
 final googleSignIn = GoogleSignIn();
 final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-Future<void> signInWithGoogle() async  {
+// function to sign in with google
+Future<void> signInWithGoogle() async {
 
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
@@ -16,19 +18,25 @@ Future<void> signInWithGoogle() async  {
   );
 
   final authResult = await firebaseAuth.signInWithCredential(authCredential);
-  final user = authResult.user;
+  final User user = authResult.user;
 
   assert(!user.isAnonymous);
   assert(await user.getIdToken() != null);
 
-  // ignore: deprecated_member_use
-  final FirebaseUser currentUser = firebaseAuth.currentUser;
+  final User currentUser = firebaseAuth.currentUser;
   assert(user.uid == currentUser.uid);
 
-  print('Signed In Successfully');
+  ApiAuthentication().userIsPresent().then((value) => {
+    if (value) {
+      print('user already in database')
+    } else {
+      ApiAuthentication().createUser()
+    }
+  });
 
 }
 
+// function to logout
 void logout() async {
   await googleSignIn.disconnect();
   firebaseAuth.signOut();
