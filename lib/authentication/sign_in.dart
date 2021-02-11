@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +8,7 @@ import '../screens/home_screen.dart';
 
 class SignIn extends StatelessWidget {
   static String routeName = '/sign_in';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +41,8 @@ class _SignInWidgetState extends State<SignInWidget> {
             SizedBox(height: 200),
             Container(
               child: Text('Paradox',
-                  style: TextStyle(fontSize: 70,
+                  style: TextStyle(
+                      fontSize: 70,
                       color: Colors.lightBlue[900].withAlpha(1000),
                       fontWeight: FontWeight.bold)),
             ),
@@ -61,33 +64,39 @@ class _SignInWidgetState extends State<SignInWidget> {
                     color: Colors.white,
                     child: RichText(
                       text: TextSpan(
-                          style: TextStyle(fontSize: 32,
+                          style: TextStyle(
+                              fontSize: 32,
                               color: Colors.lightBlue[900].withAlpha(1000),
                               fontWeight: FontWeight.bold),
                           children: [
                             TextSpan(text: 'Team .E'),
                             TextSpan(
                                 text: 'X',
-                                style: TextStyle(fontSize: 32,
+                                style: TextStyle(
+                                    fontSize: 32,
                                     color: Colors.lightBlue,
-                                    fontWeight: FontWeight.bold)
-                            ),
+                                    fontWeight: FontWeight.bold)),
                             TextSpan(text: 'E'),
-                          ]
-                      ),
+                          ]),
                     ),
                   );
                 },
                 depth: 10,
                 depthColor: Colors.blue[500],
-                shadow: BoxShadow(color: Colors.white, blurRadius: 20, spreadRadius: 0, offset: Offset(0.0, 0.75)),
+                shadow: BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 20,
+                    spreadRadius: 0,
+                    offset: Offset(0.0, 0.75)),
               ),
             ),
             SizedBox(height: 100),
             Container(
               padding: EdgeInsets.all(30),
               child: MaterialButton(
-                child: isSigningIn ? SpinKitCircle(color: Colors.blue) : GoogleSignInButton(),
+                child: isSigningIn
+                    ? SpinKitCircle(color: Colors.blue)
+                    : GoogleSignInButton(),
                 color: Colors.white,
                 highlightColor: Colors.white,
                 splashColor: Colors.white,
@@ -96,24 +105,33 @@ class _SignInWidgetState extends State<SignInWidget> {
                     isSigningIn = true;
                   });
                   signInWithGoogle().whenComplete(() {
-                    print('sign in successful');
-                    Fluttertoast.showToast(
-                      msg: 'Signed In Successfully',
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.SNACKBAR,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.blue,
-                      textColor: Colors.white,
-                      fontSize: 15.0
-                    );
-                    Navigator.of(context).pushNamed(Home.routeName);
+                    if (FirebaseAuth.instance.currentUser != null) {
+                      Fluttertoast.showToast(
+                          msg: 'Signed In Successfully',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 15.0);
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: 'Sign In Unsuccessful',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 15.0);
+                    }
+
                     setState(() {
                       isSigningIn = false;
                     });
                   });
                 },
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
@@ -127,27 +145,36 @@ class _SignInWidgetState extends State<SignInWidget> {
 class GoogleSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          child: SizedBox(
-            height: 25,
-            width: 25,
-            child: Image.asset('assets/images/google_logo.jpg'),
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: Container(
+              child: SizedBox(
+                height: 40,
+                width: 40,
+                child: Image.asset('assets/images/google_logo.jpg'),
+              ),
+            ),
           ),
-        ),
-        SizedBox(width: 30),
-        Container(
-          padding: EdgeInsets.only(right: 10),
-          child: Text('Sign in with Google', style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: Colors.grey,
-            fontSize: 15,
-          )),
-        ),
-      ],
+          SizedBox(width: 30),
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: EdgeInsets.only(right: 10),
+              child: Text('Sign up with Google',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black45,
+                    fontSize: 16,
+                  )),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
