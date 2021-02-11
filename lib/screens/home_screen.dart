@@ -28,7 +28,6 @@ class Home extends StatelessWidget {
                   backgroundColor: Colors.blue,
                   textColor: Colors.white,
                   fontSize: 15.0);
-              Navigator.of(context).pushNamed(SignIn.routeName);
             },
           ),
         ],
