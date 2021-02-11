@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../authentication/sign_in.dart';
 import '../authentication/google_sign_in.dart';
@@ -8,6 +10,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(FirebaseAuth.instance.currentUser);
     return Scaffold(
       appBar: AppBar(
         title: Text('Paradox'),
@@ -24,8 +27,7 @@ class Home extends StatelessWidget {
                   timeInSecForIosWeb: 1,
                   backgroundColor: Colors.blue,
                   textColor: Colors.white,
-                  fontSize: 15.0
-              );
+                  fontSize: 15.0);
               Navigator.of(context).pushNamed(SignIn.routeName);
             },
           ),
