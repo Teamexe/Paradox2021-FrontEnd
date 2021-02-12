@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../authentication/sign_in.dart';
+import 'package:paradox/screens/leaderboard_screen.dart';
 import '../authentication/google_sign_in.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -10,7 +8,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(FirebaseAuth.instance.currentUser);
     return Scaffold(
       appBar: AppBar(
         title: Text('Paradox'),
@@ -36,7 +33,14 @@ class Home extends StatelessWidget {
         color: Colors.white,
         child: CustomPaint(
           painter: CurvePainter(),
-          child: Container(),
+          child: Container(
+            child: TextButton(
+              child: Text("LeaderBoard"),
+              onPressed: () {
+                Navigator.of(context).pushNamed(LeaderBoard.route);
+              },
+            ),
+          ),
         ),
       ),
     );
