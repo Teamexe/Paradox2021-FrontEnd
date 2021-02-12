@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
+import 'package:paradox/utilities/Toast.dart';
 import '../authentication/google_sign_in.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatelessWidget {
   static String routeName = '/home_screen';
@@ -17,14 +17,7 @@ class Home extends StatelessWidget {
             icon: Icon(Icons.logout),
             onPressed: () {
               logout();
-              Fluttertoast.showToast(
-                  msg: 'Signed Out Successfully',
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.blue,
-                  textColor: Colors.white,
-                  fontSize: 15.0);
+              createToast('Signed Out Successfully');
             },
           ),
         ],

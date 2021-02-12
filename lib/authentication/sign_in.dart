@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hover_effect/hover_effect.dart';
+import 'package:paradox/utilities/Toast.dart';
 import '../authentication/google_sign_in.dart';
-import '../screens/home_screen.dart';
 
 class SignIn extends StatelessWidget {
   static String routeName = '/sign_in';
@@ -46,13 +46,6 @@ class _SignInWidgetState extends State<SignInWidget> {
                       color: Colors.lightBlue[900].withAlpha(1000),
                       fontWeight: FontWeight.bold)),
             ),
-            // Container(
-            //   child: Text('by',
-            //       style: TextStyle(fontSize: 30,
-            //           color: Colors.grey[400],
-            //           fontWeight: FontWeight.w500)),
-            // ),
-            // SizedBox(height: 10),
             Container(
               width: 200,
               height: 60,
@@ -106,25 +99,10 @@ class _SignInWidgetState extends State<SignInWidget> {
                   });
                   signInWithGoogle().whenComplete(() {
                     if (FirebaseAuth.instance.currentUser != null) {
-                      Fluttertoast.showToast(
-                          msg: 'Signed In Successfully',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.SNACKBAR,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
+                      createToast('Signed In Successfully');
                     } else {
-                      Fluttertoast.showToast(
-                          msg: 'Sign In Unsuccessful',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.SNACKBAR,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
+                      createToast('Sign In Unsuccessful');
                     }
-
                     setState(() {
                       isSigningIn = false;
                     });
