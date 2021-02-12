@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hover_effect/hover_effect.dart';
+import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/utilities/Toast.dart';
-import '../authentication/google_sign_in.dart';
 
 class SignIn extends StatelessWidget {
   static String routeName = '/sign_in';
@@ -97,7 +96,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                   setState(() {
                     isSigningIn = true;
                   });
-                  signInWithGoogle().whenComplete(() {
+                  UserProvider().signInWithGoogle().whenComplete(() {
                     if (FirebaseAuth.instance.currentUser != null) {
                       createToast('Signed In Successfully');
                     } else {

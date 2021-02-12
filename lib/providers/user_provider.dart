@@ -1,16 +1,19 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:paradox/models/user.dart';
+import 'package:paradox/models/user.dart' as UserModel;
+import 'package:paradox/providers/api_authentication.dart';
 import 'package:paradox/utilities/constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class UserProvider extends ChangeNotifier {
   /// Instance of [User] for currently loggedIn User.
-  User user;
+  UserModel.User user;
 
   /// Create new [User] and assign it to [user].
   void assignUser(String uid, String email, String name) {
-    user = new User(email: email, uid: uid, name: name);
+    user = new UserModel.User(email: email, uid: uid, name: name);
   }
 
   /// This function creates new User in the backend.
@@ -68,5 +71,45 @@ class UserProvider extends ChangeNotifier {
       print(e);
       throw Exception();
     }
+  }
+
+  /// function to sign in with google
+  Future<void> signInWithGoogle() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+    await googleSignInAccount.authentication;
+
+    // ignore: deprecated_member_use
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+    final authResult = await _auth.signInWithCredential(credential);
+    final user = authResult.user;
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+    final currentUser = _auth.currentUser;
+    if (currentUser == null) {
+      return;
+    }
+    ApiAuthentication().userIsPresent().then((value) => {
+      if (value)
+        {print('user already in database')}
+      else
+        {ApiAuthentication().createUser()}
+    });
+  }
+
+  /// function to logout
+  void logout() async {
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    await firebaseAuth.signOut();
+    await googleSignIn.disconnect();
+    await googleSignIn.signOut();
+    return;
   }
 }
