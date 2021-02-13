@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
-import '../authentication/google_sign_in.dart';
 
 class Home extends StatelessWidget {
   static String routeName = '/home_screen';
@@ -16,7 +16,7 @@ class Home extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () {
-              logout();
+              UserProvider().logout();
               createToast('Signed Out Successfully');
             },
           ),
