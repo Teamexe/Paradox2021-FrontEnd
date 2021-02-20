@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -24,7 +23,7 @@ class SignInWidget extends StatefulWidget {
   _SignInWidgetState createState() => _SignInWidgetState();
 }
 
-class _SignInWidgetState extends State<SignInWidget> with SingleTickerProviderStateMixin{
+class _SignInWidgetState extends State<SignInWidget> with SingleTickerProviderStateMixin {
   bool isSigningIn = false;
   AnimationController animationController;
   Animation fadeAnimation;
@@ -60,7 +59,7 @@ class _SignInWidgetState extends State<SignInWidget> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    // to start the fade
+    // to start the animation
     animationController.forward();
 
     return SafeArea(
@@ -155,22 +154,24 @@ class _SignInWidgetState extends State<SignInWidget> with SingleTickerProviderSt
               ],
             ),
             Spacer(),
-            SizedBox(
-              width: 260,
-              height: 80,
+            Expanded(
+              // width: 260,
+              // height: 80,
               child: ScaleTransition(
                 scale: scaleAnimation,
-                child: ColorizeAnimatedTextKit(
-                  textStyle: TextStyle(
-                      fontSize: 70,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                  text: ['Paradox'],
-                  speed: Duration(milliseconds: 800),
-                  colors: [Colors.white, Colors.pinkAccent, Colors.orange, Colors.blue],
-                  repeatForever: true,
-                  isRepeatingAnimation: true,
-                  stopPauseOnTap: true,
+                child: Text('Paradox',
+                  style: TextStyle(
+                    color: Colors.blue.shade900,
+                    fontSize: 70,
+                    fontWeight: FontWeight.bold,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(2.5, 2.5),
+                        blurRadius: 0,
+                        color: Colors.black
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
