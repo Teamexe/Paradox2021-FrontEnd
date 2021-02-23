@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:paradox/providers/question_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:slimy_card/slimy_card.dart';
 
-import '../myBehaviour.dart';
+import '../utilities/myBehaviour.dart';
 
 class QuestionPageLayout extends StatefulWidget {
+
   @override
   _QuestionPageLayoutState createState() => _QuestionPageLayoutState();
 }
 
 class _QuestionPageLayoutState extends State<QuestionPageLayout> {
-  @override
+    @override
   Widget build(BuildContext context) {
+    final questionData = Provider.of<QuestionProvider>(context);
     final size = MediaQuery.of(context).size;
+
     return Container(
       margin: EdgeInsets.only(top:100,left: 20,right: 20, bottom: 60),
       child: ListView(
@@ -34,7 +39,6 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
 
 // This widget will be passed as Top Card's Widget.
 Widget questionCard(Size size) {
-
   return Container(
     child: ScrollConfiguration (
       behavior: MyBehavior(),
@@ -71,7 +75,6 @@ Widget questionCard(Size size) {
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-
                     color: Colors.black.withOpacity(0.1),
                     blurRadius:10,
                     spreadRadius: 0.5,
