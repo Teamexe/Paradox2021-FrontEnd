@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hover_effect/hover_effect.dart';
-import '../authentication/google_sign_in.dart';
-import '../screens/home_screen.dart';
+import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/utilities/Toast.dart';
+import 'package:paradox/utilities/clipper.dart';
 
 class SignIn extends StatelessWidget {
   static String routeName = '/sign_in';
@@ -23,68 +23,193 @@ class SignInWidget extends StatefulWidget {
   _SignInWidgetState createState() => _SignInWidgetState();
 }
 
-class _SignInWidgetState extends State<SignInWidget> {
+class _SignInWidgetState extends State<SignInWidget> with SingleTickerProviderStateMixin {
   bool isSigningIn = false;
+  AnimationController animationController;
+  Animation fadeAnimation;
+  Animation scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    // animation controller for fade animation
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    );
+
+    // animation for fade in effect to widgets
+    fadeAnimation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(animationController);
+
+    // animation to scale up effect
+    scaleAnimation = CurvedAnimation(
+      parent: animationController,
+      curve: Curves.elasticInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // to start the animation
+    animationController.forward();
+
     return SafeArea(
       child: Container(
         padding: null,
         margin: null,
         width: double.infinity,
         height: double.infinity,
-        color: Colors.white,
+        color: Colors.blue,
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.topLeft,
+        //     end: Alignment.bottomRight,
+        //     colors: [Colors.red, Colors.yellow, Colors.blue, Colors.purple]
+        //   ),
+        // ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 200),
-            Container(
-              child: Text('Paradox',
-                  style: TextStyle(
-                      fontSize: 70,
-                      color: Colors.lightBlue[900].withAlpha(1000),
-                      fontWeight: FontWeight.bold)),
+            Stack(
+              children: [
+                FadeTransition(
+                  opacity: fadeAnimation,
+                  child: Container(
+                    height: 195,
+                    padding: null,
+                    margin: null,
+                    child: ClipPath(
+                      clipper: CustomizedClipper(),
+                      child: Container(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                FadeTransition(
+                  opacity: fadeAnimation,
+                  child: Container(
+                    height: 165,
+                    padding: null,
+                    margin: null,
+                    child: ClipPath(
+                      clipper: CustomizedClipper(),
+                      child: Container(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ),
+                FadeTransition(
+                  opacity: fadeAnimation,
+                  child: Container(
+                    height: 150,
+                    padding: null,
+                    margin: null,
+                    child: ClipPath(
+                      clipper: CustomizedClipper(),
+                      child: Container(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                FadeTransition(
+                  opacity: fadeAnimation,
+                  child: Container(
+                    height: 140,
+                    padding: null,
+                    margin: null,
+                    child: ClipPath(
+                      clipper: CustomizedClipper(),
+                      child: Container(
+                        color: Colors.blue[900].withAlpha(1000),
+                      ),
+                    ),
+                  ),
+                ),
+                FadeTransition(
+                  opacity: fadeAnimation,
+                  child: Container(
+                    height: 135,
+                    padding: null,
+                    margin: null,
+                    child: ClipPath(
+                      clipper: CustomizedClipper(),
+                      child: Container(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            // Container(
-            //   child: Text('by',
-            //       style: TextStyle(fontSize: 30,
-            //           color: Colors.grey[400],
-            //           fontWeight: FontWeight.w500)),
-            // ),
-            // SizedBox(height: 10),
-            Container(
+            Spacer(),
+            Expanded(
+              // width: 260,
+              // height: 80,
+              child: ScaleTransition(
+                scale: scaleAnimation,
+                child: Text('Paradox',
+                  style: TextStyle(
+                    color: Colors.blue.shade900,
+                    fontSize: 70,
+                    fontWeight: FontWeight.bold,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(2.5, 2.5),
+                        blurRadius: 0,
+                        color: Colors.black
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
+            SizedBox(
               width: 200,
               height: 60,
               child: HoverCard(
                 builder: (context, hovering) {
-                  return Container(
-                    padding: null,
-                    alignment: Alignment.center,
-                    color: Colors.white,
-                    child: RichText(
-                      text: TextSpan(
-                          style: TextStyle(
-                              fontSize: 32,
-                              color: Colors.lightBlue[900].withAlpha(1000),
-                              fontWeight: FontWeight.bold),
-                          children: [
-                            TextSpan(text: 'Team .E'),
-                            TextSpan(
-                                text: 'X',
-                                style: TextStyle(
-                                    fontSize: 32,
-                                    color: Colors.lightBlue,
-                                    fontWeight: FontWeight.bold)),
-                            TextSpan(text: 'E'),
-                          ]),
+                  return FadeTransition(
+                    opacity: fadeAnimation,
+                    child: Container(
+                      color: Colors.white,
+                      alignment: Alignment.center,
+                      child: RichText(
+                        text: TextSpan(
+                            style: TextStyle(
+                                fontSize: 32,
+                                color: Colors.lightBlue[900].withAlpha(1000),
+                                fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(text: 'Team .E'),
+                              TextSpan(
+                                  text: 'X',
+                                  style: TextStyle(
+                                      fontSize: 32,
+                                      color: Colors.lightBlue,
+                                      fontWeight: FontWeight.bold)),
+                              TextSpan(text: 'E'),
+                            ]),
+                      ),
                     ),
                   );
                 },
                 depth: 10,
-                depthColor: Colors.blue[500],
+                depthColor: Colors.blue,
                 shadow: BoxShadow(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     blurRadius: 20,
                     spreadRadius: 0,
                     offset: Offset(0.0, 0.75)),
@@ -93,48 +218,39 @@ class _SignInWidgetState extends State<SignInWidget> {
             SizedBox(height: 100),
             Container(
               padding: EdgeInsets.all(30),
-              child: MaterialButton(
-                child: isSigningIn
-                    ? SpinKitCircle(color: Colors.blue)
-                    : GoogleSignInButton(),
-                color: Colors.white,
-                highlightColor: Colors.white,
-                splashColor: Colors.white,
-                onPressed: () {
-                  setState(() {
-                    isSigningIn = true;
-                  });
-                  signInWithGoogle().whenComplete(() {
-                    if (FirebaseAuth.instance.currentUser != null) {
-                      Fluttertoast.showToast(
-                          msg: 'Signed In Successfully',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.SNACKBAR,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: 'Sign In Unsuccessful',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.SNACKBAR,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 15.0);
-                    }
-
-                    setState(() {
-                      isSigningIn = false;
-                    });
-                  });
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+              child: FadeTransition(
+                opacity: fadeAnimation,
+                child: Container(
+                  child: MaterialButton(
+                    child: isSigningIn
+                        ? SpinKitCircle(color: Colors.blue)
+                        : GoogleSignInButton(),
+                    color: Colors.white,
+                    highlightColor: Colors.white,
+                    splashColor: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        isSigningIn = true;
+                      });
+                      UserProvider().signInWithGoogle().whenComplete(() {
+                        if (FirebaseAuth.instance.currentUser != null) {
+                          createToast('Signed In Successfully');
+                        } else {
+                          createToast('Sign In Unsuccessful');
+                        }
+                        setState(() {
+                          isSigningIn = false;
+                        });
+                      });
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
               ),
             ),
+            Spacer()
           ],
         ),
       ),
@@ -165,7 +281,7 @@ class GoogleSignInButton extends StatelessWidget {
             flex: 3,
             child: Container(
               padding: EdgeInsets.only(right: 10),
-              child: Text('Sign up with Google',
+              child: Text('Sign in with Google',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.black45,
