@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
+import 'package:paradox/utilities/curve_painter.dart';
 import 'package:paradox/widgets/drawer.dart';
+
+import 'leaderboard_screen.dart';
 
 class Home extends StatelessWidget {
   static String routeName = '/home_screen';
@@ -30,8 +33,28 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
+      body: Container(
+        color: Colors.white,
+        child: CustomPaint(
+          painter: CurvePainter(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                Container(
+                  child: TextButton(
+                    child: Text("LeaderBoard"),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(LeaderBoard.route);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       drawer: AppDrawer(),
     );
   }
 }
-
