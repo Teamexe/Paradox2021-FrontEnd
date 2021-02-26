@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 /// Model for Hints used in particular Question
 class Hint {
@@ -8,8 +8,10 @@ class Hint {
   String hint3;
 
   Hint(
-      {@required this.level,
+      {
+      @required this.level,
       @required this.hint1,
       @required this.hint2,
-      @required this.hint3});
+      @required this.hint3,
+      });
 }

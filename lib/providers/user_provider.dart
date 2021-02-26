@@ -56,6 +56,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+
   /// Check whether a present in backend or not using the uid provided by firebase on authentication.
   Future<bool> userIsPresent() async {
     try {
