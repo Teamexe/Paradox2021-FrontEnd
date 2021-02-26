@@ -36,6 +36,7 @@ dependencies:
   photo_view: ^0.10.3
   animated_text_kit: ^3.1.0
   simple_animations: ^2.5.0
+  url_launcher: ^5.7.10
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
