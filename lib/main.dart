@@ -4,6 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/referral_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/screens/question_screen.dart';
 import 'package:provider/provider.dart';
 import 'authentication/sign_in.dart';
 import 'routes/routes.dart';
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LeaderBoardProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ReferralProvider())
+        ChangeNotifierProvider(create:(_)=> QuestionProvider()),
       ],
       child: MaterialApp(
         title: 'Paradox',
@@ -44,12 +47,16 @@ class MyApp extends StatelessWidget {
                   FirebaseAuth.instance.currentUser.displayName);
               Provider.of<UserProvider>(context, listen: false)
                   .fetchUserDetails();
+              Provider.of<QuestionProvider>(context,listen: false).fetchQuestions();
+              Provider.of<QuestionProvider>(context,listen: false).fetchHints();
+              Provider.of<LeaderBoardProvider>(context, listen: false).fetchAndSetLeaderBoard();
               return Home();
             } else {
               return SignIn();
             }
           },
         ),
+        // QuestionScreen(),
         routes: routes,
       ),
     );

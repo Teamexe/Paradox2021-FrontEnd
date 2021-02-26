@@ -33,6 +33,7 @@ dependencies:
   provider: ^4.3.3
   http: ^0.12.2
   photo_view: ^0.10.3
+  slimy_card: ^1.0.4
   animated_text_kit: ^3.1.0
   simple_animations: ^2.5.0
   url_launcher: ^5.7.10
