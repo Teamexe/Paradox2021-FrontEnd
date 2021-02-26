@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Provider.of<QuestionProvider>(context,listen: false).fetchQuestions();
+              Provider.of<QuestionProvider>(context,listen: false).fetchHints();
               Provider.of<LeaderBoardProvider>(context, listen: false).fetchAndSetLeaderBoard();
               return Home();
             } else {
