@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
+import 'package:paradox/screens/rules_screen.dart';
+import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
+import 'package:paradox/utilities/custom_dialog.dart';
 import 'package:paradox/utilities/logo_painter.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -24,18 +27,20 @@ class AppDrawerState extends State<AppDrawer> {
           Expanded(
             child: ListView(
               children: [
-                UserAccountsDrawerHeader(
-                  accountName: Text(name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                  accountEmail: Text(email, style: TextStyle(fontWeight: FontWeight.w500)),
-                  currentAccountPicture: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: Image(
-                      image: NetworkImage(image),
+                GestureDetector(
+                  child: UserAccountsDrawerHeader(
+                    accountName: Text(name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                    accountEmail: Text(email, style: TextStyle(fontWeight: FontWeight.w500)),
+                    currentAccountPicture: ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: Image(
+                        image: NetworkImage(image),
+                      ),
                     ),
+                    decoration: BoxDecoration(color: Theme.of(context).accentColor),
                   ),
-                  decoration: BoxDecoration(color: Theme.of(context).accentColor),
-                  onDetailsPressed: () {
-
+                  onTap: () {
+                    Navigator.pushNamed(context, ProfileScreen.routeName);
                   },
                 ),
                 ListTile(
@@ -58,7 +63,7 @@ class AppDrawerState extends State<AppDrawer> {
                       child: Container(
                         margin: EdgeInsets.all(10),
                         child: CustomPaint(
-                          painter: MyLogoPainter(),
+                          painter: MyLogoPainter(Colors.white),
                           child: Container(),
                         ),
                       ),
@@ -102,6 +107,14 @@ class AppDrawerState extends State<AppDrawer> {
                   ),
                   title: Text('Information'),
                   dense: true,
+                  onTap: () {
+                    showDialog(context: context,
+                        builder: (BuildContext context) {
+                          return CustomDialogBox(
+                              'Information',
+                              'View our projects on https://github.com/teamexe\n or visit our website https://teamexe.in');
+                        });
+                  },
                 ),
                 Divider(),
                 ListTile(
@@ -111,6 +124,9 @@ class AppDrawerState extends State<AppDrawer> {
                   ),
                   title: Text('View Rules'),
                   dense: true,
+                  onTap: () {
+                    Navigator.pushNamed(context, RulesScreen.routeName);
+                  },
                 ),
                 Divider(),
                 ListTile(
@@ -136,7 +152,7 @@ class AppDrawerState extends State<AppDrawer> {
                   },
                 ),
                 Divider(),
-
+                SizedBox(height: 150),
               ],
             ),
           ),
@@ -149,7 +165,7 @@ class AppDrawerState extends State<AppDrawer> {
                 text: TextSpan(
                     style: TextStyle(
                         fontSize: 17,
-                        color: Colors.grey[500],
+                        color: Colors.grey[400],
                         fontWeight: FontWeight.w600),
                     children: [
                       TextSpan(text: 'Made with '),
@@ -157,7 +173,6 @@ class AppDrawerState extends State<AppDrawer> {
                           text: String.fromCharCode(0x2665),
                           style: TextStyle(
                               fontFamily: 'Material Icons',
-                              fontSize: 17,
                               color: Colors.lightBlue[900].withAlpha(1000),
                               fontWeight: FontWeight.bold)
                       ),

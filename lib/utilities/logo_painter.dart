@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class MyLogoPainter extends CustomPainter {
+  final Color customColor;
+  MyLogoPainter(this.customColor);
+
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
     Path path = Path();
 
-
     // Path number 1
 
-
-    paint.color = Color(0xffffffff);
+    paint.color = customColor;
     path = Path();
     path.lineTo(size.width * 0.47, size.height * 1.17);
     path.cubicTo(size.width * 0.47, size.height * 1.17, size.width * 0.45, size.height * 1.14, size.width * 0.43, size.height * 1.1);
@@ -38,11 +39,9 @@ class MyLogoPainter extends CustomPainter {
     path.cubicTo(size.width * 0.47, size.height * 1.17, size.width * 0.47, size.height * 1.17, size.width * 0.47, size.height * 1.17);
     canvas.drawPath(path, paint);
 
-
     // Path number 2
 
-
-    paint.color = Color(0xffffffff);
+    paint.color = customColor;
     path = Path();
     path.lineTo(size.width * 0.65, size.height * 1.16);
     path.cubicTo(size.width * 0.65, size.height * 1.16, size.width * 0.64, size.height * 1.15, size.width * 0.64, size.height * 1.13);
@@ -90,11 +89,9 @@ class MyLogoPainter extends CustomPainter {
     path.cubicTo(size.width * 0.65, size.height * 1.16, size.width * 0.65, size.height * 1.16, size.width * 0.65, size.height * 1.16);
     canvas.drawPath(path, paint);
 
-
     // Path number 3
 
-
-    paint.color = Color(0xffffffff);
+    paint.color = customColor;
     path = Path();
     path.lineTo(size.width * 0.65, size.height * 0.82);
     path.cubicTo(size.width * 0.64, size.height * 0.81, size.width * 0.63, size.height * 0.79, size.width * 0.62, size.height * 0.76);
