@@ -21,6 +21,12 @@ class AppDrawerState extends State<AppDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyle = TextStyle(
+      color: Colors.grey.shade500,
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+    );
+
     return Drawer(
       child: Column(
         children: [
@@ -48,7 +54,7 @@ class AppDrawerState extends State<AppDrawer> {
                     child: Icon(Icons.local_activity, color: Colors.white),
                     backgroundColor: Colors.blue,
                   ),
-                  title: Text('Ranking'),
+                  title: Text('Ranking', style: textStyle),
                   dense: true,
                   onTap: () {
                     Navigator.pushNamed(context, LeaderBoard.route);
@@ -70,7 +76,7 @@ class AppDrawerState extends State<AppDrawer> {
                     ),
                   ),
                   dense: true,
-                  title: Text('Paradox'),
+                  title: Text('Paradox', style: textStyle),
                 ),
                 Divider(),
                 ListTile(
@@ -78,7 +84,7 @@ class AppDrawerState extends State<AppDrawer> {
                     backgroundColor: Colors.blue,
                     child: Icon(Icons.graphic_eq, color: Colors.white),
                   ),
-                  title: Text('Stats'),
+                  title: Text('Stats', style: textStyle),
                   dense: true,
                 ),
                 Divider(),
@@ -87,7 +93,7 @@ class AppDrawerState extends State<AppDrawer> {
                     backgroundColor: Colors.blue,
                     child: Icon(Icons.people, color: Colors.white),
                   ),
-                  title: Text('Referral'),
+                  title: Text('Referral', style: textStyle),
                   dense: true,
                 ),
                 Divider(),
@@ -96,7 +102,7 @@ class AppDrawerState extends State<AppDrawer> {
                     backgroundColor: Colors.blue,
                     child: Icon(Icons.group_sharp, color: Colors.white),
                   ),
-                  title: Text('Members'),
+                  title: Text('Members', style: textStyle),
                   dense: true,
                 ),
                 Divider(),
@@ -105,14 +111,19 @@ class AppDrawerState extends State<AppDrawer> {
                     backgroundColor: Colors.blue,
                     child: Icon(Icons.info_rounded, color: Colors.white),
                   ),
-                  title: Text('Information'),
+                  title: Text('Information', style: textStyle),
                   dense: true,
                   onTap: () {
                     showDialog(context: context,
                         builder: (BuildContext context) {
                           return CustomDialogBox(
                               'Information',
-                              'View our projects on https://github.com/teamexe\n or visit our website https://teamexe.in');
+                              'View our projects on ',
+                              'https://github.com/teamexe',
+                              '\n or visit our website ',
+                              'https://teamexe.in',
+                              Colors.blue
+                          );
                         });
                   },
                 ),
@@ -122,7 +133,7 @@ class AppDrawerState extends State<AppDrawer> {
                     backgroundColor: Colors.blue,
                     child: Icon(Icons.rule, color: Colors.white),
                   ),
-                  title: Text('View Rules'),
+                  title: Text('View Rules', style: textStyle),
                   dense: true,
                   onTap: () {
                     Navigator.pushNamed(context, RulesScreen.routeName);
@@ -134,7 +145,7 @@ class AppDrawerState extends State<AppDrawer> {
                     backgroundColor: Colors.blue,
                     child: Icon(Icons.settings_applications, color: Colors.white),
                   ),
-                  title: Text('Settings'),
+                  title: Text('Settings', style: textStyle),
                   dense: true,
                 ),
                 Divider(),
@@ -144,7 +155,7 @@ class AppDrawerState extends State<AppDrawer> {
                     backgroundColor: Colors.blue,
                     child: Icon(Icons.logout, color: Colors.white),
                   ),
-                  title: Text('Logout'),
+                  title: Text('Logout', style: textStyle),
                   dense: true,
                   onTap: () {
                     UserProvider().logout();
@@ -152,7 +163,7 @@ class AppDrawerState extends State<AppDrawer> {
                   },
                 ),
                 Divider(),
-                SizedBox(height: 150),
+                SizedBox(height: 120),
               ],
             ),
           ),
@@ -166,15 +177,13 @@ class AppDrawerState extends State<AppDrawer> {
                     style: TextStyle(
                         fontSize: 17,
                         color: Colors.grey[400],
-                        fontWeight: FontWeight.w600),
+                        fontWeight: FontWeight.normal),
                     children: [
                       TextSpan(text: 'Made with '),
                       TextSpan(
                           text: String.fromCharCode(0x2665),
                           style: TextStyle(
-                              fontFamily: 'Material Icons',
-                              color: Colors.lightBlue[900].withAlpha(1000),
-                              fontWeight: FontWeight.bold)
+                              fontFamily: 'Material Icons')
                       ),
                       TextSpan(text: ' by '),
                       TextSpan(
