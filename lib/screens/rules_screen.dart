@@ -37,6 +37,7 @@ class RulesScreen extends StatelessWidget {
             Container(
               color: Colors.blue,
               child: FlatButton(
+                onPressed: (){},
                 child: Text('Let\'s Play', style: TextStyle(color: Colors.white)),
               ),
             )
