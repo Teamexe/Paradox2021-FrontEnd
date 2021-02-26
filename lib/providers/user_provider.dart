@@ -112,4 +112,22 @@ class UserProvider extends ChangeNotifier {
     await googleSignIn.signOut();
     return;
   }
+
+  String getUserName() {
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    User user = firebaseAuth.currentUser;
+    return user.displayName;
+  }
+
+  String getUserEmail() {
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    User user = firebaseAuth.currentUser;
+    return user.email;
+  }
+
+  String getUserProfileImage() {
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    User user = firebaseAuth.currentUser;
+    return user.photoURL;
+  }
 }

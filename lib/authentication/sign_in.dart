@@ -53,8 +53,8 @@ class _SignInWidgetState extends State<SignInWidget> with SingleTickerProviderSt
 
   @override
   void dispose() {
-    super.dispose();
     animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -281,7 +281,7 @@ class GoogleSignInButton extends StatelessWidget {
             flex: 3,
             child: Container(
               padding: EdgeInsets.only(right: 10),
-              child: Text('Sign up with Google',
+              child: Text('Sign in with Google',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.black45,
