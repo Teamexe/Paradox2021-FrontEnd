@@ -11,5 +11,8 @@ class User {
   int superCoins;
   bool referralAvailed;
 
+
   User({@required this.uid, @required this.email, @required this.name});
+
+
 }

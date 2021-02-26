@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
@@ -95,6 +96,9 @@ class AppDrawerState extends State<AppDrawer> {
                   ),
                   title: Text('Referral', style: textStyle),
                   dense: true,
+                  onTap: (){
+                    Navigator.of(context).pushNamed(ReferralScreen.routeName);
+                  },
                 ),
                 Divider(),
                 ListTile(
@@ -153,6 +157,20 @@ class AppDrawerState extends State<AppDrawer> {
                   isThreeLine: false,
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue,
+                    child: Icon(Icons.lock, color: Colors.white),
+                  ),
+                  title: Text('Privacy Policy', style: textStyle),
+                  dense: true,
+                  onTap: () {
+                    UserProvider().logout();
+                    createToast('Signed out successfully');
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  isThreeLine: false,
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.blue,
                     child: Icon(Icons.logout, color: Colors.white),
                   ),
                   title: Text('Logout', style: textStyle),
@@ -162,8 +180,6 @@ class AppDrawerState extends State<AppDrawer> {
                     createToast('Signed out successfully');
                   },
                 ),
-                Divider(),
-                SizedBox(height: 120),
               ],
             ),
           ),

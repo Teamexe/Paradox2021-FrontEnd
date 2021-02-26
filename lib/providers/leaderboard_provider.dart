@@ -12,7 +12,7 @@ class LeaderBoardProvider extends ChangeNotifier {
   List<LeaderBoardUser> get userList => [..._userList];
 
   /// This function fetchers List of [LeaderBoardUser] from backend and assign them to [_userList]
-  void fetchAndSetLeaderBoard() async {
+  Future<void> fetchAndSetLeaderBoard() async {
     String route = "leaderboard/";
 
     /// URl to place request
