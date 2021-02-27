@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/question_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/widgets/drawer.dart';
 
@@ -31,6 +32,12 @@ class Home extends StatelessWidget {
         ],
       ),
       drawer: AppDrawer(),
+      body: RaisedButton(
+        onPressed: (){
+          Navigator.of(context).pushNamed(QuestionScreen.routeName);
+        },
+        child: Text('Question Page'),
+      ),
     );
   }
 }

@@ -4,8 +4,13 @@ import 'package:http/http.dart';
 import 'package:paradox/models/hint.dart';
 import 'package:paradox/models/question.dart';
 import 'package:paradox/utilities/constant.dart';
+import 'package:paradox/models/user.dart' as UserModel;
+
+
 
 class QuestionProvider extends ChangeNotifier {
+  // UserModel.User user;
+  // var uid = user.uid;
   List<Question> _questionList = [];
 
   List<Question> get questionList {
@@ -55,4 +60,7 @@ class QuestionProvider extends ChangeNotifier {
       throw Exception();
     }
   }
+
+
+
 }

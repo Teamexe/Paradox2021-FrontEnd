@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/question_screen.dart';
 import 'package:provider/provider.dart';
 import 'authentication/sign_in.dart';
