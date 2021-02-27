@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/question_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/curve_painter.dart';
 import 'package:paradox/widgets/drawer.dart';
@@ -46,6 +47,14 @@ class Home extends StatelessWidget {
                     child: Text("LeaderBoard"),
                     onPressed: () {
                       Navigator.of(context).pushNamed(LeaderBoard.route);
+                    },
+                  ),
+                ),
+                Container(
+                  child: TextButton(
+                    child: Text("Question"),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(QuestionScreen.routeName);
                     },
                   ),
                 ),
