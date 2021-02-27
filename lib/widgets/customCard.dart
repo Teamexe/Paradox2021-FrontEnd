@@ -79,7 +79,9 @@ class CustomCard extends StatelessWidget {
                           heading2??'',
                           style: TextStyle(
                               color: Colors.white,
+
                               fontSize: 25,
+
                               fontFamily: 'Avenir',
                               fontWeight: FontWeight.w700),
                         ),

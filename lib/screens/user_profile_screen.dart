@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+
 import 'package:paradox/screens/Referral.dart';
+
 import 'package:paradox/widgets/customCard.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   static String routeName = '/user_profile_screen';
-
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -18,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: true).user;
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.blue,
@@ -65,7 +67,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Colors.white,
                                   fontSize: 26,
                                   fontWeight: FontWeight.w700,
-
                                 ),
                                 overflow: TextOverflow.fade,
                               ),
@@ -77,7 +78,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Colors.white,
                                   fontSize: 22,
                                   fontWeight: FontWeight.w700,
-
                                 ),
                                 overflow: TextOverflow.fade,
                               ),
@@ -112,7 +112,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         CustomCard(
                           heading1: ' Score : ${user.score ?? 0}',
-                          heading2: ' Rank : ${Provider.of<LeaderBoardProvider>(context).getRank(user.uid)}',
+                          heading2:
+                              ' Rank : ${Provider.of<LeaderBoardProvider>(context).getRank(user.uid)}',
                           imagePath: "assets/images/trophy.png",
                         ),
                         SizedBox(
@@ -169,12 +170,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           fontFamily: 'Material Icons')),
                                   TextSpan(text: ' by '),
                                   TextSpan(
-                                      text: 'Team .E',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.lightBlue[900]
-                                              .withAlpha(1000),
-                                          fontWeight: FontWeight.bold)),
+                                    text: 'Team .E',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          Colors.lightBlue[900].withAlpha(1000),
+                                    ),
+                                  ),
                                   TextSpan(
                                       text: 'X',
                                       style: TextStyle(
