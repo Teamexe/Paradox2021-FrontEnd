@@ -35,13 +35,35 @@ class Home extends StatelessWidget {
         ],
       ),
 
-      drawer: AppDrawer(),
-      body: RaisedButton(
-        onPressed: (){
-          Navigator.of(context).pushNamed(QuestionScreen.routeName);
-        },
-        child: Text('Question Page'),
+      body: Container(
+        color: Colors.white,
+        child: CustomPaint(
+          painter: CurvePainter(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                Container(
+                  child: TextButton(
+                    child: Text("LeaderBoard"),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(LeaderBoard.route);
+                    },
+                  ),
+                ),
+                Container(
+                  child: TextButton(
+                    child: Text("Question"),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(QuestionScreen.routeName);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-    );
+      drawer: AppDrawer()
   }
 }

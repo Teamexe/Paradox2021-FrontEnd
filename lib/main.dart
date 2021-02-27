@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
+import 'package:paradox/providers/members_provider.dart';
 import 'package:paradox/providers/referral_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
@@ -29,8 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ReferralProvider()),
         ChangeNotifierProvider(create:(_)=> QuestionProvider()),
-        ChangeNotifierProvider(create:(_)=> UserProvider()),
-
+        ChangeNotifierProvider(create: (_) => ExeMembersProvider())
       ],
       child: MaterialApp(
         title: 'Paradox',
