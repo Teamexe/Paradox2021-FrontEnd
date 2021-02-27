@@ -34,6 +34,7 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
+
       body: Container(
         color: Colors.white,
         child: CustomPaint(
@@ -63,7 +64,6 @@ class Home extends StatelessWidget {
           ),
         ),
       ),
-      drawer: AppDrawer(),
-    );
+      drawer: AppDrawer()
   }
 }

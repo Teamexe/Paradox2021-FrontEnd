@@ -7,31 +7,31 @@ import 'package:slimy_card/slimy_card.dart';
 import '../utilities/myBehaviour.dart';
 
 class QuestionPageLayout extends StatefulWidget {
-
   @override
   _QuestionPageLayoutState createState() => _QuestionPageLayoutState();
 }
 
 class _QuestionPageLayoutState extends State<QuestionPageLayout> {
   int index = 0;
+  String answer;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final questList = Provider.of<QuestionProvider>(context).questionList;
     final hintList = Provider.of<QuestionProvider>(context).hintsList;
     return Container(
-      margin: EdgeInsets.only(top:100,left: 20,right: 20, bottom: 60),
+      margin: EdgeInsets.only(top: 100, left: 20, right: 20, bottom: 60),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           SlimyCard(
             color: Colors.white,
-            width: size.width *0.9,
-            topCardHeight: size.height *0.55,
-            bottomCardHeight: size.height *0.15,
+            width: size.width * 0.9,
+            topCardHeight: size.height * 0.55,
+            bottomCardHeight: size.height * 0.15,
             borderRadius: 15,
-            topCardWidget:Container(
-              child: ScrollConfiguration (
+            topCardWidget: Container(
+              child: ScrollConfiguration(
                 behavior: MyBehavior(),
                 child: SingleChildScrollView(
                   child: Column(
@@ -39,35 +39,39 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                     children: <Widget>[
                       Container(
                         width: double.infinity,
-                        child: Text('Are you Ready for',
+                        child: Text(
+                          'Are you Ready for',
                           style: TextStyle(fontSize: 18),
                           textAlign: TextAlign.left,
                         ),
                       ),
                       Container(
                         width: double.infinity,
-                        child: Text('Level ${questList[index].level}!',
-                          style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                        child: Text(
+                          'Level ${questList[index].level}!',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left,
                         ),
                       ),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Container(
-                        height: size.height *0.3,
+                        height: size.height * 0.3,
                         width: double.infinity,
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: NetworkImage('${questList[index].location}'),
                             fit: BoxFit.contain,
-
                           ),
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(15),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.1),
-                              blurRadius:10,
+                              blurRadius: 10,
                               spreadRadius: 0.5,
                             ),
                           ],
@@ -82,18 +86,22 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                           showCursor: true,
                           decoration: InputDecoration(
                             hintText: 'Answer here',
-                            hintStyle: TextStyle(fontSize: 14,),
+                            hintStyle: TextStyle(
+                              fontSize: 14,
+                            ),
                             fillColor: Colors.grey[200],
                             filled: true,
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              borderSide:
-                              new BorderSide(width: 1, color: Colors.blueGrey),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide: new BorderSide(
+                                  width: 1, color: Colors.blueGrey),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              borderSide:
-                              new BorderSide(width: 1, color: Colors.grey[200]),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide: new BorderSide(
+                                  width: 1, color: Colors.grey[200]),
                             ),
                           ),
                         ),
@@ -103,16 +111,18 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.blue[900])
-                        ),
+                            border: Border.all(color: Colors.blue[900])),
                         height: 25,
                         child: FlatButton(
-                          onPressed: (){
+                          onPressed: () {
                             setState(() {
                               index++;
                             });
                           },
-                          child: Text('Submit',style: TextStyle(fontWeight: FontWeight.bold),),
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                       SizedBox(height: 40),
@@ -125,31 +135,39 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
               behavior: MyBehavior(),
               child: SingleChildScrollView(
                 child: Container(
-                    child: Column(children: [
-                      Container(
-                        width: double.infinity,
-                        height: 20,
-                        child: FlatButton(onPressed: (){},
-                          child: Text('${hintList[index].hint1} 30 - coins',textAlign: TextAlign.center),
+                    child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 20,
+                      child: FlatButton(
+                        onPressed: () {},
+                        child: Text('${hintList[index].hint1} 30 - coins',
+                            textAlign: TextAlign.center),
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 20,
+                      child: FlatButton(
+                        onPressed: () {},
+                        child: Text('${hintList[index].hint2} 30 - coins',
+                            textAlign: TextAlign.center),
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 20,
+                      child: FlatButton(
+                        onPressed: () {},
+                        child: Text(
+                          '${hintList[index].hint3}  40 - coins',
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 20,
-                        child: FlatButton(onPressed: (){},
-                          child: Text('${hintList[index].hint2} 30 - coins',textAlign: TextAlign.center),
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 20,
-                        child: FlatButton(onPressed: (){},
-
-                          child: Text('${hintList[index].hint3}  40 - coins',textAlign: TextAlign.center,),
-                        ),
-                      ),
-                    ],)
-                ),
+                    ),
+                  ],
+                )),
               ),
             ),
           ),
@@ -158,4 +176,3 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
     );
   }
 }
-

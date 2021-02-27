@@ -29,13 +29,16 @@ class LeaderBoardProvider extends ChangeNotifier {
 
       /// Looping over List of users and adding them to _userList
       for (int i = 0; i < data.length; i++) {
-        _userList.add(LeaderBoardUser(
+        _userList.add(
+          LeaderBoardUser(
             user: data[i]['user'],
             name: data[i]['name'],
             image: data[i]['image'],
             level: data[i]['level'],
             score: data[i]['score'],
-            coins: data[i]['coins']));
+            coins: data[i]['coins'],
+          ),
+        );
       }
 
       /// Notifying Listeners
@@ -43,5 +46,13 @@ class LeaderBoardProvider extends ChangeNotifier {
     } else {
       throw Exception();
     }
+  }
+
+  int getRank(String id) {
+     for(int i = 0;i<userList.length;i++){
+       if(userList[i].user == id){
+         return i+1;
+       }
+     }
   }
 }

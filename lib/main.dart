@@ -6,6 +6,7 @@ import 'package:paradox/providers/members_provider.dart';
 import 'package:paradox/providers/referral_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/question_screen.dart';
 import 'package:provider/provider.dart';
 import 'authentication/sign_in.dart';
