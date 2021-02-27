@@ -140,4 +140,6 @@ class UserProvider extends ChangeNotifier {
     User user = firebaseAuth.currentUser;
     return user.photoURL;
   }
+
+  //
 }
