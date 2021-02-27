@@ -29,6 +29,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ReferralProvider())
         ChangeNotifierProvider(create:(_)=> QuestionProvider()),
+        ChangeNotifierProvider(create:(_)=> UserProvider()),
+
       ],
       child: MaterialApp(
         title: 'Paradox',

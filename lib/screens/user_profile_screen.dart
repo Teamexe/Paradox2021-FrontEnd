@@ -4,10 +4,17 @@ import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/widgets/customCard.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   static String routeName = '/user_profile_screen';
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context,listen: true).user;
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.blue,
@@ -86,12 +93,12 @@ class ProfileScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         CustomCard(
-                          heading1: 'Level:',
-                          heading2: 'Coins:',
+                          heading1: 'Level:${user.level}',
+                          heading2: 'Coins:${user.coins}',
                           imagePath: "assets/images/badge.png",
                         ),
                         CustomCard(
-                          heading1: 'Score:',
+                          heading1: 'Score:${user.score}',
                           imagePath: "assets/images/trophy.png",
                         ),
                         SizedBox(
