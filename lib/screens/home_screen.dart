@@ -34,27 +34,7 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        color: Colors.white,
-        child: CustomPaint(
-          painter: CurvePainter(),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: [
-                Container(
-                  child: TextButton(
-                    child: Text("LeaderBoard"),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(LeaderBoard.route);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+
       drawer: AppDrawer(),
       body: RaisedButton(
         onPressed: (){

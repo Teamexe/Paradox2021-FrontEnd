@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/widgets/customCard.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +17,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context,listen: true).user;
+    final user = Provider.of<UserProvider>(context, listen: true).user;
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.blue,
@@ -59,14 +62,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Text(
                                 UserProvider().getUserName(),
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 17),
+                                  color: Colors.white,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w700,
+
+                                ),
+                                overflow: TextOverflow.fade,
                               ),
                             ),
                             Container(
                               child: Text(
                                 UserProvider().getUserEmail(),
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 17),
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700,
+
+                                ),
+                                overflow: TextOverflow.fade,
                               ),
                             ),
                           ],
@@ -77,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 80),
+            SizedBox(height: 60),
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
@@ -93,27 +106,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       children: [
                         CustomCard(
-                          heading1: 'Level:${user.level}',
-                          heading2: 'Coins:${user.coins}',
+                          heading1: ' Level : ${user.level ?? 1} ',
+                          heading2: ' Coins : ${user.coins ?? 0}',
                           imagePath: "assets/images/badge.png",
                         ),
                         CustomCard(
-                          heading1: 'Score:${user.score}',
+                          heading1: ' Score : ${user.score ?? 0}',
+                          heading2: ' Rank : ${Provider.of<LeaderBoardProvider>(context).getRank(user.uid)}',
                           imagePath: "assets/images/trophy.png",
                         ),
                         SizedBox(
-                          height: 40,
-                        ),
-                        FlatButton(
                           height: 30,
-                          textColor: Colors.white,
-                          minWidth: double.infinity,
-                          color: Colors.blue,
-                          onPressed: () {},
-                          child: Text(
-                            'Referral',
-                            style: TextStyle(fontSize: 18),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                            width: double.infinity,
+                            child: MaterialButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pushNamed(ReferralScreen.routeName);
+                                },
+                                height: 48,
+                                color: Colors.blue,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Text(
+                                    'Referral',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.white,
+                                      width: 2,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(17.0),
+                                )),
                           ),
+                        ),
+                        SizedBox(
+                          height: 20,
                         ),
                         Container(
                           alignment: Alignment.center,
@@ -129,28 +166,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   TextSpan(
                                       text: String.fromCharCode(0x2665),
                                       style: TextStyle(
-                                          fontFamily: 'Material Icons')
-                                  ),
+                                          fontFamily: 'Material Icons')),
                                   TextSpan(text: ' by '),
                                   TextSpan(
                                       text: 'Team .E',
                                       style: TextStyle(
                                           fontSize: 15,
-                                          color: Colors.lightBlue[900].withAlpha(1000),
-                                          fontWeight: FontWeight.bold)
-                                  ),
+                                          color: Colors.lightBlue[900]
+                                              .withAlpha(1000),
+                                          fontWeight: FontWeight.bold)),
                                   TextSpan(
                                       text: 'X',
                                       style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.lightBlue,
-                                          fontWeight: FontWeight.bold)
-                                  ),
+                                          fontWeight: FontWeight.bold)),
                                   TextSpan(
                                       text: 'E',
                                       style: TextStyle(
-                                          fontSize: 17,
-                                          color: Colors.lightBlue[900].withAlpha(1000),
+                                          fontSize: 15,
+                                          color: Colors.lightBlue[900]
+                                              .withAlpha(1000),
                                           fontWeight: FontWeight.bold)),
                                 ]),
                           ),

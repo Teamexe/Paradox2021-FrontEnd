@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => LeaderBoardProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => ReferralProvider())
+        ChangeNotifierProvider(create: (_) => ReferralProvider()),
         ChangeNotifierProvider(create:(_)=> QuestionProvider()),
         ChangeNotifierProvider(create:(_)=> UserProvider()),
 

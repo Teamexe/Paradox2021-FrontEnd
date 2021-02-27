@@ -69,7 +69,7 @@ class CustomCard extends StatelessWidget {
                           style: TextStyle(
                               color: Colors.white,
                               fontFamily: 'Avenir',
-                              fontSize: 18,
+                              fontSize: 25,
                               fontWeight: FontWeight.w700),
                         ),
                         SizedBox(
@@ -79,7 +79,7 @@ class CustomCard extends StatelessWidget {
                           heading2??'',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 25,
                               fontFamily: 'Avenir',
                               fontWeight: FontWeight.w700),
                         ),
