@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
         ),
         // QuestionScreen(),
         routes: routes,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

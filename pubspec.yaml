@@ -37,12 +37,12 @@ dependencies:
   animated_text_kit: ^3.1.0
   simple_animations: ^2.5.0
   url_launcher: ^5.7.10
+  supercharged: ^1.12.0
+  carousel_slider: ^3.0.0
   share: ^0.6.5+4
   loader_overlay: ^1.1.1
   flutter_markdown: ^0.5.2
   font_awesome_flutter: ^8.11.0
-
-
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -71,6 +71,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/google_logo.jpg
+    - assets/images/paradox_play.jpg
     - assets/images/trophy.png
     - assets/images/badge.png
 
