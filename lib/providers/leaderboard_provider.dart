@@ -12,7 +12,7 @@ class LeaderBoardProvider extends ChangeNotifier {
   List<LeaderBoardUser> get userList => [..._userList];
 
   /// This function fetchers List of [LeaderBoardUser] from backend and assign them to [_userList]
-  void fetchAndSetLeaderBoard() async {
+  Future<void> fetchAndSetLeaderBoard() async {
     String route = "leaderboard/";
 
     /// URl to place request
@@ -29,13 +29,16 @@ class LeaderBoardProvider extends ChangeNotifier {
 
       /// Looping over List of users and adding them to _userList
       for (int i = 0; i < data.length; i++) {
-        _userList.add(LeaderBoardUser(
+        _userList.add(
+          LeaderBoardUser(
             user: data[i]['user'],
             name: data[i]['name'],
             image: data[i]['image'],
             level: data[i]['level'],
             score: data[i]['score'],
-            coins: data[i]['coins']));
+            coins: data[i]['coins'],
+          ),
+        );
       }
 
       /// Notifying Listeners
@@ -48,5 +51,13 @@ class LeaderBoardProvider extends ChangeNotifier {
   List<LeaderBoardUser> get topPlayerList {
     // TODO: return top 10 players
     return _userList.sublist(0);
+  }
+
+  int getRank(String id) {
+     for(int i = 0;i<userList.length;i++){
+       if(userList[i].user == id){
+         return i+1;
+       }
+     }
   }
 }

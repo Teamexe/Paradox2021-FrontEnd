@@ -3,12 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
 import 'package:paradox/utilities/logo_painter.dart';
+import 'package:paradox/utilities/member_screen.dart';
+import 'package:paradox/utilities/privacy_policy.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -37,15 +40,19 @@ class AppDrawerState extends State<AppDrawer> {
               children: [
                 GestureDetector(
                   child: UserAccountsDrawerHeader(
-                    accountName: Text(name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                    accountEmail: Text(email, style: TextStyle(fontWeight: FontWeight.w500)),
+                    accountName: Text(name,
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500)),
+                    accountEmail: Text(email,
+                        style: TextStyle(fontWeight: FontWeight.w500)),
                     currentAccountPicture: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
                       child: Image(
                         image: NetworkImage(image),
                       ),
                     ),
-                    decoration: BoxDecoration(color: Theme.of(context).accentColor),
+                    decoration:
+                        BoxDecoration(color: Theme.of(context).accentColor),
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, ProfileScreen.routeName);
@@ -97,9 +104,15 @@ class AppDrawerState extends State<AppDrawer> {
                   ),
                   title: Text('Referral', style: textStyle),
                   dense: true,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(ReferralScreen.routeName);
+                  },
                 ),
                 Divider(),
                 ListTile(
+                  onTap: (){
+                    Navigator.of(context).pushNamed(MemberScreen.routeName);
+                  },
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue,
                     child: Icon(Icons.group_sharp, color: Colors.white),
@@ -116,7 +129,8 @@ class AppDrawerState extends State<AppDrawer> {
                   title: Text('Information', style: textStyle),
                   dense: true,
                   onTap: () {
-                    showDialog(context: context,
+                    showDialog(
+                        context: context,
                         builder: (BuildContext context) {
                           return CustomDialogBox(
                               'Information',
@@ -124,8 +138,7 @@ class AppDrawerState extends State<AppDrawer> {
                               'https://github.com/teamexe',
                               '\n or visit our website ',
                               'https://teamexe.in',
-                              Colors.blue
-                          );
+                              Colors.blue);
                         });
                   },
                 ),
@@ -145,10 +158,25 @@ class AppDrawerState extends State<AppDrawer> {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue,
-                    child: Icon(Icons.settings_applications, color: Colors.white),
+                    child:
+                        Icon(Icons.settings_applications, color: Colors.white),
                   ),
                   title: Text('Settings', style: textStyle),
                   dense: true,
+                ),
+                Divider(),
+                ListTile(
+                  isThreeLine: false,
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    child: Icon(Icons.lock, color: Colors.white),
+                  ),
+                  title: Text('Privacy Policy', style: textStyle),
+                  dense: true,
+                  onTap: () async {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (ctx) => PrivacyPolicyWidget()));
+                  },
                 ),
                 Divider(),
                 ListTile(
@@ -164,8 +192,6 @@ class AppDrawerState extends State<AppDrawer> {
                     createToast('Signed out successfully');
                   },
                 ),
-                Divider(),
-                SizedBox(height: 120),
               ],
             ),
           ),
@@ -184,9 +210,7 @@ class AppDrawerState extends State<AppDrawer> {
                       TextSpan(text: 'Made with '),
                       TextSpan(
                           text: String.fromCharCode(0x2665),
-                          style: TextStyle(
-                              fontFamily: 'Material Icons')
-                      ),
+                          style: TextStyle(fontFamily: 'Material Icons')),
                       TextSpan(text: ' by '),
                       TextSpan(
                         recognizer: TapGestureRecognizer()
@@ -198,8 +222,7 @@ class AppDrawerState extends State<AppDrawer> {
                           style: TextStyle(
                               fontSize: 17,
                               color: Colors.lightBlue[900].withAlpha(1000),
-                              fontWeight: FontWeight.bold)
-                      ),
+                              fontWeight: FontWeight.bold)),
                       TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
@@ -210,8 +233,7 @@ class AppDrawerState extends State<AppDrawer> {
                           style: TextStyle(
                               fontSize: 17,
                               color: Colors.lightBlue,
-                              fontWeight: FontWeight.bold)
-                      ),
+                              fontWeight: FontWeight.bold)),
                       TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {

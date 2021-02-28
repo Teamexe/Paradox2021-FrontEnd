@@ -12,12 +12,13 @@ class UserProvider extends ChangeNotifier {
   UserModel.User user;
 
   /// Create new [User] and assign it to [user].
-  void assignUser(String uid, String email, String name) {
-    user = new UserModel.User(email: email, uid: uid, name: name);
+  Future<void> assignUser(String uid, String email, String name) async{
+    this.user = new UserModel.User(email: email, uid: uid, name: name);
+    return;
   }
 
   /// This function creates new User in the backend.
-  void createUser(String uid, String email, String displayName) async {
+  Future<void> createUser(String uid, String email, String displayName) async {
     final String postUrl = "${baseUrl}user/";
 
     /// Sending Request to backend with [google_id], [name], [email] to create new User.
@@ -45,16 +46,26 @@ class UserProvider extends ChangeNotifier {
   }
 
   /// This function is used to fetch details of User from backend and assign it to user.
-  void fetchUserDetails() async {
+  Future<void> fetchUserDetails() async {
     if (user.uid == null) {
       return;
     }
     String url = "${baseUrl}userProfile/${user.uid}/";
     Response response = await get(url);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       var userProfile = jsonDecode(response.body);
+      print(userProfile);
+      this.user.referralCode = userProfile['ref_code'];
+      this.user.level = userProfile['profile']['level'];
+      this.user.score = userProfile['profile']['level'];
+      this.user.coins = userProfile['profile']['coins'];
+      this.user.referralAvailed = userProfile['profile']['refferral_availed'];
+      notifyListeners();
     }
+    return;
   }
+
 
   /// Check whether a present in backend or not using the uid provided by firebase on authentication.
   Future<bool> userIsPresent() async {
@@ -79,7 +90,7 @@ class UserProvider extends ChangeNotifier {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount.authentication;
+        await googleSignInAccount.authentication;
 
     // ignore: deprecated_member_use
     final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -87,20 +98,19 @@ class UserProvider extends ChangeNotifier {
       idToken: googleSignInAuthentication.idToken,
     );
     final authResult = await _auth.signInWithCredential(credential);
-    final user = authResult.user;
-
+    final user = await authResult.user;
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
     final currentUser = _auth.currentUser;
     if (currentUser == null) {
       return;
     }
-    ApiAuthentication().userIsPresent().then((value) => {
-      if (value)
-        {print('user already in database')}
-      else
-        {ApiAuthentication().createUser()}
-    });
+    ApiAuthentication().userIsPresent().then((value) async => {
+          if (value)
+            {print('user already in database')}
+          else
+            {await ApiAuthentication().createUser()}
+        });
   }
 
   /// function to logout
@@ -130,4 +140,6 @@ class UserProvider extends ChangeNotifier {
     User user = firebaseAuth.currentUser;
     return user.photoURL;
   }
+
+  //
 }
