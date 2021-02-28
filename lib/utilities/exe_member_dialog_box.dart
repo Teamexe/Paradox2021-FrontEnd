@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -65,8 +66,15 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                   children: [
                     ClipRRect(
                       child: Container(
-                        child: Image.network(
-                          widget.exeMemberProfile.image,
+                        child: CachedNetworkImage(
+                          imageUrl: widget.exeMemberProfile.image,
+                          placeholder: (context, url) =>
+                              Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => Icon(
+                            Icons.error,
+                            color: Colors.blue,
+                            size: 60,
+                          ),
                           fit: BoxFit.cover,
                         ),
                         height: 250,
@@ -74,14 +82,29 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        widget.exeMemberProfile.category,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
+                    SizedBox(height: 5),
+                    if (widget.exeMemberProfile.position == "Developer")
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.exeMemberProfile.category,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
                       ),
-                    ),
+                    if (widget.exeMemberProfile.position == 'Pre-Final year' &&
+                        (widget.exeMemberProfile.name
+                                .contains('Deeksha Sharma') ||
+                            widget.exeMemberProfile.name
+                                .contains('Ankit Kumar')))
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Core Coordinator',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
+                      ),
                   ],
                 ),
                 SizedBox(height: 12),

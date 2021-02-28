@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 
 import 'package:paradox/screens/Referral.dart';
@@ -11,6 +10,7 @@ import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   static String routeName = '/user_profile_screen';
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -112,8 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         CustomCard(
                           heading1: ' Score : ${user.score ?? 0}',
-                          heading2:
-                              ' Rank : ${Provider.of<LeaderBoardProvider>(context).getRank(user.uid)}',
+                          heading2: ' Attempts : ${user.attempts}',
                           imagePath: "assets/images/trophy.png",
                         ),
                         SizedBox(

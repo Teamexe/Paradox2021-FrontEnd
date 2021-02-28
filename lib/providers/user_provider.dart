@@ -12,7 +12,7 @@ class UserProvider extends ChangeNotifier {
   UserModel.User user;
 
   /// Create new [User] and assign it to [user].
-  Future<void> assignUser(String uid, String email, String name) async{
+  Future<void> assignUser(String uid, String email, String name) async {
     this.user = new UserModel.User(email: email, uid: uid, name: name);
     return;
   }
@@ -53,19 +53,19 @@ class UserProvider extends ChangeNotifier {
     String url = "${baseUrl}userProfile/${user.uid}/";
     Response response = await get(url);
     print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       var userProfile = jsonDecode(response.body);
-      print(userProfile);
       this.user.referralCode = userProfile['ref_code'];
       this.user.level = userProfile['profile']['level'];
       this.user.score = userProfile['profile']['level'];
       this.user.coins = userProfile['profile']['coins'];
+      this.user.attempts = userProfile['profile']['attempts'];
       this.user.referralAvailed = userProfile['profile']['refferral_availed'];
       notifyListeners();
     }
     return;
   }
-
 
   /// Check whether a present in backend or not using the uid provided by firebase on authentication.
   Future<bool> userIsPresent() async {
@@ -98,7 +98,7 @@ class UserProvider extends ChangeNotifier {
       idToken: googleSignInAuthentication.idToken,
     );
     final authResult = await _auth.signInWithCredential(credential);
-    final user = await authResult.user;
+    final user = authResult.user;
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
     final currentUser = _auth.currentUser;
@@ -120,6 +120,7 @@ class UserProvider extends ChangeNotifier {
     await firebaseAuth.signOut();
     await googleSignIn.disconnect();
     await googleSignIn.signOut();
+    this.user = null;
     return;
   }
 
@@ -140,6 +141,4 @@ class UserProvider extends ChangeNotifier {
     User user = firebaseAuth.currentUser;
     return user.photoURL;
   }
-
-  //
 }

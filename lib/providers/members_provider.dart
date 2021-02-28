@@ -13,6 +13,7 @@ class ExeMembersProvider extends ChangeNotifier {
   List<ExeMemberProfile> executive = [];
   List<ExeMemberProfile> volunteer = [];
   List<ExeMemberProfile> preFinal = [];
+  List<ExeMemberProfile> alumni = [];
 
   void clearList() {
     /// Clear all the lists
@@ -22,6 +23,7 @@ class ExeMembersProvider extends ChangeNotifier {
       finalYear,
       mentors,
       coordinator,
+      alumni,
       executive,
       volunteer,
       preFinal
@@ -61,6 +63,8 @@ class ExeMembersProvider extends ChangeNotifier {
             finalYear.add(exeMemberProfile);
           } else if (exeMemberProfile.position == 'Coordinator') {
             coordinator.add(exeMemberProfile);
+          } else if (exeMemberProfile.position == 'Alumni') {
+            alumni.add(exeMemberProfile);
           } else if (exeMemberProfile.position == 'Executive') {
             executive.add(exeMemberProfile);
           } else if (exeMemberProfile.position == 'Pre-Final year') {
