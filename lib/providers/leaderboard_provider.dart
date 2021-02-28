@@ -44,4 +44,9 @@ class LeaderBoardProvider extends ChangeNotifier {
       throw Exception();
     }
   }
+
+  List<LeaderBoardUser> get topPlayerList {
+    // TODO: return top 10 players
+    return _userList.sublist(0);
+  }
 }
