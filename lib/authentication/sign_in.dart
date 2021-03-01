@@ -5,6 +5,7 @@ import 'package:hover_effect/hover_effect.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/home_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/clipper.dart';
 import 'package:provider/provider.dart';
@@ -241,6 +242,7 @@ class _SignInWidgetState extends State<SignInWidget>
                             .whenComplete(() async {
                           if (FirebaseAuth.instance.currentUser != null) {
                             createToast('Sign in Successful');
+                            Navigator.of(context).pushNamed(Home.routeName);
                           } else {
                             createToast('Sign In Unsuccessful');
                           }

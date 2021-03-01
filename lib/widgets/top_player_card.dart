@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/screens/photo_view.dart';
+import 'package:provider/provider.dart';
 
 class PlayerCard extends StatelessWidget {
   final LeaderBoardUser user;
@@ -9,10 +12,12 @@ class PlayerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: true);
+
     return Container(
       width: 160,
       child: Card(
-        color: Colors.grey[300],
+        color: themeProvider.brightness == BrightnessOption.light ? Colors.grey[300] : Colors.grey[400],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -21,7 +26,7 @@ class PlayerCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          color: Colors.white,
+          color: themeProvider.brightness == BrightnessOption.light ? Colors.white : Colors.white54,
           child: Container(
             padding: EdgeInsets.all(10),
             child: Column(

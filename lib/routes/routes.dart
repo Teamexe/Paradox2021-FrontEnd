@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:paradox/screens/Referral.dart';
 import '../utilities/member_screen.dart';
+import 'package:paradox/screens/settings.dart';
+import 'package:paradox/utilities/member_screen.dart';
 import '../screens/question_screen.dart';
 import '../screens/leaderboard_screen.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
@@ -17,5 +19,6 @@ Map<String, Widget Function(BuildContext)> routes = {
   ProfileScreen.routeName: (context) => ProfileScreen(),
   RulesScreen.routeName: (context) => RulesScreen(),
   ReferralScreen.routeName: (context) => ReferralScreen(),
-  MemberScreen.routeName: (context) => MemberScreen()
+  MemberScreen.routeName: (context) => MemberScreen(),
+  SettingsScreen.routeName: (context) => SettingsScreen(),
 };

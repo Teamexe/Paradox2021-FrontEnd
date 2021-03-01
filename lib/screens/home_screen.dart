@@ -316,7 +316,7 @@ class _HomePageState extends State<HomePage>
               ScaleTransition(
                 scale: scaleAnimation,
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  // margin: EdgeInsets.symmetric(horizontal: 10),
                   color: Colors.blue.withOpacity(0.84),
                   height: 40,
                   alignment: Alignment.center,

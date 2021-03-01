@@ -2,10 +2,12 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:paradox/authentication/sign_in.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
+import 'package:paradox/screens/settings.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
@@ -161,6 +163,19 @@ class AppDrawerState extends State<AppDrawer> {
                 ),
                 Divider(),
                 ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    child:
+                        Icon(Icons.settings_applications, color: Colors.white),
+                  ),
+                  title: Text('Settings', style: textStyle),
+                  dense: true,
+                  onTap: () {
+                    Navigator.pushNamed(context, SettingsScreen.routeName);
+                  },
+                ),
+                Divider(),
+                ListTile(
                   isThreeLine: false,
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue,
@@ -187,6 +202,7 @@ class AppDrawerState extends State<AppDrawer> {
                   dense: true,
                   onTap: () {
                     UserProvider().logout();
+                    Navigator.pushNamed(context, SignIn.routeName);
                     createToast('Signed out successfully');
                   },
                 ),
