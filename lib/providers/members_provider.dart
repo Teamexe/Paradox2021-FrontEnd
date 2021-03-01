@@ -12,11 +12,22 @@ class ExeMembersProvider extends ChangeNotifier {
   List<ExeMemberProfile> coordinator = [];
   List<ExeMemberProfile> executive = [];
   List<ExeMemberProfile> volunteer = [];
+  List<ExeMemberProfile> preFinal = [];
+  List<ExeMemberProfile> alumni = [];
 
   void clearList() {
     /// Clear all the lists
-    [developers, mentors, finalYear, mentors, coordinator, executive, volunteer]
-        .forEach((list) => list.clear());
+    [
+      developers,
+      mentors,
+      finalYear,
+      mentors,
+      coordinator,
+      alumni,
+      executive,
+      volunteer,
+      preFinal
+    ].forEach((list) => list.clear());
   }
 
   Future<void> fetchAndSetExeMembers() async {
@@ -50,10 +61,14 @@ class ExeMembersProvider extends ChangeNotifier {
             mentors.add(exeMemberProfile);
           } else if (exeMemberProfile.position == 'Final year') {
             finalYear.add(exeMemberProfile);
-          } else if (exeMemberProfile.position== 'Coordinator') {
+          } else if (exeMemberProfile.position == 'Coordinator') {
             coordinator.add(exeMemberProfile);
+          } else if (exeMemberProfile.position == 'Alumni') {
+            alumni.add(exeMemberProfile);
           } else if (exeMemberProfile.position == 'Executive') {
             executive.add(exeMemberProfile);
+          } else if (exeMemberProfile.position == 'Pre-Final year') {
+            preFinal.add(exeMemberProfile);
           } else {
             volunteer.add(exeMemberProfile);
           }

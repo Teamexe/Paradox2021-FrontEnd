@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LeaderBoardProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ReferralProvider()),
-        ChangeNotifierProvider(create:(_)=> QuestionProvider()),
+        ChangeNotifierProvider(create: (_) => QuestionProvider()),
         ChangeNotifierProvider(create: (_) => ExeMembersProvider())
       ],
       child: MaterialApp(
@@ -40,17 +40,16 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.onAuthStateChanged,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              Provider.of<LeaderBoardProvider>(context, listen: false)
-                  .fetchAndSetLeaderBoard();
               Provider.of<UserProvider>(context, listen: false).assignUser(
                   FirebaseAuth.instance.currentUser.uid,
                   FirebaseAuth.instance.currentUser.email,
                   FirebaseAuth.instance.currentUser.displayName);
               Provider.of<UserProvider>(context, listen: false)
                   .fetchUserDetails();
-              Provider.of<QuestionProvider>(context,listen: false).fetchQuestions();
-              Provider.of<QuestionProvider>(context,listen: false).fetchHints();
-              Provider.of<LeaderBoardProvider>(context, listen: false).fetchAndSetLeaderBoard();
+              Provider.of<QuestionProvider>(context, listen: false)
+                  .fetchQuestions();
+              Provider.of<QuestionProvider>(context, listen: false)
+                  .fetchHints();
               return Home();
             } else {
               return SignIn();

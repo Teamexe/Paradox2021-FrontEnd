@@ -60,10 +60,10 @@ class AppDrawerState extends State<AppDrawer> {
                 ),
                 ListTile(
                   leading: CircleAvatar(
-                    child: Icon(Icons.local_activity, color: Colors.white),
+                    child: Icon(Icons.leaderboard, color: Colors.white),
                     backgroundColor: Colors.blue,
                   ),
-                  title: Text('Ranking', style: textStyle),
+                  title: Text('LeaderBoard', style: textStyle),
                   dense: true,
                   onTap: () {
                     Navigator.pushNamed(context, LeaderBoard.route);
@@ -110,7 +110,7 @@ class AppDrawerState extends State<AppDrawer> {
                 ),
                 Divider(),
                 ListTile(
-                  onTap: (){
+                  onTap: () {
                     Navigator.of(context).pushNamed(MemberScreen.routeName);
                   },
                   leading: CircleAvatar(
@@ -124,7 +124,8 @@ class AppDrawerState extends State<AppDrawer> {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue,
-                    child: Icon(Icons.info_outline_rounded, color: Colors.white),
+                    child:
+                        Icon(Icons.info_outline_rounded, color: Colors.white),
                   ),
                   title: Text('Information', style: textStyle),
                   dense: true,
@@ -151,18 +152,12 @@ class AppDrawerState extends State<AppDrawer> {
                   title: Text('View Rules', style: textStyle),
                   dense: true,
                   onTap: () {
-                    Navigator.pushNamed(context, RulesScreen.routeName);
+                    Navigator.of(context).push(PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (ctx, animation, _) {
+                          return RulesScreen();
+                        }));
                   },
-                ),
-                Divider(),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child:
-                        Icon(Icons.settings_applications, color: Colors.white),
-                  ),
-                  title: Text('Settings', style: textStyle),
-                  dense: true,
                 ),
                 Divider(),
                 ListTile(
@@ -174,8 +169,11 @@ class AppDrawerState extends State<AppDrawer> {
                   title: Text('Privacy Policy', style: textStyle),
                   dense: true,
                   onTap: () async {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (ctx) => PrivacyPolicyWidget()));
+                    Navigator.of(context).push(PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (ctx, animation, _) {
+                          return PrivacyPolicyWidget();
+                        }));
                   },
                 ),
                 Divider(),
@@ -213,6 +211,7 @@ class AppDrawerState extends State<AppDrawer> {
                           style: TextStyle(fontFamily: 'Material Icons')),
                       TextSpan(text: ' by '),
                       TextSpan(
+
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
                             if (await canLaunch('https://teamexe.in')) {
