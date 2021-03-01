@@ -1,15 +1,17 @@
 import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
-import 'package:paradox/models/user.dart';
+import 'package:paradox/models/user.dart' as BaseUser;
 import 'package:paradox/providers/leaderboard_provider.dart';
+import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/question_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
@@ -21,37 +23,73 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   static String routeName = '/home_screen';
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
+  @override
+  bool get wantKeepAlive => true;
+  bool load = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-       title: Text('Paradox'),
-        actions: [
-          GestureDetector(
-            child: Container(
-              padding: EdgeInsets.all(10),
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          title: Text('Paradox'),
+          actions: [
+            GestureDetector(
               child: Container(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image(
-                    image: NetworkImage(UserProvider().getUserProfileImage()),
+                padding: EdgeInsets.all(10),
+                child: Container(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: Image(
+                      image: NetworkImage(UserProvider().getUserProfileImage()),
+                    ),
                   ),
                 ),
               ),
+              onTap: () {
+                Navigator.pushNamed(context, ProfileScreen.routeName);
+              },
             ),
-            onTap: () {
-              Navigator.pushNamed(context, ProfileScreen.routeName);
-            },
-          ),
-        ],
-      ),
-      drawer: AppDrawer(),
-      body: HomePage(),
-    );
+          ],
+        ),
+        drawer: AppDrawer(),
+        body: load != true
+            ? HomePage()
+            : Center(
+                child: SpinKitFoldingCube(
+                  color: Colors.blue,
+                ),
+              ));
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      load = true;
+    });
+    Future.delayed(Duration.zero, () async {
+      Provider.of<UserProvider>(context, listen: false).assignUser(
+          FirebaseAuth.instance.currentUser.uid,
+          FirebaseAuth.instance.currentUser.email,
+          FirebaseAuth.instance.currentUser.displayName);
+      await Future.wait([
+        Provider.of<QuestionProvider>(context, listen: false).fetchQuestions(),
+        Provider.of<QuestionProvider>(context, listen: false).fetchHints(),
+        Provider.of<UserProvider>(context, listen: false).fetchUserDetails()
+      ]);
+
+      setState(() {
+        load = false;
+      });
+    });
   }
 }
 
@@ -108,9 +146,10 @@ class _HomePageState extends State<HomePage>
     // start the animation
     animationController.forward();
 
-    List<LeaderBoardUser> users = Provider.of<LeaderBoardProvider>(context, listen: true).topPlayerList;
+    List<LeaderBoardUser> users =
+        Provider.of<LeaderBoardProvider>(context, listen: true).topPlayerList;
     // bool showReferralCode = false;
-    User user = Provider.of<UserProvider>(context, listen: true).user;
+    BaseUser.User user = Provider.of<UserProvider>(context, listen: true).user;
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -267,8 +306,11 @@ class _HomePageState extends State<HomePage>
               ),
               SizedBox(height: 8),
               Container(
-
-                child: Text('Use referral code', style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 20, fontWeight: FontWeight.w400)),
+                child: Text('Use referral code',
+                    style: TextStyle(
+                        color: Colors.blue.withOpacity(0.8),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400)),
               ),
               SizedBox(height: 13),
               ScaleTransition(
@@ -285,14 +327,24 @@ class _HomePageState extends State<HomePage>
                       children: [
                         Container(
                             margin: EdgeInsets.only(left: 10),
-                            child: Text('Your referral code is: ${user.referralCode}', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16))),
+                            child: Text(
+                                'Your referral code is: ${user.referralCode}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16))),
                         FlatButton(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onPressed: () {
-                              Share.share('Download Paradox from https://play.google.com/store/apps/details?id=com.exe.paradoxplay and use my referral code: ${user.referralCode} and earn 50 coins.');
-                            },
-                            child: Text('Share'.toUpperCase(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16)),
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onPressed: () {
+                            Share.share(
+                                'Download Paradox from https://play.google.com/store/apps/details?id=com.exe.paradoxplay and use my referral code: ${user.referralCode} and earn 50 coins.');
+                          },
+                          child: Text('Share'.toUpperCase(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16)),
                         ),
                       ],
                     ),
@@ -368,52 +420,52 @@ class _HomePageState extends State<HomePage>
                               style: TextStyle(fontFamily: 'Material Icons')),
                           TextSpan(text: ' by '),
                           TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  if (await canLaunch('https://teamexe.in')) {
-                                    launch('https://teamexe.in');
-                                  } else {
-                                    throw 'Could not launch https://teamexe.in';
-                                  }
-                                },
-                              text: 'Team .E',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.lightBlue[900].withAlpha(1000),
-                                  fontWeight: FontWeight.w400,
-                              ),
-                          ),
-                          TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  if (await canLaunch('https://teamexe.in')) {
-                                    launch('https://teamexe.in');
-                                  } else {
-                                    throw 'Could not launch https://teamexe.in';
-                                  }
-                                },
-                              text: 'X',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.lightBlue[100],
-                                  fontWeight: FontWeight.w400,
-                              ),
-                          ),
-                          TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  if (await canLaunch('https://teamexe.in')) {
-                                    launch('https://teamexe.in');
-                                  } else {
-                                    throw 'Could not launch https://teamexe.in';
-                                  }
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (await canLaunch('https://teamexe.in')) {
+                                  launch('https://teamexe.in');
+                                } else {
+                                  throw 'Could not launch https://teamexe.in';
+                                }
                               },
-                              text: 'E',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.lightBlue[900].withAlpha(1000),
-                                  fontWeight: FontWeight.w400,
-                              ),
+                            text: 'Team .E',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.lightBlue[900].withAlpha(1000),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (await canLaunch('https://teamexe.in')) {
+                                  launch('https://teamexe.in');
+                                } else {
+                                  throw 'Could not launch https://teamexe.in';
+                                }
+                              },
+                            text: 'X',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.lightBlue[100],
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (await canLaunch('https://teamexe.in')) {
+                                  launch('https://teamexe.in');
+                                } else {
+                                  throw 'Could not launch https://teamexe.in';
+                                }
+                              },
+                            text: 'E',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.lightBlue[900].withAlpha(1000),
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ]),
                   ),
@@ -465,18 +517,23 @@ class ParadoxPlayEasy extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FlatButton(
-
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: () {},
-                          child: Text('Easy Level'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, letterSpacing: 3))
-                        ),
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onPressed: () {},
+                            child: Text('Easy Level'.toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 3))),
                         FlatButton(
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           onPressed: () {},
-
-                          child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 3)),
+                          child: Text('nimbus'.toUpperCase(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 3)),
                         ),
                       ]),
                 ),
@@ -553,11 +610,18 @@ class ParadoxPlayMedium extends StatelessWidget {
                       children: [
                         FlatButton(
                             onPressed: () {},
-                            child: Text('Medium Level'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, letterSpacing: 3))
-                        ),
+                            child: Text('Medium Level'.toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 3))),
                         FlatButton(
                           onPressed: () {},
-                          child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 3)),
+                          child: Text('nimbus'.toUpperCase(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 3)),
                         ),
                       ]),
                 ),
@@ -646,11 +710,18 @@ class ParadoxPlayHard extends StatelessWidget {
                       children: [
                         FlatButton(
                             onPressed: () {},
-                            child: Text('Hard Level'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, letterSpacing: 3))
-                        ),
+                            child: Text('Hard Level'.toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 3))),
                         FlatButton(
                           onPressed: () {},
-                          child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 3)),
+                          child: Text('nimbus'.toUpperCase(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 3)),
                         ),
                       ]),
                 ),
@@ -660,7 +731,7 @@ class ParadoxPlayHard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        // TODO: navigating to the question page
+        Navigator.of(context).pushNamed(QuestionScreen.routeName);
       },
     );
   }
