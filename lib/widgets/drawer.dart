@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:paradox/authentication/sign_in.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
@@ -201,6 +202,7 @@ class AppDrawerState extends State<AppDrawer> {
                   dense: true,
                   onTap: () {
                     UserProvider().logout();
+                    Navigator.pushNamed(context, SignIn.routeName);
                     createToast('Signed out successfully');
                   },
                 ),
