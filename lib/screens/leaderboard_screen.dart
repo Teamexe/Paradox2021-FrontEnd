@@ -13,7 +13,12 @@ class LeaderBoard extends StatelessWidget {
         Provider.of<LeaderBoardProvider>(context, listen: true).userList;
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Color(0xff002a1e),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios),onPressed: (){
+         Navigator.pop(context);
+        },),
+
         title: Text(
           "Leaderboard",
           textAlign: TextAlign.center,

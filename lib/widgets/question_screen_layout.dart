@@ -13,7 +13,8 @@ import '../utilities/myBehaviour.dart';
 
 class QuestionPageLayout extends StatefulWidget {
   final List<Question> questList;
-  QuestionPageLayout(this.questList);
+  final level;
+  QuestionPageLayout({this.questList,this.level});
   @override
   _QuestionPageLayoutState createState() => _QuestionPageLayoutState();
 }
@@ -26,37 +27,37 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
     answerController.dispose();
     super.dispose();
   }
-  int index = 0;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final id = Provider.of<UserProvider>(context).getUserId();
     final hintList = Provider.of<QuestionProvider>(context).hintsList;
+    int index = widget.level;
     void displayDialog({String title, String imgName, String text,Color color}) {
       showDialog(
           context: context,
-          builder: (_) => AssetGiffyDialog(
-                image: Image.asset("assets/images/$imgName",height: double.infinity,),
-                title: Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+          builder: (_) =>  AssetGiffyDialog(
+                  image: Image.asset("assets/images/$imgName",height: double.infinity,),
+                  title: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+                  ),
+                  description: Text(
+                    'Press $text to continue',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(),
+                  ),
+                  onlyOkButton: true,
+                  buttonOkColor: color,
+                  entryAnimation: EntryAnimation.RIGHT,
+                  buttonOkText: Text(text,style:TextStyle(color: Colors.white,fontSize: 18)),
+                  onOkButtonPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
-                description: Text(
-                  'Press $text to continue',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(),
-                ),
-                onlyOkButton: true,
-                buttonOkColor: color,
-                entryAnimation: EntryAnimation.RIGHT,
-                buttonOkText: Text(text,style:TextStyle(color: Colors.white,fontSize: 18)),
-                onOkButtonPressed: () {
-                  Navigator.pop(context);
-                },
-              ));
+          );
     }
-
     return Container(
       margin: EdgeInsets.only(top: 100, left: 20, right: 20, bottom: 60),
       child: ListView(
@@ -87,7 +88,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                       Container(
                         width: double.infinity,
                         child: Text(
-                          'Level ${widget.questList[index].level}!',
+                          'Level ${index}!',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left,
@@ -210,6 +211,9 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                       level: body['level'],
                                       coins: body['coins'],
                                     );
+                                    setState(() {
+                                      index++;
+                                    });
                                   }
                                   setState(() {
                                     isLoading = false;

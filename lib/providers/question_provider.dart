@@ -6,8 +6,6 @@ import 'package:paradox/models/question.dart';
 import 'package:paradox/utilities/constant.dart';
 
 
-
-
 class QuestionProvider extends ChangeNotifier {
 
   List<Question> _questionList = [];

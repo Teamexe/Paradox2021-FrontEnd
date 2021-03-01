@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/question_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
@@ -15,6 +16,7 @@ class Home extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
+
         title: Text('Paradox'),
         actions: [
           Container(
