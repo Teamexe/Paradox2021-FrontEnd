@@ -11,34 +11,50 @@ class UserCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
       child: Row(
         children: [
           Expanded(
               child: Center(
                   child: Text(
-            index.toString(),
+            '$index',
             style: TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+                color: Colors.blue[700],
+                fontSize: 26,
+                fontWeight: FontWeight.w600),
           ))),
           Expanded(
               flex: 4,
               child: Container(
                 decoration: BoxDecoration(
-                    color: Color(0xff33554b),
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xff0083B0),
+                        Color(0xff00B4DB),
+                        // Color(0xff1A2980),
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xff0083B0),
+                        blurRadius: 10,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
                     borderRadius: BorderRadius.circular(35)),
                 child: Row(
                   children: [
                     GestureDetector(
                       child: CircleAvatar(
-                        backgroundImage:
-                            new NetworkImage("https://placebeard.it/320X${(320+index).toString()}"),
+                        backgroundImage: new NetworkImage(
+                            "https://placebeard.it/320X${(320 + index).toString()}"),
                         radius: 35,
                       ),
-                      onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (ctx) => ExpandedImageView(
-                                  image: "https://placebeard.it/320X${(320+index).toString()}")));
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => ExpandedImageView(
+                                image:
+                                    "https://placebeard.it/320X${(320 + index).toString()}")));
                       },
                     ),
                     Expanded(

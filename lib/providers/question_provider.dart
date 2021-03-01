@@ -41,7 +41,11 @@ class QuestionProvider extends ChangeNotifier {
     return;
   }
 
-  Future<void> fetchHints() async {
+
+
+ Future<void> fetchHints() async {
+    if (loadedHints == false) {
+
       String url = "${baseUrl}hints/";
       Response response = await get(url);
       if (response.statusCode == 200) {
@@ -61,7 +65,7 @@ class QuestionProvider extends ChangeNotifier {
       }
     loadedHints = true;
     return;
-  }
+  }}
 
   Future<dynamic> checkAnswer(String answer, int level, String uid) async {
     String url = "${baseUrl}check-answer/";

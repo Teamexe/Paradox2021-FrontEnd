@@ -9,6 +9,7 @@ class ExpandedImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: SafeArea(
         child: Stack(
           children: [
@@ -20,11 +21,11 @@ class ExpandedImageView extends StatelessWidget {
             Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: IconButton(
                     icon: Icon(
-                      Icons.backspace_outlined,
-                      size: 40,
+                      Icons.arrow_back_ios,
+                      size: 30,
                       color: Colors.white,
                     ),
                     onPressed: () => Navigator.pop(context)),
