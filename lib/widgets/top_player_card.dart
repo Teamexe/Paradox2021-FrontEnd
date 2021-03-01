@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
+import 'package:paradox/screens/photo_view.dart';
 
 class PlayerCard extends StatelessWidget {
   final LeaderBoardUser user;
@@ -27,19 +28,24 @@ class PlayerCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.blue.withOpacity(0.85),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: Image(
-                        image: NetworkImage("https://placebeard.it/320X${(320 + index).toString()}"),
+                GestureDetector(
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.blue.withOpacity(0.85),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Image(
+                          image: NetworkImage("https://placebeard.it/320X${(320 + index).toString()}"),
+                        ),
                       ),
                     ),
                   ),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (ctx) => ExpandedImageView(image: "https://placebeard.it/320X${(320+index).toString()}")));
+                  },
                 ),
                 SizedBox(height: 15),
                 Align(
