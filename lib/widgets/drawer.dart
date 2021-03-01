@@ -6,6 +6,7 @@ import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
+import 'package:paradox/screens/settings.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
@@ -163,6 +164,9 @@ class AppDrawerState extends State<AppDrawer> {
                   ),
                   title: Text('Settings', style: textStyle),
                   dense: true,
+                  onTap: () {
+                    Navigator.pushNamed(context, SettingsScreen.routeName);
+                  },
                 ),
                 Divider(),
                 ListTile(

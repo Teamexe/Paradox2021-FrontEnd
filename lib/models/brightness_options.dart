@@ -1,0 +1,4 @@
+enum BrightnessOption {
+  light,
+  dark
+}
