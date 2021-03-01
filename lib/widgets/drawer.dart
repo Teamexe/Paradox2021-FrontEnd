@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/Referral.dart';
@@ -51,7 +52,7 @@ class AppDrawerState extends State<AppDrawer> {
                       ),
                     ),
                     decoration:
-                        BoxDecoration(color: Theme.of(context).accentColor),
+                        BoxDecoration(color: Colors.blue),
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, ProfileScreen.routeName);
@@ -123,7 +124,7 @@ class AppDrawerState extends State<AppDrawer> {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue,
-                    child: Icon(Icons.info_rounded, color: Colors.white),
+                    child: Icon(Icons.info_outline_rounded, color: Colors.white),
                   ),
                   title: Text('Information', style: textStyle),
                   dense: true,
@@ -145,7 +146,7 @@ class AppDrawerState extends State<AppDrawer> {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue,
-                    child: Icon(Icons.rule, color: Colors.white),
+                    child: Icon(Icons.list_rounded, color: Colors.white),
                   ),
                   title: Text('View Rules', style: textStyle),
                   dense: true,
@@ -212,18 +213,42 @@ class AppDrawerState extends State<AppDrawer> {
                           style: TextStyle(fontFamily: 'Material Icons')),
                       TextSpan(text: ' by '),
                       TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            if (await canLaunch('https://teamexe.in')) {
+                              launch('https://teamexe.in');
+                            } else {
+                              throw 'Could not launch https://teamexe.in';
+                            }
+                          },
                           text: 'Team .E',
                           style: TextStyle(
                               fontSize: 17,
                               color: Colors.lightBlue[900].withAlpha(1000),
                               fontWeight: FontWeight.bold)),
                       TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              if (await canLaunch('https://teamexe.in')) {
+                                launch('https://teamexe.in');
+                              } else {
+                                throw 'Could not launch https://teamexe.in';
+                              }
+                          },
                           text: 'X',
                           style: TextStyle(
                               fontSize: 17,
                               color: Colors.lightBlue,
                               fontWeight: FontWeight.bold)),
                       TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              if (await canLaunch('https://teamexe.in')) {
+                                launch('https://teamexe.in');
+                              } else {
+                                throw 'Could not launch https://teamexe.in';
+                              }
+                          },
                           text: 'E',
                           style: TextStyle(
                               fontSize: 17,

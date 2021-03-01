@@ -48,6 +48,11 @@ class LeaderBoardProvider extends ChangeNotifier {
     }
   }
 
+  List<LeaderBoardUser> get topPlayerList {
+    // TODO: return top 10 players
+    return _userList.sublist(0);
+  }
+
   int getRank(String id) {
      for(int i = 0;i<userList.length;i++){
        if(userList[i].user == id){
