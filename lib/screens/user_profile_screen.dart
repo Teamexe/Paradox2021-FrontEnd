@@ -19,7 +19,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: true).user;
-
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.blue,

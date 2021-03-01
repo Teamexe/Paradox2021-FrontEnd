@@ -4,13 +4,12 @@ import 'package:http/http.dart';
 import 'package:paradox/models/hint.dart';
 import 'package:paradox/models/question.dart';
 import 'package:paradox/utilities/constant.dart';
-import 'package:paradox/models/user.dart' as UserModel;
+
 
 
 
 class QuestionProvider extends ChangeNotifier {
-  // UserModel.User user;
-  // var uid = user.uid;
+
   List<Question> _questionList = [];
 
   List<Question> get questionList {
@@ -26,6 +25,7 @@ class QuestionProvider extends ChangeNotifier {
   void fetchQuestions() async {
     String url = "${baseUrl}questions/";
     Response response = await get(url);
+    print(response.body);
     if (response.statusCode == 200) {
       _questionList.clear();
       var data = jsonDecode(response.body);
@@ -41,11 +41,11 @@ class QuestionProvider extends ChangeNotifier {
     }
   }
 
-  void fetchHints() async {
+void fetchHints() async {
     String url = "${baseUrl}hints/";
     Response response = await get(url);
     if (response.statusCode == 200) {
-      _questionList.clear();
+      // _questionList.clear();
       var data = jsonDecode(response.body);
       for (int i = 0; i < data.length; i++) {
         _hintsList.add(Hint(
@@ -61,6 +61,38 @@ class QuestionProvider extends ChangeNotifier {
     }
   }
 
+ Future<dynamic> checkAnswer(String answer,int level,String uid) async {
+    String url ="${baseUrl}check-answer/";
+    print(jsonEncode(<String, dynamic>{
+      'answer': answer,
+      'google_id': uid,
+      'level':level
+    }),);
+    try {
+      Response response = await post(
+        url,
+        body: jsonEncode(<String, dynamic>{
+          'answer': answer,
+          'google_id': uid,
+          'level': level
+        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else if (response.statusCode == 400) {
+        return null;
+      } else if (response.statusCode == 500) {
+        return null;
+      }
+    }catch(err){
+      print(err);
+      return null;
+    }
 
+   // notifyListeners();
+  }
 
 }

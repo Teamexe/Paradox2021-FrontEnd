@@ -41,6 +41,7 @@ dependencies:
   loader_overlay: ^1.1.1
   flutter_markdown: ^0.5.2
   font_awesome_flutter: ^8.11.0
+  giffy_dialog: ^1.8.0
 
 
 
@@ -73,6 +74,9 @@ flutter:
     - assets/images/google_logo.jpg
     - assets/images/trophy.png
     - assets/images/badge.png
+    - assets/images/right.gif
+    - assets/images/wrong.gif
+    - assets/images/correct.gif
 
   # To add assets to your application, add an assets section, like this:
   # assets:

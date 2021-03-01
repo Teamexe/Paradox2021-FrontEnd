@@ -13,6 +13,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Paradox'),
         actions: [
@@ -64,6 +65,7 @@ class Home extends StatelessWidget {
           ),
         ),
       ),
-      drawer: AppDrawer()
+      drawer: AppDrawer(),
+    );
   }
 }

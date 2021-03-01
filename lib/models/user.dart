@@ -10,6 +10,7 @@ class User {
   int coins;
   int superCoins;
   bool referralAvailed;
+  int hintLevel;
 
 
   User({@required this.uid, @required this.email, @required this.name});

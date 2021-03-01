@@ -61,6 +61,7 @@ class UserProvider extends ChangeNotifier {
       this.user.score = userProfile['profile']['level'];
       this.user.coins = userProfile['profile']['coins'];
       this.user.referralAvailed = userProfile['profile']['refferral_availed'];
+      this.user.hintLevel = userProfile['hint']['hintNumber'];
       notifyListeners();
     }
     return;
@@ -122,6 +123,14 @@ class UserProvider extends ChangeNotifier {
     await googleSignIn.signOut();
     return;
   }
+  ///update user level,coins and referral availed
+  void updateData({int level, int coins, bool referral = false}) {
+    this.user.level = level;
+      this.user.score = level;
+      this.user.coins = coins;
+      this.user.referralAvailed = referral;
+      notifyListeners();
+  }
 
   String getUserName() {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -139,6 +148,11 @@ class UserProvider extends ChangeNotifier {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     User user = firebaseAuth.currentUser;
     return user.photoURL;
+  }
+  String getUserId() {
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    User user = firebaseAuth.currentUser;
+    return user.uid;
   }
 
   //

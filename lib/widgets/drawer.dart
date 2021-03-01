@@ -9,7 +9,7 @@ import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
 import 'package:paradox/utilities/logo_painter.dart';
-import 'package:paradox/utilities/member_screen.dart';
+import '../utilities/member_screen.dart';
 import 'package:paradox/utilities/privacy_policy.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -41,9 +41,9 @@ class AppDrawerState extends State<AppDrawer> {
                   child: UserAccountsDrawerHeader(
                     accountName: Text(name,
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500)),
+                            fontSize: 20, fontWeight: FontWeight.w500)),
                     accountEmail: Text(email,
-                        style: TextStyle(fontWeight: FontWeight.w500)),
+                        style: TextStyle(fontWeight: FontWeight.w400,fontSize: 18)),
                     currentAccountPicture: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
                       child: Image(
