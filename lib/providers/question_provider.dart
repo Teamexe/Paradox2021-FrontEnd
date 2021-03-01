@@ -7,13 +7,12 @@ import 'package:paradox/utilities/constant.dart';
 import 'package:paradox/models/user.dart' as UserModel;
 
 class QuestionProvider extends ChangeNotifier {
-
   List<Question> _questionList = [];
   bool loaded = false;
   bool loadedHints = false;
 
   List<Question> get questionList {
-    return [..._questionList];
+    return _questionList;
   }
 
   List<Hint> _hintsList = [];
@@ -22,32 +21,27 @@ class QuestionProvider extends ChangeNotifier {
     return [..._hintsList];
   }
 
-
   Future<void> fetchQuestions() async {
-    if (loaded == false) {
-      String url = "${baseUrl}questions/";
-      Response response = await get(url);
-      if (response.statusCode == 200) {
-        _questionList.clear();
-        var data = jsonDecode(response.body);
-        for (int i = 0; i < data.length; i++) {
-          _questionList.add(Question(
-            level: data[i]['level'],
-            location: data[i]['location'],
-          ));
-        }
-        notifyListeners();
-      } else {
-        throw Exception();
+    String url = "${baseUrl}questions/";
+    Response response = await get(url);
+    if (response.statusCode == 200) {
+      _questionList.clear();
+      var data = jsonDecode(response.body);
+      for (int i = 0; i < data.length; i++) {
+        _questionList.add(Question(
+          level: data[i]['level'],
+          location: data[i]['location'],
+        ));
       }
+      notifyListeners();
+    } else {
+      throw Exception();
     }
     loaded = true;
     return;
   }
 
-
-  void fetchHints() async {
-    if (loadedHints == false) {
+  Future<void> fetchHints() async {
       String url = "${baseUrl}hints/";
       Response response = await get(url);
       if (response.statusCode == 200) {
@@ -65,18 +59,19 @@ class QuestionProvider extends ChangeNotifier {
       } else {
         throw Exception();
       }
-    }
     loadedHints = true;
     return;
   }
 
- Future<dynamic> checkAnswer(String answer,int level,String uid) async {
-    String url ="${baseUrl}check-answer/";
-    print(jsonEncode(<String, dynamic>{
-      'answer': answer,
-      'google_id': uid,
-      'level':level
-    }),);
+  Future<dynamic> checkAnswer(String answer, int level, String uid) async {
+    String url = "${baseUrl}check-answer/";
+    print(
+      jsonEncode(<String, dynamic>{
+        'answer': answer,
+        'google_id': uid,
+        'level': level
+      }),
+    );
     try {
       Response response = await post(
         url,
@@ -96,12 +91,11 @@ class QuestionProvider extends ChangeNotifier {
       } else if (response.statusCode == 500) {
         return null;
       }
-    }catch(err){
+    } catch (err) {
       print(err);
       return null;
     }
 
-   // notifyListeners();
+    // notifyListeners();
   }
-
 }

@@ -72,17 +72,6 @@ class _MyAppState extends State<MyApp> {
                 stream: FirebaseAuth.instance.onAuthStateChanged,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    Provider.of<LeaderBoardProvider>(context, listen: false)
-                        .fetchAndSetLeaderBoard();
-                    Provider.of<UserProvider>(context, listen: false).assignUser(
-                        FirebaseAuth.instance.currentUser.uid,
-                        FirebaseAuth.instance.currentUser.email,
-                        FirebaseAuth.instance.currentUser.displayName);
-                    Provider.of<UserProvider>(context, listen: false)
-                        .fetchUserDetails();
-                    Provider.of<QuestionProvider>(context,listen: false).fetchQuestions();
-                    Provider.of<QuestionProvider>(context,listen: false).fetchHints();
-                    Provider.of<LeaderBoardProvider>(context, listen: false).fetchAndSetLeaderBoard();
                     Provider.of<ThemeProvider>(context, listen: true).brightness;
                     return Home();
                   } else {
