@@ -5,15 +5,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
+import 'package:paradox/models/user.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/rules_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
+import 'package:paradox/utilities/member_screen.dart';
 import 'package:paradox/utilities/type_writer_box.dart';
 import 'package:paradox/widgets/drawer.dart';
 import 'package:paradox/widgets/top_player_card.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatelessWidget {
@@ -101,6 +104,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     // start the animation
     animationController.forward();
     List<LeaderBoardUser> users = Provider.of<LeaderBoardProvider>(context, listen: true).topPlayerList;
+    // bool showReferralCode = false;
+    User user = Provider.of<UserProvider>(context, listen: true).user;
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -249,33 +254,33 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
               SizedBox(height: 8),
               Container(
-                child: Text('Use referral code', style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 18, fontWeight: FontWeight.w400)),
+                child: Text('Use referral code', style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 20, fontWeight: FontWeight.w400)),
               ),
               SizedBox(height: 13),
-              Container(
-                color: Colors.blue.withOpacity(0.84),
-                height: 40,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.center,
-                // TODO: fetching referral code and displaying it
+              ScaleTransition(
+                scale: scaleAnimation,
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text('Your referral code is: 819c7nz', textAlign: TextAlign.center, style: TextStyle(color: Colors.white))),
-                      FlatButton(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: () {
-                            // TODO: adding share referral code functionality and sharing app's play store link
-
-                          },
-                          child: Text('Share', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400)),
-                      ),
-                    ],
+                  color: Colors.blue.withOpacity(0.84),
+                  height: 40,
+                  alignment: Alignment.center,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text('Your referral code is: ${user.referralCode}', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 16))),
+                        FlatButton(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onPressed: () {
+                              Share.share('Download Paradox from https://play.google.com/store/apps/details?id=com.exe.paradoxplay and use my referral code: ${user.referralCode} and earn 50 coins.');
+                            },
+                            child: Text('Share'.toUpperCase(), textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -289,7 +294,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onPressed: () {
-                        // TODO: navigating to members page
+                        Navigator.pushNamed(context, MemberScreen.routeName);
                       },
                       child: Text('Members', style: TextStyle(fontSize: 17, letterSpacing: 2, fontWeight: FontWeight.w400, color: Colors.blue.withOpacity(0.85))),
                     ),
@@ -425,12 +430,16 @@ class ParadoxPlayEasy extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FlatButton(
-                            onPressed: () {},
-                            child: Text('Easy Level', style: TextStyle(color: Colors.white))
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onPressed: () {},
+                          child: Text('Easy Level'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, letterSpacing: 3))
                         ),
                         FlatButton(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
                           onPressed: () {},
-                          child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white)),
+                          child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 3)),
                         ),
                       ]
                   ),
@@ -504,11 +513,11 @@ class ParadoxPlayMedium extends StatelessWidget {
                       children: [
                         FlatButton(
                             onPressed: () {},
-                            child: Text('Medium Level', style: TextStyle(color: Colors.white))
+                            child: Text('Medium Level'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, letterSpacing: 3))
                         ),
                         FlatButton(
                           onPressed: () {},
-                          child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white)),
+                          child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 3)),
                         ),
                       ]
                   ),
@@ -593,11 +602,11 @@ class ParadoxPlayHard extends StatelessWidget {
                       children: [
                         FlatButton(
                             onPressed: () {},
-                            child: Text('Hard Level', style: TextStyle(color: Colors.white))
+                            child: Text('Hard Level'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, letterSpacing: 3))
                         ),
                         FlatButton(
                           onPressed: () {},
-                          child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white)),
+                          child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 3)),
                         ),
                       ]
                   ),
