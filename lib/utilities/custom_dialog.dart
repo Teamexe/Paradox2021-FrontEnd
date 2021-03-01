@@ -65,6 +65,8 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                           ..onTap = () async {
                             if (await canLaunch(widget.url1)) {
                               launch(widget.url1);
+                            } else {
+                              throw 'Could not launch ${widget.url1}';
                             }
                           }
                         ),
@@ -75,6 +77,8 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                           ..onTap = () async {
                             if (await canLaunch(widget.url2)) {
                               launch(widget.url2);
+                            } else {
+                              throw 'Could not launch ${widget.url2}';
                             }
                           }
                         ),
@@ -91,6 +95,9 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                           onTap: () async {
                             if (await canLaunch('mailto:teamexenith@gmail.com'))
                               launch('mailto:teamexenith@gmail.com');
+                            else {
+                              throw 'Could not launch mailto:teamexenith@gmail.com';
+                            }
                           },
                           child: Container(
                               child: Text('contact us'.toUpperCase(), style: TextStyle(color: Colors.grey, fontSize: 15))
@@ -99,9 +106,12 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                       SizedBox(height: 8),
                       GestureDetector(
                           onTap: () async {
-                            if (await canLaunch('https://docs.google.com/forms/d/e/1FAIpQLSdf7fcO6cUbLcHCt7uxJoOSeVY7eTxRCE25E_BKyPRzEyZMng/viewform'))
+                            if (await canLaunch('https://docs.google.com/forms/d/e/1FAIpQLSdf7fcO6cUbLcHCt7uxJoOSeVY7eTxRCE25E_BKyPRzEyZMng/viewform')) {
                               launch('https://docs.google.com/forms/d/e/1FAIpQLSdf7fcO6cUbLcHCt7uxJoOSeVY7eTxRCE25E_BKyPRzEyZMng/viewform');
-                          },
+                            } else {
+                              throw 'Could not launch https://docs.google.com/forms/d/e/1FAIpQLSdf7fcO6cUbLcHCt7uxJoOSeVY7eTxRCE25E_BKyPRzEyZMng/viewform';
+                            }
+                        },
                           child: Container(
                               child: Text('feedback'.toUpperCase(), style: TextStyle(color: Colors.grey, fontSize: 15))
                           ),
@@ -109,9 +119,12 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                       SizedBox(height: 8),
                       GestureDetector(
                           onTap: () async {
-                            if (await canLaunch('https://instagram.com/teamexenith?igshid=q1zcaikgc08s'))
+                            if (await canLaunch('https://instagram.com/teamexenith?igshid=q1zcaikgc08s')) {
                               launch('https://instagram.com/teamexenith?igshid=q1zcaikgc08s');
-                          },
+                            } else {
+                              throw 'Could not launch https://instagram.com/teamexenith?igshid=q1zcaikgc08s';
+                            }
+                        },
                           child: Container(child: Text('instagram'.toUpperCase(), style: TextStyle(color: Colors.grey, fontSize: 15))
                           ),
                       ),
