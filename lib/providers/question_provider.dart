@@ -7,8 +7,7 @@ import 'package:paradox/utilities/constant.dart';
 import 'package:paradox/models/user.dart' as UserModel;
 
 class QuestionProvider extends ChangeNotifier {
-  // UserModel.User user;
-  // var uid = user.uid;
+
   List<Question> _questionList = [];
   bool loaded = false;
   bool loadedHints = false;
@@ -22,6 +21,7 @@ class QuestionProvider extends ChangeNotifier {
   List<Hint> get hintsList {
     return [..._hintsList];
   }
+
 
   Future<void> fetchQuestions() async {
     if (loaded == false) {
@@ -44,6 +44,7 @@ class QuestionProvider extends ChangeNotifier {
     loaded = true;
     return;
   }
+
 
   void fetchHints() async {
     if (loadedHints == false) {
@@ -68,4 +69,39 @@ class QuestionProvider extends ChangeNotifier {
     loadedHints = true;
     return;
   }
+
+ Future<dynamic> checkAnswer(String answer,int level,String uid) async {
+    String url ="${baseUrl}check-answer/";
+    print(jsonEncode(<String, dynamic>{
+      'answer': answer,
+      'google_id': uid,
+      'level':level
+    }),);
+    try {
+      Response response = await post(
+        url,
+        body: jsonEncode(<String, dynamic>{
+          'answer': answer,
+          'google_id': uid,
+          'level': level
+        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else if (response.statusCode == 400) {
+        return null;
+      } else if (response.statusCode == 500) {
+        return null;
+      }
+    }catch(err){
+      print(err);
+      return null;
+    }
+
+   // notifyListeners();
+  }
+
 }

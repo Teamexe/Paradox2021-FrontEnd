@@ -12,6 +12,7 @@ class User {
   int attempts;
   int superCoins;
   bool referralAvailed;
+  int hintLevel;
 
   User({@required this.uid, @required this.email, @required this.name});
 }

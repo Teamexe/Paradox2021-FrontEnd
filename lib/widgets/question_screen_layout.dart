@@ -1,24 +1,63 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:paradox/models/question.dart';
 import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:slimy_card/slimy_card.dart';
 
 import '../utilities/myBehaviour.dart';
 
 class QuestionPageLayout extends StatefulWidget {
+  final List<Question> questList;
+  final level;
+  QuestionPageLayout({this.questList,this.level});
   @override
   _QuestionPageLayoutState createState() => _QuestionPageLayoutState();
 }
 
 class _QuestionPageLayoutState extends State<QuestionPageLayout> {
-  int index = 0;
-  String answer;
+  var answerController = TextEditingController();
+  bool isLoading = false;
+  @override
+  void dispose() {
+    answerController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final questList = Provider.of<QuestionProvider>(context).questionList;
+    final id = Provider.of<UserProvider>(context).getUserId();
     final hintList = Provider.of<QuestionProvider>(context).hintsList;
+    int index = widget.level;
+    void displayDialog({String title, String imgName, String text,Color color}) {
+      showDialog(
+          context: context,
+          builder: (_) =>  AssetGiffyDialog(
+                  image: Image.asset("assets/images/$imgName",height: double.infinity,),
+                  title: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+                  ),
+                  description: Text(
+                    'Press $text to continue',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(),
+                  ),
+                  onlyOkButton: true,
+                  buttonOkColor: color,
+                  entryAnimation: EntryAnimation.RIGHT,
+                  buttonOkText: Text(text,style:TextStyle(color: Colors.white,fontSize: 18)),
+                  onOkButtonPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+          );
+    }
     return Container(
       margin: EdgeInsets.only(top: 100, left: 20, right: 20, bottom: 60),
       child: ListView(
@@ -36,6 +75,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
                         width: double.infinity,
@@ -48,14 +88,14 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                       Container(
                         width: double.infinity,
                         child: Text(
-                          'Level ${questList[index].level}!',
+                          'Level ${index}!',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left,
                         ),
                       ),
                       SizedBox(
-                        height: 5,
+                        height: 15,
                       ),
                       Container(
                         height: size.height * 0.3,
@@ -63,7 +103,10 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: NetworkImage('${questList[index].location}'),
+                            repeat: ImageRepeat.noRepeat,
+                            alignment: Alignment.center,
+                            image: NetworkImage(
+                                '${widget.questList[index].location}'),
                             fit: BoxFit.contain,
                           ),
                           color: Colors.white,
@@ -83,7 +126,11 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                         width: 300,
                         child: TextField(
                           textAlign: TextAlign.center,
+                          textAlignVertical: TextAlignVertical.center,
                           showCursor: true,
+                          onChanged: (value) {
+                            answerController.text = value;
+                          },
                           decoration: InputDecoration(
                             hintText: 'Answer here',
                             hintStyle: TextStyle(
@@ -106,26 +153,93 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 15),
+                      // SizedBox(height: ),
                       Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.blue[900])),
-                        height: 25,
-                        child: FlatButton(
-                          onPressed: () {
-                            setState(() {
-                              index++;
-                            });
-                          },
-                          child: Text(
-                            'Submit',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
+                        width: 120,
+                        child: isLoading
+                            ? SpinKitCircle(
+                                color: Colors.blue[600],
+                                size: 30,
+                              )
+                            : MaterialButton(
+                                height: 25,
+                                color: Colors.blue[800],
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Text(
+                                    'Submit',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Colors.white,
+                                      width: 2,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  var body =
+                                      await Provider.of<QuestionProvider>(
+                                              context,
+                                              listen: false)
+                                          .checkAnswer(
+                                              answerController.text,
+                                              widget.questList[index].level,
+                                              id);
+                                  answerController.clear();
+                                  if (body == null) {
+                                    displayDialog(
+                                        title: 'Incorrect Answer',
+                                        imgName: 'wrong.gif',
+                                        text: 'Retry!',color: Colors.red,);
+                                  } else {
+                                    displayDialog(
+                                        title: 'Correct Answer',
+                                        imgName: 'right.gif',
+                                        text: 'Next!',color: Colors.green,);
+                                    Provider.of<UserProvider>(context,
+                                            listen: false)
+                                        .updateData(
+                                      level: body['level'],
+                                      coins: body['coins'],
+                                    );
+                                    setState(() {
+                                      index++;
+                                    });
+                                  }
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                },
+                              ),
                       ),
-                      SizedBox(height: 40),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.white,
+                      //       borderRadius: BorderRadius.circular(10),
+                      //       border: Border.all(color: Colors.blue[900])),
+                      //   height: 25,
+                      //   child: FlatButton(
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         index++;
+                      //       });
+                      //     },
+                      //     child: Text(
+                      //       'Submit',
+                      //       style: TextStyle(fontWeight: FontWeight.bold),
+                      //     ),
+                      //   ),
+                      // ),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -135,39 +249,40 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
               behavior: MyBehavior(),
               child: SingleChildScrollView(
                 child: Container(
-                    child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 20,
-                      child: FlatButton(
-                        onPressed: () {},
-                        child: Text('${hintList[index].hint1} 30 - coins',
-                            textAlign: TextAlign.center),
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 20,
-                      child: FlatButton(
-                        onPressed: () {},
-                        child: Text('${hintList[index].hint2} 30 - coins',
-                            textAlign: TextAlign.center),
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 20,
-                      child: FlatButton(
-                        onPressed: () {},
-                        child: Text(
-                          '${hintList[index].hint3}  40 - coins',
-                          textAlign: TextAlign.center,
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 20,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text('${hintList[index].hint1} 30 - coins',
+                              textAlign: TextAlign.center),
                         ),
                       ),
-                    ),
-                  ],
-                )),
+                      Container(
+                        width: double.infinity,
+                        height: 20,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text('${hintList[index].hint2} 30 - coins',
+                              textAlign: TextAlign.center),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 20,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text(
+                            '${hintList[index].hint3}  40 - coins',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
