@@ -52,7 +52,7 @@ class AppDrawerState extends State<AppDrawer> {
                       ),
                     ),
                     decoration:
-                        BoxDecoration(color: Theme.of(context).accentColor),
+                        BoxDecoration(color: Colors.blue),
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, ProfileScreen.routeName);
@@ -211,11 +211,15 @@ class AppDrawerState extends State<AppDrawer> {
                           style: TextStyle(fontFamily: 'Material Icons')),
                       TextSpan(text: ' by '),
                       TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              if (await canLaunch('https://teamexe.in'))
-                                launch('https://teamexe.in');
-                            },
+
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () async {
+                            if (await canLaunch('https://teamexe.in')) {
+                              launch('https://teamexe.in');
+                            } else {
+                              throw 'Could not launch https://teamexe.in';
+                            }
+                          },
                           text: 'Team .E',
                           style: TextStyle(
                               fontSize: 17,
@@ -224,9 +228,12 @@ class AppDrawerState extends State<AppDrawer> {
                       TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
-                              if (await canLaunch('https://teamexe.in'))
+                              if (await canLaunch('https://teamexe.in')) {
                                 launch('https://teamexe.in');
-                            },
+                              } else {
+                                throw 'Could not launch https://teamexe.in';
+                              }
+                          },
                           text: 'X',
                           style: TextStyle(
                               fontSize: 17,
@@ -235,9 +242,12 @@ class AppDrawerState extends State<AppDrawer> {
                       TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () async {
-                              if (await canLaunch('https://teamexe.in'))
+                              if (await canLaunch('https://teamexe.in')) {
                                 launch('https://teamexe.in');
-                            },
+                              } else {
+                                throw 'Could not launch https://teamexe.in';
+                              }
+                          },
                           text: 'E',
                           style: TextStyle(
                               fontSize: 17,
