@@ -7,14 +7,29 @@ import 'package:paradox/providers/question_provider.dart';
 import 'package:provider/provider.dart';
 import '../widgets/question_screen_layout.dart';
 
-class QuestionScreen extends StatelessWidget {
+class QuestionScreen extends StatefulWidget {
   static String routeName = '/question_page';
 
+  @override
+  _QuestionScreenState createState() => _QuestionScreenState();
+}
 
+class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     final questList = Provider.of<QuestionProvider>(context).questionList;
+    final loading = Provider.of<QuestionProvider>(context).loaded;
+    final loadingHints = Provider.of<QuestionProvider>(context).loadedHints;
     final level = Provider.of<UserProvider>(context).user.level;
+    final loadedUser = Provider.of<UserProvider>(context).loadedProfile;
+    print(Provider.of<UserProvider>(context).user.hintLevel);
+    print(questList);
+    if (loading == false || loadingHints == false || loadedUser == false) {
+      return Center(
+          child: Container(
+        child: Text("Loading"),
+      ));
+    }
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: ScrollConfiguration(
@@ -41,17 +56,18 @@ class QuestionScreen extends StatelessWidget {
                 end: Alignment.topCenter,
               ),
             ),
-            child:  (level ?? 1) < questList.length
-                    ? questList.isEmpty
-                ? SpinKitCircle(
-              color: Colors.white,
-            )
-                : QuestionPageLayout(
+            child: level < questList.length
+                ? questList.isEmpty
+                    ? SpinKitCircle(
+                        color: Colors.white,
+                      )
+                    : QuestionPageLayout(
                         questList: questList,
                         level: level,
                       )
-                    : Container(color: Colors.transparent,)
-        ),
+                : Container(
+                    color: Colors.transparent,
+                  )),
       ),
       bottomNavigationBar: Container(
         // alignment: Alignment.topLeft,

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:paradox/models/user.dart' as UserModel;
 import 'package:paradox/providers/api_authentication.dart';
-import 'package:paradox/providers/leaderboard_provider.dart';
-import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -53,22 +52,23 @@ class UserProvider extends ChangeNotifier {
     if (user.uid == null) {
       return;
     }
-    if (loadedProfile == false) {
-      String url = "${baseUrl}userProfile/${user.uid}/";
-      Response response = await get(url);
-      if (response.statusCode == 200) {
-        var userProfile = jsonDecode(response.body);
-        this.user.referralCode = userProfile['ref_code'];
-        this.user.level = userProfile['profile']['level'];
-        this.user.score = userProfile['profile']['level'];
-        this.user.coins = userProfile['profile']['coins'];
-        this.user.attempts = userProfile['profile']['attempts'];
-        this.user.referralAvailed = userProfile['profile']['refferral_availed'];
-        notifyListeners();
-      }
-      return;
+    String url = "${baseUrl}userProfile/${user.uid}/";
+    Response response = await get(url);
+    if (response.statusCode == 200) {
+      var userProfile = jsonDecode(response.body);
+      print(userProfile);
+      this.user.referralCode = userProfile['ref_code'];
+      this.user.level = userProfile['profile']['level'];
+      this.user.score = userProfile['profile']['level'];
+      this.user.coins = userProfile['profile']['coins'];
+      this.user.attempts = userProfile['profile']['attempts'];
+      this.user.referralAvailed = userProfile['profile']['refferral_availed'];
+      this.user.hintLevel = userProfile['hint']['hintNumber'];
+      loadedProfile = true;
+      notifyListeners();
+    } else {
+      loadedProfile = false;
     }
-    loadedProfile = true;
     notifyListeners();
   }
 
@@ -128,13 +128,50 @@ class UserProvider extends ChangeNotifier {
     this.user = null;
     return;
   }
+
   ///update user level,coins and referral availed
   void updateData({int level, int coins, bool referral = false}) {
     this.user.level = level;
-      this.user.score = level;
-      this.user.coins = coins;
-      this.user.referralAvailed = referral;
-      notifyListeners();
+    this.user.score = level;
+    this.user.coins = coins;
+    this.user.referralAvailed = referral;
+    notifyListeners();
+  }
+
+  Future<dynamic> availHints() async {
+    String url = "${baseUrl}avail-hints/";
+    print({
+      'google_id': FirebaseAuth.instance.currentUser.uid,
+      'level': this.user.level,
+      'hint': this.user.hintLevel + 1
+    });
+    try {
+      Response response = await post(url,
+          body: jsonEncode(<String, dynamic>{
+            'google_id': FirebaseAuth.instance.currentUser.uid,
+            'level': this.user.level,
+            'hint': this.user.hintLevel + 1
+          }),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          });
+      print(response.body);
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        this.user.hintLevel = this.user.hintLevel + 1;
+        this.user.coins  = body['coins'];
+        notifyListeners();
+        return body;
+      } else {
+        final body = jsonDecode(response.body);
+        createToast(body['message']);
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      createToast("There was some error. Please try again later.");
+      throw Exception();
+    }
   }
 
   String getUserName() {
@@ -154,10 +191,10 @@ class UserProvider extends ChangeNotifier {
     User user = firebaseAuth.currentUser;
     return user.photoURL;
   }
+
   String getUserId() {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     User user = firebaseAuth.currentUser;
     return user.uid;
   }
-
 }
