@@ -347,8 +347,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           TextSpan(
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () async {
-                                  if (await canLaunch('https://teamexe.in'))
+                                  if (await canLaunch('https://teamexe.in')) {
                                     launch('https://teamexe.in');
+                                  } else {
+                                    throw 'Could not launch https://teamexe.in';
+                                  }
                                 },
                               text: 'Team .E',
                               style: TextStyle(
@@ -360,8 +363,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           TextSpan(
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () async {
-                                  if (await canLaunch('https://teamexe.in'))
+                                  if (await canLaunch('https://teamexe.in')) {
                                     launch('https://teamexe.in');
+                                  } else {
+                                    throw 'Could not launch https://teamexe.in';
+                                  }
                                 },
                               text: 'X',
                               style: TextStyle(
@@ -373,9 +379,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           TextSpan(
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () async {
-                                  if (await canLaunch('https://teamexe.in'))
+                                  if (await canLaunch('https://teamexe.in')) {
                                     launch('https://teamexe.in');
-                                },
+                                  } else {
+                                    throw 'Could not launch https://teamexe.in';
+                                  }
+                              },
                               text: 'E',
                               style: TextStyle(
                                   fontSize: 20,
