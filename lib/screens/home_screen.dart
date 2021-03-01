@@ -553,7 +553,6 @@ class ParadoxPlayMedium extends StatelessWidget {
                       children: [
                         FlatButton(
                             onPressed: () {},
-                style: TextStyle(color: Colors.white)),
                             child: Text('Medium Level'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, letterSpacing: 3))
                         ),
                         FlatButton(
