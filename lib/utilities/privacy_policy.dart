@@ -69,9 +69,31 @@ class PrivacyPolicyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SafeArea(child: Markdown(data: privacyPolicy)),
+        child: TweenAnimationBuilder(
+          tween: Tween(begin: 0.0, end: 1.0),
+          child: SafeArea(child: Markdown(data: privacyPolicy)),
+          duration: Duration(milliseconds: 1000),
+          builder: (ctx, value, child) {
+            return ShaderMask(
+                shaderCallback: (rect) {
+                  return RadialGradient(
+                          colors: [
+                            Colors.white,
+                            Colors.white,
+                            Colors.transparent,
+                            Colors.transparent
+                          ],
+                          radius: value * 5,
+                          stops: [0.0, .55, .66, 1.0],
+                          center: FractionalOffset(.1, .9))
+                      .createShader(rect);
+                },
+                child: child);
+          },
+        ),
       ),
     );
   }

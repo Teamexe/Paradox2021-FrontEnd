@@ -44,78 +44,96 @@ class _MemberScreenState extends State<MemberScreen> {
               color: Colors.white,
             )
           : SafeArea(
-              child: Container(
-                child: Column(
-                  children: [
-                    if (members.developers.length != 0)
-                      Container(
-                        child: Text(
-                          "Developers",
-                          style: textStyle,
-                          textAlign: TextAlign.left,
+              child: SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    children: [
+                      if (members.alumni.length != 0)
+                        Text("Alumni", style: textStyle),
+                      if (members.alumni.length != 0)
+                        Container(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (ctx, index) {
+                                return MemberCard(members.alumni[index]);
+                              },
+                              itemCount: members.alumni.length),
                         ),
-                      ),
-                    if (members.developers.length != 0)
-                      Container(
-                        height: 200,
-                        width: MediaQuery.of(context).size.width,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (ctx, index) {
-                              return MemberCard(members.developers[index]);
-                            },
-                            itemCount: members.developers.length),
-                      ),
-                    // if (members.mentors.length != 0)
-                    //   Text("Mentors", style: textStyle),
-                    // if (members.mentors.length != 0)
-                    //   ListView.builder(
-                    //     itemBuilder: (ctx, index) {
-                    //       return MemberCard(members.mentors[index]);
-                    //     },
-                    //     itemCount: members.volunteer.length,
-                    //   ),
-                    // if (members.finalYear.length != 0)
-                    //   Text("Final Year", style: textStyle),
-                    // if (members.finalYear.length != 0)
-                    //   ListView.builder(
-                    //     itemBuilder: (ctx, index) {
-                    //       return MemberCard(members.finalYear[index]);
-                    //     },
-                    //     itemCount: members.volunteer.length,
-                    //   ),
-                    // if (members.coordinator.length != 0)
-                    //   Text("Coordinator", style: textStyle),
-                    // if (members.coordinator.length != 0)
-                    //   ListView.builder(
-                    //     itemBuilder: (ctx, index) {
-                    //       return MemberCard(members.coordinator[index]);
-                    //     },
-                    //     itemCount: members.volunteer.length,
-                    //   ),
-                    // if (members.executive.length != 0)
-                    //   Text("Executive Members", style: textStyle),
-                    // if (members.executive.length != 0)
-                    //   ListView.builder(
-                    //     itemBuilder: (ctx, index) {
-                    //       return MemberCard(members.executive[index]);
-                    //     },
-                    //     itemCount: members.volunteer.length,
-                    //   ),
-                    // if (members.developers.length != 0)
-                    //   Text("Volunteers", style: textStyle),
-                    // if (members.volunteer.length != 0)
-                    //   Container(
-                    //     width: MediaQuery.of(context).size.width,
-                    //     child: ListView.builder(
-                    //       scrollDirection: Axis.horizontal,
-                    //       itemBuilder: (ctx, index) {
-                    //         return MemberCard(members.volunteer[index]);
-                    //       },
-                    //       itemCount: members.volunteer.length,
-                    //     ),
-                    //   ),
-                  ],
+                      if (members.finalYear.length != 0)
+                        Text("Final Year", style: textStyle),
+                      if (members.finalYear.length != 0)
+                        Container(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (ctx, index) {
+                                return MemberCard(members.finalYear[index]);
+                              },
+                              itemCount: members.finalYear.length),
+                        ),
+                      if (members.preFinal.length != 0)
+                        Text("Pre Final Year", style: textStyle),
+                      if (members.preFinal.length != 0)
+                        Container(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (ctx, index) {
+                                return MemberCard(members.preFinal[index]);
+                              },
+                              itemCount: members.preFinal.length),
+                        ),
+                      if (members.developers.length != 0)
+                        Container(
+                          child: Text(
+                            "Developers",
+                            style: textStyle,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      if (members.developers.length != 0)
+                        Container(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (ctx, index) {
+                                return MemberCard(members.developers[index]);
+                              },
+                              itemCount: members.developers.length),
+                        ),
+                      if (members.executive.length != 0)
+                        Text("Executive Members", style: textStyle),
+                      if (members.executive.length != 0)
+                        Container(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (ctx, index) {
+                                return MemberCard(members.executive[index]);
+                              },
+                              itemCount: members.executive.length),
+                        ),
+                      if (members.volunteer.length != 0)
+                        Text("Volunteers", style: textStyle),
+                      if (members.volunteer.length != 0)
+                        Container(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (ctx, index) {
+                                return MemberCard(members.volunteer[index]);
+                              },
+                              itemCount: members.volunteer.length),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),

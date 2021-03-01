@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paradox/models/member.dart';
 import 'package:paradox/utilities/exe_member_dialog_box.dart';
 
@@ -13,11 +15,11 @@ class MemberCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: FlatButton(
         onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CustomDialogBox(exeMemberProfile);
-                });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialogBox(exeMemberProfile);
+              });
         },
         child: Container(
             width: 120,
@@ -28,11 +30,15 @@ class MemberCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Container(
-                child: Image.network(
-                  exeMemberProfile.image,
-                  fit: BoxFit.cover,
-                ),
-              ),
+                  child: CachedNetworkImage(
+                imageUrl: exeMemberProfile.image,
+                placeholder: (context, url) => Center(
+                    child: SpinKitCircle(
+                  color: Colors.white,
+                )),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                fit: BoxFit.cover,
+              )),
             )),
       ),
     );

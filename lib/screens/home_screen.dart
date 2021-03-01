@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
 import 'package:paradox/models/user.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
@@ -56,21 +57,18 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   Animation scaleAnimation;
   AnimationController animationController;
   int _currentIndex = 0;
 
-  List itemList = [
-    ParadoxPlayEasy(),
-    ParadoxPlayMedium(),
-    ParadoxPlayHard()
-  ];
+  List itemList = [ParadoxPlayEasy(), ParadoxPlayMedium(), ParadoxPlayHard()];
 
   // generic function
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
-    for(var i = 0; i < list.length; i++) {
+    for (var i = 0; i < list.length; i++) {
       result.add(handler(i, list[i]));
     }
     return result;
@@ -79,6 +77,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   void initState() {
     super.initState();
+
+    Provider.of<LeaderBoardProvider>(context, listen: false)
+        .fetchAndSetLeaderBoard();
 
     // animation controller for scale animation
     animationController = AnimationController(
@@ -103,6 +104,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     // start the animation
     animationController.forward();
+
     List<LeaderBoardUser> users = Provider.of<LeaderBoardProvider>(context, listen: true).topPlayerList;
     // bool showReferralCode = false;
     User user = Provider.of<UserProvider>(context, listen: true).user;
@@ -136,7 +138,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             margin: EdgeInsets.only(top: 10, right: 10),
                             child: ScaleTransition(
                               scale: scaleAnimation,
-                              child: Text('View Rules', style: TextStyle(fontSize: 18, color: Colors.blue.withOpacity(0.85))),
+                              child: Text('View Rules',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.blue.withOpacity(0.85))),
                             ),
                           ),
                           onTap: () {
@@ -151,30 +156,29 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         margin: EdgeInsets.only(top: 16),
                         child: CarouselSlider(
                           options: CarouselOptions(
-                            height: 230,
-                            autoPlay: true,
-                            autoPlayInterval: Duration(seconds: 3),
-                            autoPlayAnimationDuration: Duration(milliseconds: 800),
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            pauseAutoPlayOnTouch: true,
-                            aspectRatio: 2.0,
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                _currentIndex = index;
-                              });
-                            }
-                          ),
-                          items: itemList.map((paradoxCard) {
-                            return Builder(
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Transform.scale(
-                                      scale: 1,
-                                      child: paradoxCard,
-                                    ),
-                                  );
+                              height: 230,
+                              autoPlay: true,
+                              autoPlayInterval: Duration(seconds: 3),
+                              autoPlayAnimationDuration:
+                                  Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              pauseAutoPlayOnTouch: true,
+                              aspectRatio: 2.0,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _currentIndex = index;
                                 });
+                              }),
+                          items: itemList.map((paradoxCard) {
+                            return Builder(builder: (BuildContext context) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Transform.scale(
+                                  scale: 1,
+                                  child: paradoxCard,
+                                ),
+                              );
+                            });
                           }).toList(),
                         ),
                       ),
@@ -187,10 +191,13 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           return Container(
                             width: 10,
                             height: 10,
-                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 2),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: _currentIndex == index ? Colors.blue.withOpacity(0.7) : Colors.grey.withOpacity(0.55),
+                              color: _currentIndex == index
+                                  ? Colors.blue.withOpacity(0.7)
+                                  : Colors.grey.withOpacity(0.55),
                             ),
                           );
                         }),
@@ -200,9 +207,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     ScaleTransition(
                       scale: scaleAnimation,
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 16),
-                        child: Divider()
-                      ),
+                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          child: Divider()),
                     ),
                     SizedBox(height: 15),
                     Row(
@@ -224,7 +230,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           padding: EdgeInsets.all(5),
                           child: ScaleTransition(
                             scale: scaleAnimation,
-                            child: Text('nimbus'.toUpperCase(), style: TextStyle(fontSize: 18, color: Colors.blue.withOpacity(0.85))),
+                            child: Text('nimbus'.toUpperCase(),
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.blue.withOpacity(0.85))),
                           ),
                         ),
                       ],
@@ -233,13 +242,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     Container(
                       height: 250,
                       margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                          itemBuilder: (ctx, index) {
-                            return PlayerCard(users[index], index + 1);
-                          },
-                        itemCount: users.length,
-                      ),
+                      child: users.length == 0
+                          ? SpinKitDualRing(color: Colors.blue)
+                          : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (ctx, index) {
+                                return PlayerCard(users[index], index + 1);
+                              },
+                              itemCount: users.length,
+                            ),
                     ),
                   ],
                 ),
@@ -249,17 +260,18 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 scale: scaleAnimation,
                 child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 16),
-                    child: Divider()
-                ),
+                    child: Divider()),
               ),
               SizedBox(height: 8),
               Container(
+
                 child: Text('Use referral code', style: TextStyle(color: Colors.blue.withOpacity(0.8), fontSize: 20, fontWeight: FontWeight.w400)),
               ),
               SizedBox(height: 13),
               ScaleTransition(
                 scale: scaleAnimation,
                 child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
                   color: Colors.blue.withOpacity(0.84),
                   height: 40,
                   alignment: Alignment.center,
@@ -296,13 +308,19 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       onPressed: () {
                         Navigator.pushNamed(context, MemberScreen.routeName);
                       },
-                      child: Text('Members', style: TextStyle(fontSize: 17, letterSpacing: 2, fontWeight: FontWeight.w400, color: Colors.blue.withOpacity(0.85))),
+                      child: Text('Members',
+                          style: TextStyle(
+                              fontSize: 17,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.blue.withOpacity(0.85))),
                     ),
                     FlatButton(
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onPressed: () {
-                        showDialog(context: context,
+                        showDialog(
+                            context: context,
                             builder: (BuildContext context) {
                               return CustomDialogBox(
                                   'Information',
@@ -310,11 +328,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                   'https://github.com/teamexe',
                                   '\n or visit our website ',
                                   'https://teamexe.in',
-                                  Colors.blue
-                              );
+                                  Colors.blue);
                             });
                       },
-                      child: Text('Information', style: TextStyle(fontSize: 17, letterSpacing: 2, fontWeight: FontWeight.w400, color: Colors.blue.withOpacity(0.85))),
+                      child: Text('Information',
+                          style: TextStyle(
+                              fontSize: 17,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.blue.withOpacity(0.85))),
                     ),
                     Spacer(),
                   ],
@@ -331,18 +353,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   child: RichText(
                     text: TextSpan(
                         style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300,
-                            letterSpacing: 2,
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: 2,
                         ),
                         children: [
                           TextSpan(text: 'Made with '),
                           TextSpan(
                               text: String.fromCharCode(0x2665),
-                              style: TextStyle(
-                                  fontFamily: 'Material Icons')
-                          ),
+                              style: TextStyle(fontFamily: 'Material Icons')),
                           TextSpan(text: ' by '),
                           TextSpan(
                               recognizer: TapGestureRecognizer()
@@ -427,18 +447,22 @@ class ParadoxPlayEasy extends StatelessWidget {
                 Spacer(),
                 Align(
                   alignment: Alignment.center,
-                  child: Image.asset('assets/images/paradox_play.jpg', height: 60, width: 60),
+                  child: Image.asset('assets/images/paradox_play.jpg',
+                      height: 60, width: 60),
                 ),
                 Spacer(),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.blue.withOpacity(0.85),
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
                   ),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FlatButton(
+
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           onPressed: () {},
@@ -448,10 +472,10 @@ class ParadoxPlayEasy extends StatelessWidget {
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           onPressed: () {},
+
                           child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 3)),
                         ),
-                      ]
-                  ),
+                      ]),
                 ),
               ],
             ),
@@ -495,7 +519,8 @@ class ParadoxPlayMedium extends StatelessWidget {
                       Container(
                         height: 60,
                         width: 60,
-                        child: Image.asset('assets/images/paradox_play.jpg', height: 60, width: 60),
+                        child: Image.asset('assets/images/paradox_play.jpg',
+                            height: 60, width: 60),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 20),
@@ -504,7 +529,8 @@ class ParadoxPlayMedium extends StatelessWidget {
                           child: Container(
                             height: 60,
                             width: 60,
-                            child: Image.asset('assets/images/paradox_play.jpg', height: 60, width: 60),
+                            child: Image.asset('assets/images/paradox_play.jpg',
+                                height: 60, width: 60),
                           ),
                         ),
                       ),
@@ -515,21 +541,23 @@ class ParadoxPlayMedium extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.blue.withOpacity(0.8),
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
                   ),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FlatButton(
                             onPressed: () {},
+                style: TextStyle(color: Colors.white)),
                             child: Text('Medium Level'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, letterSpacing: 3))
                         ),
                         FlatButton(
                           onPressed: () {},
                           child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 3)),
                         ),
-                      ]
-                  ),
+                      ]),
                 ),
               ],
             ),
@@ -573,18 +601,20 @@ class ParadoxPlayHard extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(bottom: 20, left: 10),
                         child: Transform.rotate(
-                          angle: - pi / 3,
+                          angle: -pi / 3,
                           child: Container(
                             height: 60,
                             width: 60,
-                            child: Image.asset('assets/images/paradox_play.jpg', height: 60, width: 60),
+                            child: Image.asset('assets/images/paradox_play.jpg',
+                                height: 60, width: 60),
                           ),
                         ),
                       ),
                       Container(
                         height: 60,
                         width: 60,
-                        child: Image.asset('assets/images/paradox_play.jpg', height: 60, width: 60),
+                        child: Image.asset('assets/images/paradox_play.jpg',
+                            height: 60, width: 60),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 20),
@@ -593,7 +623,8 @@ class ParadoxPlayHard extends StatelessWidget {
                           child: Container(
                             height: 60,
                             width: 60,
-                            child: Image.asset('assets/images/paradox_play.jpg', height: 60, width: 60),
+                            child: Image.asset('assets/images/paradox_play.jpg',
+                                height: 60, width: 60),
                           ),
                         ),
                       ),
@@ -604,7 +635,9 @@ class ParadoxPlayHard extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.blue.withOpacity(0.85),
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
                   ),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -617,8 +650,7 @@ class ParadoxPlayHard extends StatelessWidget {
                           onPressed: () {},
                           child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 3)),
                         ),
-                      ]
-                  ),
+                      ]),
                 ),
               ],
             ),
