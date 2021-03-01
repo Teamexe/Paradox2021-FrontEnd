@@ -77,19 +77,21 @@ class PrivacyPolicyWidget extends StatelessWidget {
           child: SafeArea(child: Markdown(data: privacyPolicy)),
           duration: Duration(milliseconds: 1000),
           builder: (ctx, value, child) {
-            return ShaderMask(shaderCallback: (rect) {
-              return RadialGradient(
-                      colors: [
-                        Colors.white,
-                        Colors.white,
-                        Colors.transparent,
-                        Colors.transparent
-                      ],
-                      radius: value * 5,
-                      stops: [0.0, .55, .66, 1.0],
-                      center: FractionalOffset(.1, .9))
-                  .createShader(rect);
-            }, child: child);
+            return ShaderMask(
+                shaderCallback: (rect) {
+                  return RadialGradient(
+                          colors: [
+                            Colors.white,
+                            Colors.white,
+                            Colors.transparent,
+                            Colors.transparent
+                          ],
+                          radius: value * 5,
+                          stops: [0.0, .55, .66, 1.0],
+                          center: FractionalOffset(.1, .9))
+                      .createShader(rect);
+                },
+                child: child);
           },
         ),
       ),

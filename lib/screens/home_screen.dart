@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
@@ -73,6 +74,9 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+
+    Provider.of<LeaderBoardProvider>(context, listen: false)
+        .fetchAndSetLeaderBoard();
 
     // animation controller for scale animation
     animationController = AnimationController(
@@ -233,13 +237,15 @@ class _HomePageState extends State<HomePage>
                     Container(
                       height: 250,
                       margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (ctx, index) {
-                          return PlayerCard(users[index], index + 1);
-                        },
-                        itemCount: users.length,
-                      ),
+                      child: users.length == 0
+                          ? SpinKitDualRing(color: Colors.blue)
+                          : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (ctx, index) {
+                                return PlayerCard(users[index], index + 1);
+                              },
+                              itemCount: users.length,
+                            ),
                     ),
                   ],
                 ),
@@ -273,7 +279,7 @@ class _HomePageState extends State<HomePage>
                     children: [
                       Container(
                           margin: EdgeInsets.only(left: 10),
-                          child: Text('Your referral code is: 819c7nz',
+                          child: Text('Your referral code is: ',
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white))),
                       FlatButton(

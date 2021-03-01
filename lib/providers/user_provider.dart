@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:paradox/models/user.dart' as UserModel;
 import 'package:paradox/providers/api_authentication.dart';
+import 'package:paradox/providers/leaderboard_provider.dart';
+import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/utilities/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,6 +12,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class UserProvider extends ChangeNotifier {
   /// Instance of [User] for currently loggedIn User.
   UserModel.User user;
+  bool loadedProfile = false;
 
   /// Create new [User] and assign it to [user].
   Future<void> assignUser(String uid, String email, String name) async {
@@ -50,21 +53,23 @@ class UserProvider extends ChangeNotifier {
     if (user.uid == null) {
       return;
     }
-    String url = "${baseUrl}userProfile/${user.uid}/";
-    Response response = await get(url);
-    print(response.statusCode);
-    print(response.body);
-    if (response.statusCode == 200) {
-      var userProfile = jsonDecode(response.body);
-      this.user.referralCode = userProfile['ref_code'];
-      this.user.level = userProfile['profile']['level'];
-      this.user.score = userProfile['profile']['level'];
-      this.user.coins = userProfile['profile']['coins'];
-      this.user.attempts = userProfile['profile']['attempts'];
-      this.user.referralAvailed = userProfile['profile']['refferral_availed'];
-      notifyListeners();
+    if (loadedProfile == false) {
+      String url = "${baseUrl}userProfile/${user.uid}/";
+      Response response = await get(url);
+      if (response.statusCode == 200) {
+        var userProfile = jsonDecode(response.body);
+        this.user.referralCode = userProfile['ref_code'];
+        this.user.level = userProfile['profile']['level'];
+        this.user.score = userProfile['profile']['level'];
+        this.user.coins = userProfile['profile']['coins'];
+        this.user.attempts = userProfile['profile']['attempts'];
+        this.user.referralAvailed = userProfile['profile']['refferral_availed'];
+        notifyListeners();
+      }
+      return;
     }
-    return;
+    loadedProfile = true;
+    notifyListeners();
   }
 
   /// Check whether a present in backend or not using the uid provided by firebase on authentication.
@@ -105,7 +110,7 @@ class UserProvider extends ChangeNotifier {
     if (currentUser == null) {
       return;
     }
-    ApiAuthentication().userIsPresent().then((value) async => {
+    await ApiAuthentication().userIsPresent().then((value) async => {
           if (value)
             {print('user already in database')}
           else
