@@ -58,6 +58,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                 Navigator.pushNamed(context, ProfileScreen.routeName);
               },
             ),
+
           ],
         ),
         drawer: AppDrawer(),
@@ -90,6 +91,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
         load = false;
       });
     });
+
   }
 }
 
