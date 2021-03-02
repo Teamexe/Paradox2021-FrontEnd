@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:paradox/models/question.dart';
 import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/home_screen.dart';
 import 'package:paradox/screens/question_screen.dart';
+import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:provider/provider.dart';
 import 'package:slimy_card/slimy_card.dart';
@@ -69,7 +72,6 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
               Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
           onOkButtonPressed: () {
             Navigator.of(context).pop();
-            Navigator.of(context).pop();
           },
         ),
       );
@@ -80,8 +82,8 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
       showDialog(
         context: context,
         builder: (_) => NetworkGiffyDialog(
-          image: Image.network(
-              "https://media.giphy.com/media/gH94kBTHmFum6aMYzu/giphy.gif"),
+          image: Image.asset(
+              "assets/images/hint.gif"),
           title: Text(
             title,
             textAlign: TextAlign.center,
@@ -114,342 +116,289 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
       );
     }
 
-    return Container(
-      margin: EdgeInsets.only(
-        top: 100,
-        left: 20,
-        right: 20,
-      ),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          SlimyCard(
-            color: Colors.white,
-            width: size.width * 0.9,
-            topCardHeight: size.height * 0.55,
-            bottomCardHeight: size.height * 0.15,
-            borderRadius: 15,
-            topCardWidget: Container(
-              child: ScrollConfiguration(
-                behavior: MyBehavior(),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        width: double.infinity,
-                        child: Text(
-                          'Are you Ready for',
-                          style: TextStyle(fontSize: 18),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        child: Text(
-                          'Level ${index}!',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        height: size.height * 0.3,
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            repeat: ImageRepeat.noRepeat,
-                            alignment: Alignment.center,
-                            image: NetworkImage(
-                                '${widget.questList[index].location}'),
-                            fit: BoxFit.contain,
-                          ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 10,
-                              spreadRadius: 0.5,
+    return (widget.level >= widget.questList.length)
+        ? StageCompleted()
+        : Container(
+            margin: EdgeInsets.only(
+              top: 100,
+              left: 20,
+              right: 20,
+            ),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                SlimyCard(
+                  color: Colors.white,
+                  width: size.width * 0.9,
+                  topCardHeight: size.height * 0.55,
+                  bottomCardHeight: size.height * 0.15,
+                  borderRadius: 15,
+                  topCardWidget: Container(
+                    child: ScrollConfiguration(
+                      behavior: MyBehavior(),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              width: double.infinity,
+                              child: Text(
+                                'Are you Ready for',
+                                style: TextStyle(fontSize: 18),
+                                textAlign: TextAlign.left,
+                              ),
                             ),
+                            Container(
+                              width: double.infinity,
+                              child: Text(
+                                'Level ${index}!',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              height: size.height * 0.3,
+                              width: double.infinity,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  repeat: ImageRepeat.noRepeat,
+                                  alignment: Alignment.center,
+                                  image: NetworkImage(
+                                      '${widget.questList[index].location}'),
+                                  fit: BoxFit.contain,
+                                ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 10,
+                                    spreadRadius: 0.5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 15),
+                            Container(
+                              height: 40,
+                              width: 300,
+                              child: TextField(
+                                textAlign: TextAlign.center,
+                                textAlignVertical: TextAlignVertical.center,
+                                showCursor: true,
+                                onChanged: (value) {
+                                  answerController.text = value;
+                                },
+                                decoration: InputDecoration(
+                                  hintText: 'Answer here',
+                                  hintStyle: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                  fillColor: Colors.grey[200],
+                                  filled: true,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    borderSide: new BorderSide(
+                                        width: 1, color: Colors.blueGrey),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    borderSide: new BorderSide(
+                                        width: 1, color: Colors.grey[200]),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // SizedBox(height: ),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
+                              child: isLoading
+                                  ? SpinKitCircle(
+                                      color: Colors.blue[600],
+                                      size: 30,
+                                    )
+                                  : RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                          side: BorderSide(
+                                              color: Colors.white, width: 2)),
+                                      color: Colors.blue[600],
+                                      child: Text(
+                                        'Submit',
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        var body =
+                                            await Provider.of<QuestionProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .checkAnswer(
+                                                    answerController.text,
+                                                    widget
+                                                        .questList[index].level,
+                                                    id);
+                                        answerController.clear();
+                                        if (body == null) {
+                                          displayDialog(
+                                            title: 'Incorrect Answer',
+                                            imgName: 'wrong.gif',
+                                            text: 'Retry!',
+                                            color: Colors.red,
+                                          );
+                                        } else {
+                                          displayDialog(
+                                            title: 'Correct Answer',
+                                            imgName: 'right.gif',
+                                            text: 'Next!',
+                                            color: Colors.green,
+                                          );
+                                          Provider.of<UserProvider>(context,
+                                                  listen: false)
+                                              .updateData(
+                                            level: body['level'],
+                                            coins: body['coins'],
+                                          );
+                                          setState(() {
+                                            index++;
+                                          });
+                                        }
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                      },
+                                    ),
+                            ),
+                            SizedBox(height: 20),
                           ],
                         ),
                       ),
-                      SizedBox(height: 15),
-                      Container(
-                        height: 40,
-                        width: 300,
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          textAlignVertical: TextAlignVertical.center,
-                          showCursor: true,
-                          onChanged: (value) {
-                            answerController.text = value;
-                          },
-                          decoration: InputDecoration(
-                            hintText: 'Answer here',
-                            hintStyle: TextStyle(
-                              fontSize: 14,
-                            ),
-                            fillColor: Colors.grey[200],
-                            filled: true,
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              borderSide: new BorderSide(
-                                  width: 1, color: Colors.blueGrey),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              borderSide: new BorderSide(
-                                  width: 1, color: Colors.grey[200]),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // SizedBox(height: ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-                        child: isLoading
-                            ? SpinKitCircle(
-                                color: Colors.blue[600],
-                                size: 30,
-                              )
-                            : MaterialButton(
-                                height: 25,
-                                color: Colors.blue[800],
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
+                    ),
+                  ),
+                  bottomCardWidget: ScrollConfiguration(
+                    behavior: MyBehavior(),
+                    child: SingleChildScrollView(
+                      child: Container(
+                        child: Column(
+                          children: [
+                            if (hintNumber <= 0)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  onPressed: () async {
+                                    if (hintNumber != 0) {
+                                      createToast(
+                                          "Please Avail Previous Hint First.");
+                                      return;
+                                    }
+                                    displayDialogforHint(
+                                        title:
+                                            'Are you sure you want to Retrieve hint 1?',
+                                        imgName: 'hint.gif',
+                                        text: 'Yes',
+                                        color: Colors.red);
+                                  },
+                                  child: Text('Avail Hint 1 for 20 - coins',
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                            if (hintNumber >= 1)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
                                   child: Text(
-                                    'Submit',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                      '${hintList[user.level - 1].hint1}',
+                                      textAlign: TextAlign.center),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      color: Colors.white,
-                                      width: 2,
-                                      style: BorderStyle.solid),
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                                onPressed: () async {
-                                  if (answerController.text == null ||
-                                      answerController.text == "") {
-                                    createToast("Please Enter a answer");
-                                    return;
-                                  }
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  var body =
-                                      await Provider.of<QuestionProvider>(
-                                              context,
-                                              listen: false)
-                                          .checkAnswer(
-                                              answerController.text,
-                                              Provider.of<UserProvider>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .level,
-                                              id);
-                                  answerController.clear();
-                                  if (body == null) {
-                                    await displayDialog(
-                                      title: 'Incorrect Answer',
+                              ),
+                            Divider(),
+                            if (hintNumber <= 1)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    if (hintNumber != 1) {
+                                      createToast(
+                                          "Please Avail Previous Hint First.");
+                                      return;
+                                    }
+                                    displayDialogforHint(
+                                      title:
+                                          'Are you sure you want to Retrieve hint 2?',
                                       imgName: 'wrong.gif',
-                                      text: 'Retry!',
+                                      text: 'Yes',
                                       color: Colors.red,
                                     );
-                                  } else {
-                                    displayDialog(
-                                      title: 'Correct Answer',
-                                      imgName: 'right.gif',
-                                      text: 'Next!',
-                                      color: Colors.green,
-                                    );
-                                    Provider.of<UserProvider>(context,
-                                            listen: false)
-                                        .updateData(
-                                      level: body['level'],
-                                      coins: body['coins'],
-                                    );
-                                  }
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                },
+                                  },
+                                  child: Text('Avail Hint 2 for 30 - coins',
+                                      textAlign: TextAlign.center),
+                                ),
                               ),
+                            if (hintNumber >= 2)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  child: Text(
+                                      '${hintList[user.level - 1].hint2}',
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                            Divider(),
+                            if (hintNumber <= 2)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    if (hintNumber != 2) {
+                                      createToast(
+                                          "Please Avail Previous Hint First.");
+                                      return;
+                                    }
+                                    displayDialogforHint(
+                                      title:
+                                          'Are you sure you want to Retrieve hint 3?',
+                                      imgName: 'wrong.gif',
+                                      text: 'Yes',
+                                      color: Colors.red,
+                                    );
+                                  },
+                                  child: Text('Avail Hint 3 for 40 - coins',
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                            Divider(),
+                            if (hintNumber >= 3)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  child: Text(
+                                      '${hintList[user.level - 1].hint3}',
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.white,
-                      //       borderRadius: BorderRadius.circular(10),
-                      //       border: Border.all(color: Colors.blue[900])),
-                      //   height: 25,
-                      //   child: FlatButton(
-                      //     onPressed: () async {
-                      //                                   setState(() {
-                      //                                     isLoading = true;
-                      //                                   });
-                      //                                   var body =
-                      //                                       await Provider.of<QuestionProvider>(
-                      //                                               context,
-                      //                                               listen: false)
-                      //                                           .checkAnswer(
-                      //                                               answerController.text,
-                      //                                               widget.questList[index].level,
-                      //                                               id);
-                      //                                   answerController.clear();
-                      //                                   if (body == null) {
-                      //                                     displayDialog(
-                      //                                         title: 'Incorrect Answer',
-                      //                                         imgName: 'wrong.gif',
-                      //                                         text: 'Retry!',color: Colors.red,);
-                      //                                   } else {
-                      //                                     displayDialog(
-                      //                                         title: 'Correct Answer',
-                      //                                         imgName: 'right.gif',
-                      //                                         text: 'Next!',color: Colors.green,);
-                      //                                     Provider.of<UserProvider>(context,
-                      //                                             listen: false)
-                      //                                         .updateData(
-                      //                                       level: body['level'],
-                      //                                       coins: body['coins'],
-                      //                                     );
-                      //                                     setState(() {
-                      //                                       index++;
-                      //                                     });
-                      //                                   }
-                      //                                   setState(() {
-                      //                                     isLoading = false;
-                      //                                   });
-                      //     child: Text(
-                      //       'Submit',
-                      //       style: TextStyle(fontWeight: FontWeight.bold),
-                      //     ),
-                      //   ),
-                      // ),
-                      SizedBox(height: 20),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-            bottomCardWidget: ScrollConfiguration(
-              behavior: MyBehavior(),
-              child: SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                    children: [
-                      if (hintNumber <= 0)
-                        Container(
-                          width: double.infinity,
-                          child: FlatButton(
-                            onPressed: () async {
-                              if (hintNumber != 0) {
-                                createToast(
-                                    "Please Avail Previous Hint First.");
-                                return;
-                              }
-                              displayDialogforHint(
-                                  title:
-                                      'Are you sure you want to Retrieve hint 1?',
-                                  imgName: 'hint.gif',
-                                  text: 'Yes',
-                                  color: Colors.red);
-                            },
-                            child: Text('Avail Hint 1 for 20 - coins',
-                                textAlign: TextAlign.center),
-                          ),
-                        ),
-                      if (hintNumber >= 1)
-                        Container(
-                          width: double.infinity,
-                          child: FlatButton(
-                            child: Text('${hintList[user.level - 1].hint1}',
-                                textAlign: TextAlign.center),
-                          ),
-                        ),
-                      Divider(),
-                      if (hintNumber <= 1)
-                        Container(
-                          width: double.infinity,
-                          child: FlatButton(
-                            onPressed: () {
-                              if (hintNumber != 1) {
-                                createToast(
-                                    "Please Avail Previous Hint First.");
-                                return;
-                              }
-                              displayDialogforHint(
-                                title:
-                                    'Are you sure you want to Retrieve hint 2?',
-                                imgName: 'wrong.gif',
-                                text: 'Yes',
-                                color: Colors.red,
-                              );
-                            },
-                            child: Text('Avail Hint 2 for 30 - coins',
-                                textAlign: TextAlign.center),
-                          ),
-                        ),
-                      if (hintNumber >= 2)
-                        Container(
-                          width: double.infinity,
-                          child: FlatButton(
-                            child: Text('${hintList[user.level - 1].hint2}',
-                                textAlign: TextAlign.center),
-                          ),
-                        ),
-                      Divider(),
-                      if (hintNumber <= 2)
-                        Container(
-                          width: double.infinity,
-                          child: FlatButton(
-                            onPressed: () {
-                              if (hintNumber != 2) {
-                                createToast(
-                                    "Please Avail Previous Hint First.");
-                                return;
-                              }
-                              displayDialogforHint(
-                                title:
-                                    'Are you sure you want to Retrieve hint 3?',
-                                imgName: 'wrong.gif',
-                                text: 'Yes',
-                                color: Colors.red,
-                              );
-                            },
-                            child: Text('Avail Hint 3 for 40 - coins',
-                                textAlign: TextAlign.center),
-                          ),
-                        ),
-                      Divider(),
-                      if (hintNumber >= 3)
-                        Container(
-                          width: double.infinity,
-                          child: FlatButton(
-                            child: Text('${hintList[user.level - 1].hint3}',
-                                textAlign: TextAlign.center),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }
