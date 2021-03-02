@@ -135,6 +135,7 @@ class UserProvider extends ChangeNotifier {
     this.user.score = level;
     this.user.coins = coins;
     this.user.referralAvailed = referral;
+    this.user.hintLevel = 0;
     notifyListeners();
   }
 
@@ -180,6 +181,7 @@ class UserProvider extends ChangeNotifier {
           body: jsonEncode(<String, dynamic>{
             "google_id": FirebaseAuth.instance.currentUser.uid,
             "image": FirebaseAuth.instance.currentUser.photoURL
+                .replaceAll("s96-c/photo.jpg", "s400-c/photo.jpg")
           }),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
@@ -212,7 +214,7 @@ class UserProvider extends ChangeNotifier {
     return user.uid;
   }
 
-  void updateAttempts(){
+  void updateAttempts() {
     this.user.attempts += 1;
     notifyListeners();
   }

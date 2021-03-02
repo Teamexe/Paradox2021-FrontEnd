@@ -62,3 +62,48 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
+
+class ThemeSetting extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ThemeProvider>(
+        builder: (context, settingsProvider, child) => ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.blue,
+                child: Icon(Icons.wb_sunny_outlined, color: Colors.white),
+              ),
+              title: settingsProvider.brightness == BrightnessOption.light
+                  ? Text("Dark Theme",
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ))
+                  : Text("Light Theme",
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      )),
+              onTap: () {
+                if (settingsProvider.brightness == BrightnessOption.light) {
+                  settingsProvider.setBrightnessOption(BrightnessOption.dark);
+                } else {
+                  settingsProvider.setBrightnessOption(BrightnessOption.light);
+                }
+              },
+              trailing: Switch(
+                  activeColor: Colors.grey,
+                  value: settingsProvider.brightness != BrightnessOption.light,
+                  onChanged: (status) {
+                    if (status == true) {
+                      settingsProvider
+                          .setBrightnessOption(BrightnessOption.dark);
+                    } else {
+                      settingsProvider
+                          .setBrightnessOption(BrightnessOption.light);
+                    }
+                  }),
+            ));
+  }
+}

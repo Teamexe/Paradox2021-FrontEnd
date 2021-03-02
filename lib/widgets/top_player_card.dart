@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 class PlayerCard extends StatelessWidget {
   final LeaderBoardUser user;
   final int index;
+
   PlayerCard(this.user, this.index);
 
   @override
@@ -17,7 +18,9 @@ class PlayerCard extends StatelessWidget {
     return Container(
       width: 160,
       child: Card(
-        color: themeProvider.brightness == BrightnessOption.light ? Colors.grey[300] : Colors.grey[400],
+        color: themeProvider.brightness == BrightnessOption.light
+            ? Colors.grey[300]
+            : Colors.grey[400],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -26,7 +29,9 @@ class PlayerCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          color: themeProvider.brightness == BrightnessOption.light ? Colors.white : Colors.white54,
+          color: themeProvider.brightness == BrightnessOption.light
+              ? Colors.white
+              : Colors.white54,
           child: Container(
             padding: EdgeInsets.all(10),
             child: Column(
@@ -43,28 +48,31 @@ class PlayerCard extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
                         child: Image(
-                          image: NetworkImage("https://placebeard.it/320X${(320 + index).toString()}"),
+                          image: NetworkImage(user.image),
                         ),
                       ),
                     ),
                   ),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (ctx) => ExpandedImageView(image: "https://placebeard.it/320X${(320+index).toString()}")));
-                  },
                 ),
                 SizedBox(height: 15),
                 Align(
-                  child: Text(user.name, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.blue.withOpacity(0.85))),
+                  child: Text(user.name,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.blue.withOpacity(0.85))),
                 ),
                 SizedBox(height: 5),
                 Container(
-                  child: Text('nimbus'.toUpperCase(), style: TextStyle(color: Colors.grey[400])),
+                  child: Text('nimbus'.toUpperCase(),
+                      style: TextStyle(color: Colors.grey[400])),
                 ),
                 SizedBox(height: 5),
                 Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.blue.withOpacity(0.83),
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.blue.withOpacity(0.83),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   child: RichText(
@@ -77,11 +85,9 @@ class PlayerCard extends StatelessWidget {
                             text: user.score.toString(),
                             style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                           ),
-                        ]
-                    ),
+                        ]),
                   ),
                 ),
               ],
