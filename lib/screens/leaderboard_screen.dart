@@ -46,7 +46,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
     List<LeaderBoardUser> users =
         Provider.of<LeaderBoardProvider>(context, listen: true).userList;
     final currentUser = Provider.of<UserProvider>(context, listen: true).user;
-
+    final userImage = Provider.of<UserProvider>(context, listen: true).getUserProfileImage();
     final rank = users.indexWhere((userUid) => userUid.user == currentUser.uid);
     return Scaffold(
       // backgroundColor: Colors.white,
@@ -121,8 +121,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                               child: CircleAvatar(
                                 radius: 50,
                                 backgroundColor: Colors.white,
-                                backgroundImage: NetworkImage(
-                                    "https://placebeard.it/320X${(320 + 2).toString()}"),
+                                backgroundImage: NetworkImage(userImage),
                               ),
                             ),
                             Text(

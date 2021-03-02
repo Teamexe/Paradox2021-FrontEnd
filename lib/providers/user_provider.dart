@@ -59,7 +59,7 @@ class UserProvider extends ChangeNotifier {
       print(userProfile);
       this.user.referralCode = userProfile['ref_code'];
       this.user.level = userProfile['profile']['level'];
-      this.user.score = userProfile['profile']['level'];
+      this.user.score = userProfile['profile']['score'];
       this.user.coins = userProfile['profile']['coins'];
       this.user.attempts = userProfile['profile']['attempts'];
       this.user.referralAvailed = userProfile['profile']['refferral_availed'];
@@ -132,7 +132,7 @@ class UserProvider extends ChangeNotifier {
   ///update user level,coins and referral availed
   void updateData({int level, int coins, bool referral = false}) {
     this.user.level = level;
-    this.user.score = level;
+    this.user.score += 10 ;
     this.user.coins = coins;
     this.user.referralAvailed = referral;
     this.user.hintLevel = 0;
