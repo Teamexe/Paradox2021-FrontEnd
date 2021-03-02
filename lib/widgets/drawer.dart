@@ -58,7 +58,8 @@ class AppDrawerState extends State<AppDrawer> {
                     Navigator.pushNamed(context, ProfileScreen.routeName);
                   },
                 ),
-                SettingsPage(),
+                ThemeSetting(),
+                Divider(),
                 ListTile(
                   leading: CircleAvatar(
                     child: Icon(Icons.leaderboard, color: Colors.white),

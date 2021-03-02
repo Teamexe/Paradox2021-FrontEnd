@@ -7,13 +7,10 @@ import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:paradox/models/question.dart';
 import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
-import 'package:paradox/screens/home_screen.dart';
-import 'package:paradox/screens/question_screen.dart';
 import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:provider/provider.dart';
 import 'package:slimy_card/slimy_card.dart';
-
 import '../utilities/myBehaviour.dart';
 
 class QuestionPageLayout extends StatefulWidget {
@@ -43,9 +40,8 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
     final id = Provider.of<UserProvider>(context).getUserId();
     final hintList = Provider.of<QuestionProvider>(context).hintsList;
     final user = Provider.of<UserProvider>(context).user;
-    final hintNumber =
-        Provider.of<UserProvider>(context, listen: true).user.hintLevel;
     int index = widget.level;
+    bool loading = false;
     void displayDialog(
         {String title, String imgName, String text, Color color}) async {
       await showDialog(
@@ -72,6 +68,10 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
               Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
           onOkButtonPressed: () {
             answerController.text = "";
+            FocusScope.of(context).unfocus();
+            FocusScope.of(context).unfocus();
+            answerController.clear();
+            new TextEditingController().clear();
             Navigator.of(context).pop();
           },
         ),
@@ -82,37 +82,58 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
         {String title, String imgName, String text, Color color, int level}) {
       showDialog(
         context: context,
-        builder: (_) => NetworkGiffyDialog(
-          image: Image.asset("assets/images/hint.gif"),
-          title: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
-          ),
-          description: Text(
-            'Press $text to continue',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
-          ),
-          buttonOkColor: Colors.blue,
-          buttonCancelColor: color,
-          entryAnimation: EntryAnimation.RIGHT,
-          buttonCancelText:
-              Text("No", style: TextStyle(color: Colors.white, fontSize: 18)),
-          buttonOkText:
-              Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
-          onCancelButtonPressed: () {
-            Navigator.of(context).pop();
-          },
-          onOkButtonPressed: () async {
-            final resp = await Provider.of<UserProvider>(context, listen: false)
-                .availHints();
-            if (resp == true) {
-              createToast("Hint successfully availed");
-            }
-            Navigator.of(context).pop();
-          },
-        ),
+        builder: (context) => loading
+            ? SpinKitDualRing(color: Colors.blue)
+            : NetworkGiffyDialog(
+                image: Image.asset("assets/images/hint.gif"),
+                title: Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+                ),
+                description: Text(
+                  'Press $text to continue',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                ),
+                buttonOkColor: Colors.blue,
+                buttonCancelColor: color,
+                entryAnimation: EntryAnimation.RIGHT,
+                buttonCancelText: Text("No",
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
+                buttonOkText: Text(text,
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
+                onCancelButtonPressed: () {
+                  Navigator.of(context).pop();
+                },
+                onOkButtonPressed: () async {
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => SpinKitFadingGrid(
+                            color: Colors.blue,
+                          ));
+                  try {
+                    final resp =
+                        await Provider.of<UserProvider>(context, listen: false)
+                            .availHints();
+                    if (resp == true) {
+                      createToast("Hint successfully availed");
+                    }
+                    setState(() {
+                      loading = false;
+                    });
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    createToast("Hint availed Successfully");
+                  } catch (e) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    createToast(
+                        "Please try again later. There was some issue.");
+                  }
+                },
+              ),
       );
     }
 
@@ -258,7 +279,8 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                             text: 'Retry!',
                                             color: Colors.red,
                                           );
-                                          Provider.of<UserProvider>(context, listen: false)
+                                          Provider.of<UserProvider>(context,
+                                                  listen: false)
                                               .updateAttempts();
                                         } else {
                                           displayDialog(
@@ -293,104 +315,109 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                     behavior: MyBehavior(),
                     child: SingleChildScrollView(
                       child: Container(
-                        child: Column(
-                          children: [
-                            if (hintNumber <= 0)
-                              Container(
-                                width: double.infinity,
-                                child: FlatButton(
-                                  onPressed: () async {
-                                    if (hintNumber != 0) {
-                                      createToast(
-                                          "Please Avail Previous Hint First.");
-                                      return;
-                                    }
-                                    displayDialogforHint(
-                                        title:
-                                            'Are you sure you want to Retrieve hint 1?',
-                                        imgName: 'hint.gif',
-                                        text: 'Yes',
-                                        color: Colors.red);
-                                  },
-                                  child: Text('Avail Hint 1 for 20 - coins',
-                                      textAlign: TextAlign.center),
-                                ),
-                              ),
-                            if (hintNumber >= 1)
-                              Container(
-                                width: double.infinity,
-                                child: FlatButton(
-                                  child: Text(
-                                      '${hintList[user.level - 1].hint1}',
-                                      textAlign: TextAlign.center),
-                                ),
-                              ),
-                            Divider(),
-                            if (hintNumber <= 1)
-                              Container(
-                                width: double.infinity,
-                                child: FlatButton(
-                                  onPressed: () {
-                                    if (hintNumber != 1) {
-                                      createToast(
-                                          "Please Avail Previous Hint First.");
-                                      return;
-                                    }
-                                    displayDialogforHint(
-                                      title:
-                                          'Are you sure you want to Retrieve hint 2?',
-                                      imgName: 'wrong.gif',
-                                      text: 'Yes',
-                                      color: Colors.red,
-                                    );
-                                  },
-                                  child: Text('Avail Hint 2 for 30 - coins',
-                                      textAlign: TextAlign.center),
-                                ),
-                              ),
-                            if (hintNumber >= 2)
-                              Container(
-                                width: double.infinity,
-                                child: FlatButton(
-                                  child: Text(
-                                      '${hintList[user.level - 1].hint2}',
-                                      textAlign: TextAlign.center),
-                                ),
-                              ),
-                            Divider(),
-                            if (hintNumber <= 2)
-                              Container(
-                                width: double.infinity,
-                                child: FlatButton(
-                                  onPressed: () {
-                                    if (hintNumber != 2) {
-                                      createToast(
-                                          "Please Avail Previous Hint First.");
-                                      return;
-                                    }
-                                    displayDialogforHint(
-                                      title:
-                                          'Are you sure you want to Retrieve hint 3?',
-                                      imgName: 'wrong.gif',
-                                      text: 'Yes',
-                                      color: Colors.red,
-                                    );
-                                  },
-                                  child: Text('Avail Hint 3 for 40 - coins',
-                                      textAlign: TextAlign.center),
-                                ),
-                              ),
-                            Divider(),
-                            if (hintNumber >= 3)
-                              Container(
-                                width: double.infinity,
-                                child: FlatButton(
-                                  child: Text(
-                                      '${hintList[user.level - 1].hint3}',
-                                      textAlign: TextAlign.center),
-                                ),
-                              ),
-                          ],
+                        child: Consumer<UserProvider>(
+                          builder: (ctx, provider, _) {
+                            int hintNumber = provider.user.hintLevel;
+                            return Column(
+                              children: [
+                                if (hintNumber <= 0)
+                                  Container(
+                                    width: double.infinity,
+                                    child: FlatButton(
+                                      onPressed: () async {
+                                        if (hintNumber != 0) {
+                                          createToast(
+                                              "Please Avail Previous Hint First.");
+                                          return;
+                                        }
+                                        displayDialogforHint(
+                                            title:
+                                                'Are you sure you want to Retrieve hint 1?',
+                                            imgName: 'hint.gif',
+                                            text: 'Yes',
+                                            color: Colors.red);
+                                      },
+                                      child: Text('Avail Hint 1 for 20 - coins',
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  ),
+                                if (hintNumber >= 1)
+                                  Container(
+                                    width: double.infinity,
+                                    child: FlatButton(
+                                      child: Text(
+                                          '${hintList[user.level - 1].hint1}',
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  ),
+                                Divider(),
+                                if (hintNumber <= 1)
+                                  Container(
+                                    width: double.infinity,
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        if (hintNumber != 1) {
+                                          createToast(
+                                              "Please Avail Previous Hint First.");
+                                          return;
+                                        }
+                                        displayDialogforHint(
+                                          title:
+                                              'Are you sure you want to Retrieve hint 2?',
+                                          imgName: 'wrong.gif',
+                                          text: 'Yes',
+                                          color: Colors.red,
+                                        );
+                                      },
+                                      child: Text('Avail Hint 2 for 30 - coins',
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  ),
+                                if (hintNumber >= 2)
+                                  Container(
+                                    width: double.infinity,
+                                    child: FlatButton(
+                                      child: Text(
+                                          '${hintList[user.level - 1].hint2}',
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  ),
+                                Divider(),
+                                if (hintNumber <= 2)
+                                  Container(
+                                    width: double.infinity,
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        if (hintNumber != 2) {
+                                          createToast(
+                                              "Please Avail Previous Hint First.");
+                                          return;
+                                        }
+                                        displayDialogforHint(
+                                          title:
+                                              'Are you sure you want to Retrieve hint 3?',
+                                          imgName: 'wrong.gif',
+                                          text: 'Yes',
+                                          color: Colors.red,
+                                        );
+                                      },
+                                      child: Text('Avail Hint 3 for 40 - coins',
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  ),
+                                Divider(),
+                                if (hintNumber >= 3)
+                                  Container(
+                                    width: double.infinity,
+                                    child: FlatButton(
+                                      child: Text(
+                                          '${hintList[user.level - 1].hint3}',
+                                          textAlign: TextAlign.center),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                     ),
