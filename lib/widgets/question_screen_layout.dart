@@ -40,6 +40,9 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
     final id = Provider.of<UserProvider>(context).getUserId();
     final hintList = Provider.of<QuestionProvider>(context).hintsList;
     final user = Provider.of<UserProvider>(context).user;
+    // final user.hintLevel =
+    //     Provider.of<UserProvider>(context, listen: true).user.hintLevel;
+
     int index = widget.level;
     bool loading = false;
     void displayDialog(
@@ -173,7 +176,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                             Container(
                               width: double.infinity,
                               child: Text(
-                                'Level ${index}!',
+                                'Level $index!',
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.left,
@@ -418,6 +421,106 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                               ],
                             );
                           },
+
+                        child: Column(
+                          children: [
+                            if (user.hintLevel <= 0)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  onPressed: () async {
+                                    if (user.hintLevel != 0) {
+                                      createToast(
+                                          "Please Avail Previous Hint First.");
+                                      return;
+                                    }
+                                    displayDialogforHint(
+                                        title:
+                                            'Are you sure you want to Retrieve hint 1?',
+                                        imgName: 'hint.gif',
+                                        text: 'Yes',
+                                        color: Colors.red);
+                                  },
+                                  child: Text('Avail Hint 1 for 20 - coins',
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                            if (user.hintLevel >= 1)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  child: Text(
+                                      '${hintList[user.level - 1].hint1}',
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                            Divider(),
+                            if (user.hintLevel <= 1)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    if (user.hintLevel != 1) {
+                                      createToast(
+                                          "Please Avail Previous Hint First.");
+                                      return;
+                                    }
+                                    displayDialogforHint(
+                                      title:
+                                          'Are you sure you want to Retrieve hint 2?',
+                                      imgName: 'wrong.gif',
+                                      text: 'Yes',
+                                      color: Colors.red,
+                                    );
+                                  },
+                                  child: Text('Avail Hint 2 for 30 - coins',
+                                      textAlign: TextAlign.center),
+
+                                ),
+                              ),
+                            if (user.hintLevel >= 2)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  child: Text(
+                                      '${hintList[user.level - 1].hint2}',
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                            Divider(),
+                            if (user.hintLevel <= 2)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    if (user.hintLevel != 2) {
+                                      createToast(
+                                          "Please Avail Previous Hint First.");
+                                      return;
+                                    }
+                                    displayDialogforHint(
+                                      title:
+                                          'Are you sure you want to Retrieve hint 3?',
+                                      imgName: 'wrong.gif',
+                                      text: 'Yes',
+                                      color: Colors.red,
+                                    );
+                                  },
+                                  child: Text('Avail Hint 3 for 40 - coins',
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                            if (user.hintLevel >= 3)
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  child: Text(
+                                      '${hintList[user.level - 1].hint3}',
+                                      textAlign: TextAlign.center),
+                                ),
+                              ),
+                          ],
+                        ),
                         ),
                       ),
                     ),

@@ -163,6 +163,7 @@ class UserProvider extends ChangeNotifier {
         this.user.coins = body['coins'];
         notifyListeners();
         return body;
+
       } else {
         final body = jsonDecode(response.body);
         createToast(body['message']);
