@@ -40,7 +40,12 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          title: Text('Paradox'),
+          title: Text('Paradox',
+              style: TextStyle(
+              letterSpacing: 2,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
           actions: [
             GestureDetector(
               child: Container(
