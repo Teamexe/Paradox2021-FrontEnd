@@ -35,44 +35,42 @@ class _QuestionScreenState extends State<QuestionScreen> {
       body: ScrollConfiguration(
         behavior: MyBehavior(),
         child: Container(
-            height: MediaQuery.of(context).size.height * 1,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color(0xFF172339),
-                  const Color(0xFF1a2840),
-                  const Color(0xFF20324d),
-                  const Color(0xFF1d2d46),
-                  const Color(0xFF233754),
-                  const Color(0xFF253a59),
-                  const Color(0xFF273e5d),
-                  const Color(0xFF294162),
-                  const Color(0xFF2a4465),
-                  const Color(0xFF2c4669),
-                  const Color(0xFF2d496c),
-                  const Color(0xFF2e4c70),
-                ],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
+          height: MediaQuery.of(context).size.height * 1,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Color(0xff0083B0),
+              Color(0xff00B4DB),
+              // Color(0xff1A2980),
+            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff0083B0),
+                blurRadius: 12,
+                offset: Offset(0, 6),
               ),
-            ),
-            child: level < questList.length
-                ? questList.isEmpty
-                    ? SpinKitCircle(
-                        color: Colors.white,
-                      )
-                    : QuestionPageLayout(
-                        questList: questList,
-                        level: level,
-                      )
-                : Container(
-                    color: Colors.transparent,
-                  )),
+            ],
+          ),
+          child: questList.isEmpty
+              ? SpinKitCircle(
+                  color: Colors.white,
+                )
+              : QuestionPageLayout(
+                  questList: questList,
+                  level: level,
+                ),
+        ),
       ),
       bottomNavigationBar: Container(
         // alignment: Alignment.topLeft,
         height: 40,
-        color: const Color(0xFF172339),
+        decoration:BoxDecoration(
+          gradient: LinearGradient(colors: [
+            Color(0xff00A9D3),
+            Color(0xff00B4DB),
+            // Color(0xff1A2980),
+          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+        ) ,
+
         child: IconButton(
           icon: Icon(Icons.keyboard_arrow_down_sharp),
           color: Colors.white,

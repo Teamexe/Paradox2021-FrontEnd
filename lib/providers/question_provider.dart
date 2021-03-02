@@ -4,7 +4,6 @@ import 'package:http/http.dart';
 import 'package:paradox/models/hint.dart';
 import 'package:paradox/models/question.dart';
 import 'package:paradox/utilities/constant.dart';
-import 'package:paradox/models/user.dart' as UserModel;
 
 class QuestionProvider extends ChangeNotifier {
   List<Question> _questionList = [];
@@ -49,7 +48,7 @@ class QuestionProvider extends ChangeNotifier {
       String url = "${baseUrl}hints/";
       Response response = await get(url);
       if (response.statusCode == 200) {
-        _questionList.clear();
+        _hintsList.clear();
         var data = jsonDecode(response.body);
         for (int i = 0; i < data.length; i++) {
           _hintsList.add(Hint(
