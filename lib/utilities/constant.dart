@@ -1,1 +1,1 @@
-const String baseUrl = "http://140ad535ad38.ngrok.io/";
+const String baseUrl = "http://34.232.52.129:8002/";
