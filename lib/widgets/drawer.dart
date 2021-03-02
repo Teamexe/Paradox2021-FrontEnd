@@ -8,6 +8,7 @@ import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
 import 'package:paradox/screens/settings.dart';
+import 'package:paradox/screens/stats_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
@@ -46,15 +47,15 @@ class AppDrawerState extends State<AppDrawer> {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w500)),
                     accountEmail: Text(email,
-                        style: TextStyle(fontWeight: FontWeight.w400,fontSize: 18)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 18)),
                     currentAccountPicture: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
                       child: Image(
                         image: NetworkImage(image),
                       ),
                     ),
-                    decoration:
-                        BoxDecoration(color: Colors.blue),
+                    decoration: BoxDecoration(color: Colors.blue),
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, ProfileScreen.routeName);
@@ -91,6 +92,9 @@ class AppDrawerState extends State<AppDrawer> {
                 ),
                 Divider(),
                 ListTile(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(StatsScreen.routeName);
+                  },
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue,
                     child: Icon(Icons.graphic_eq, color: Colors.white),
@@ -227,15 +231,14 @@ class AppDrawerState extends State<AppDrawer> {
                           style: TextStyle(fontFamily: 'Material Icons')),
                       TextSpan(text: ' by '),
                       TextSpan(
-
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () async {
-                            if (await canLaunch('https://teamexe.in')) {
-                              launch('https://teamexe.in');
-                            } else {
-                              throw 'Could not launch https://teamexe.in';
-                            }
-                          },
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              if (await canLaunch('https://teamexe.in')) {
+                                launch('https://teamexe.in');
+                              } else {
+                                throw 'Could not launch https://teamexe.in';
+                              }
+                            },
                           text: 'Team .E',
                           style: TextStyle(
                               fontSize: 17,
@@ -249,7 +252,7 @@ class AppDrawerState extends State<AppDrawer> {
                               } else {
                                 throw 'Could not launch https://teamexe.in';
                               }
-                          },
+                            },
                           text: 'X',
                           style: TextStyle(
                               fontSize: 17,
@@ -263,7 +266,7 @@ class AppDrawerState extends State<AppDrawer> {
                               } else {
                                 throw 'Could not launch https://teamexe.in';
                               }
-                          },
+                            },
                           text: 'E',
                           style: TextStyle(
                               fontSize: 17,
