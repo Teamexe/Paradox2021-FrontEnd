@@ -66,12 +66,12 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
     bool loading = false;
     void displayDialog(
         {String title, String imgName, String text, Color color}) async {
-        // int x = checkList().length;
-        // int y = tempList.length;
-        // if(tempList)
-       setState(() {
-         tempList = tempList;
-       });
+      // int x = checkList().length;
+      // int y = tempList.length;
+      // if(tempList)
+      setState(() {
+        tempList = tempList;
+      });
 
       await showDialog(
         context: context,
@@ -312,14 +312,17 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                                   listen: false)
                                               .updateAttempts();
                                         } else {
-                                          displayDialog(
-                                            title: 'Correct Answer',
-                                            imgName: 'right.gif',
-                                            text: 'Next!',
-                                            color: Colors.green,
-                                          );
-                                          if(user.level== tempList.length){
-                                            Navigator.pushReplacementNamed(context, StageCompleted.routeName);
+                                          if (user.level == tempList.length) {
+                                            Navigator.of(context)
+                                                .pushReplacementNamed(
+                                                    StageCompleted.routeName);
+                                          } else {
+                                            displayDialog(
+                                              title: 'Correct Answer',
+                                              imgName: 'right.gif',
+                                              text: 'Next!',
+                                              color: Colors.green,
+                                            );
                                           }
 
                                           Provider.of<UserProvider>(context,
@@ -332,8 +335,9 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                         setState(() {
                                           isLoading = false;
                                         });
-                                        Provider.of<LeaderBoardProvider>(context).fetchAndSetLeaderBoard();
-
+                                        Provider.of<LeaderBoardProvider>(
+                                                context)
+                                            .fetchAndSetLeaderBoard();
                                       },
                                     ),
                             ),
