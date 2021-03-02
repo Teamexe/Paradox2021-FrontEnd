@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -10,16 +11,19 @@ import 'package:provider/provider.dart';
 
 class LeaderBoard extends StatefulWidget {
   static String route = "/leaderBoard";
+
   @override
   _LeaderBoardState createState() => _LeaderBoardState();
 }
 
 class _LeaderBoardState extends State<LeaderBoard> {
   bool load = true;
+
   @override
   void initState() {
     update();
   }
+
   void update() async {
     setState(() {
       load = true;
@@ -117,7 +121,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                               radius: 50,
                               backgroundColor: Colors.white,
                               backgroundImage: NetworkImage(
-                                  "https://placebeard.it/320X${(320 + 2).toString()}"),
+                                  FirebaseAuth.instance.currentUser.photoURL),
                             ),
                           ),
                           Text(

@@ -159,7 +159,7 @@ class UserProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         this.user.hintLevel = this.user.hintLevel + 1;
-        this.user.coins  = body['coins'];
+        this.user.coins = body['coins'];
         notifyListeners();
         return body;
       } else {
@@ -172,6 +172,20 @@ class UserProvider extends ChangeNotifier {
       createToast("There was some error. Please try again later.");
       throw Exception();
     }
+  }
+
+  Future<dynamic> updateUserImage() async {
+    try {
+      Response response = await post("${baseUrl}update-photo/",
+          body: jsonEncode(<String, dynamic>{
+            "google_id": FirebaseAuth.instance.currentUser.uid,
+            "image": FirebaseAuth.instance.currentUser.photoURL
+          }),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          });
+      print(response.body);
+    } catch (e) {}
   }
 
   String getUserName() {
@@ -196,5 +210,10 @@ class UserProvider extends ChangeNotifier {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     User user = firebaseAuth.currentUser;
     return user.uid;
+  }
+
+  void updateAttempts(){
+    this.user.attempts += 1;
+    notifyListeners();
   }
 }

@@ -71,6 +71,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
           buttonOkText:
               Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
           onOkButtonPressed: () {
+            answerController.text = "";
             Navigator.of(context).pop();
           },
         ),
@@ -82,8 +83,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
       showDialog(
         context: context,
         builder: (_) => NetworkGiffyDialog(
-          image: Image.asset(
-              "assets/images/hint.gif"),
+          image: Image.asset("assets/images/hint.gif"),
           title: Text(
             title,
             textAlign: TextAlign.center,
@@ -170,7 +170,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                   repeat: ImageRepeat.noRepeat,
                                   alignment: Alignment.center,
                                   image: NetworkImage(
-                                      '${widget.questList[index].location}'),
+                                      '${widget.questList[index - 1].location}'),
                                   fit: BoxFit.contain,
                                 ),
                                 color: Colors.white,
@@ -190,11 +190,9 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                               width: 300,
                               child: TextField(
                                 textAlign: TextAlign.center,
+                                controller: answerController,
                                 textAlignVertical: TextAlignVertical.center,
                                 showCursor: true,
-                                onChanged: (value) {
-                                  answerController.text = value;
-                                },
                                 decoration: InputDecoration(
                                   hintText: 'Answer here',
                                   hintStyle: TextStyle(
@@ -250,8 +248,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                                     listen: false)
                                                 .checkAnswer(
                                                     answerController.text,
-                                                    widget
-                                                        .questList[index].level,
+                                                    user.level,
                                                     id);
                                         answerController.clear();
                                         if (body == null) {
@@ -261,6 +258,8 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                             text: 'Retry!',
                                             color: Colors.red,
                                           );
+                                          Provider.of<UserProvider>(context, listen: false)
+                                              .updateAttempts();
                                         } else {
                                           displayDialog(
                                             title: 'Correct Answer',
