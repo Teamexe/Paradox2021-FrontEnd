@@ -31,7 +31,7 @@ static const routeName = '/stageCompletedScreen';
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(20)),
-                  border: Border.all(color: Colors.black,),
+
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black,
@@ -63,7 +63,7 @@ static const routeName = '/stageCompletedScreen';
 
                       ),
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, Home.routeName);
+                        Navigator.pop(context);
                       },
                       color: Colors.blue[600],
                       child: Text(
