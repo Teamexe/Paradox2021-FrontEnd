@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/members_provider.dart';
 import 'package:paradox/providers/referral_provider.dart';
@@ -28,7 +27,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeProvider themeProvider = new ThemeProvider();
+  ThemeProvider themeProvider;
 
   @override
   void initState() {
@@ -37,13 +36,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void getTheme() async {
-    await themeProvider.darkThemePreferences.getTheme().then((value) => {
-      if (value) {
-        themeProvider.brightnessOption = BrightnessOption.dark
-      } else {
-        themeProvider.brightnessOption = BrightnessOption.dark
-      }
-    });
+    themeProvider = new ThemeProvider();
   }
 
   @override

@@ -99,16 +99,16 @@ class _SettingsPageState extends State<SettingsPage> {
                             )
                         ),
                         CupertinoSlidingSegmentedControl<BrightnessOption>(
-                            children: options,
-                            groupValue: selectedOption,
-                            backgroundColor: Colors.grey[100].withOpacity(0.5),
-                            onValueChanged: (BrightnessOption selectedValue) {
-                              setState(() {
-                                selectedOption = selectedValue;
-                                themeProvider.setBrightnessOption(selectedOption);
-                                print(selectedOption);
-                              });
-                            },
+                          children: options,
+                          groupValue: selectedOption,
+                          backgroundColor: Colors.grey[100].withOpacity(0.5),
+                          onValueChanged: (BrightnessOption selectedValue) {
+                            setState(() {
+                              selectedOption = selectedValue;
+                              themeProvider.setBrightnessOption(selectedOption);
+                              print(selectedOption);
+                            });
+                          },
                         ),
                       ],
                     ),
