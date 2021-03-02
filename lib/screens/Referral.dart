@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/models/user.dart';
 import 'package:paradox/providers/referral_provider.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:provider/provider.dart';
@@ -30,15 +32,34 @@ class _ReferralScreenState extends State<ReferralScreen> {
     final availReferral =
         Provider.of<ReferralProvider>(context, listen: true).availReferral;
     print(user.referralAvailed);
+    final brightness = Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Referral"),
+        title: Text("Referral".toUpperCase(),
+          style: TextStyle(
+            fontWeight: brightness == BrightnessOption.light ? FontWeight.w400 : FontWeight.w300,
+            letterSpacing: 2,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        leading: Container(
+          padding: const EdgeInsets.all(10),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
       ),
       body: Container(
         child: Column(
           children: [
             if (user.referralAvailed == false)
               Container(
+                margin: EdgeInsets.all(10),
                 child: Column(
                   children: [
                     Padding(
@@ -46,8 +67,10 @@ class _ReferralScreenState extends State<ReferralScreen> {
                       child: Text(
                         "Avail Referral",
                         style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 19,
+                          fontWeight: brightness == BrightnessOption.light ? FontWeight.w500: FontWeight.w400,
+                          letterSpacing: 3,
+                          color: brightness == BrightnessOption.light ? Colors.blue:  Colors.white,
                         ),
                       ),
                     ),
@@ -72,20 +95,20 @@ class _ReferralScreenState extends State<ReferralScreen> {
                             color: Colors.grey[700],
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
                             borderSide: new BorderSide(
                               width: 2,
                               color: Colors.black,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
                             borderSide: new BorderSide(
                                 width: 2, color: Colors.grey[200]),
                           ),
                           suffixIcon: Icon(
                             Icons.screen_share,
-                            color: Colors.white,
+                            color: brightness == BrightnessOption.light ? Colors.grey[300] : Colors.white,
                           ),
                         ),
                       ),
@@ -97,10 +120,11 @@ class _ReferralScreenState extends State<ReferralScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
                   padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
                   width: double.infinity,
                   child: MaterialButton(
-                      height: 48,
+                      height: 50,
                       color: Colors.blue,
                       onPressed: !loader
                           ? () async {
@@ -133,8 +157,9 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                 'Avail Referral Code',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold),
+                                    fontSize: 18.0,
+                                    letterSpacing: 3,
+                                    fontWeight: FontWeight.w400),
                               ),
                             )
                           : SpinKitCircle(
@@ -145,7 +170,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                             color: Colors.white,
                             width: 2,
                             style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(17.0),
+                        borderRadius: BorderRadius.circular(10.0),
                       )),
                 ),
               ),
@@ -165,18 +190,31 @@ class _ReferralScreenState extends State<ReferralScreen> {
                 ),
               ),
             SizedBox(
-              height: 30,
+              height: 15,
+            ),
+            Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                child: Divider()
+            ),
+            SizedBox(
+              height: 10,
             ),
             Text(
-              "Share Your Referral Code.",
-              style: TextStyle(fontSize: 30),
+              "Share Your Referral Code",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: brightness == BrightnessOption.light ? FontWeight.w500: FontWeight.w400,
+                letterSpacing: 2,
+                color: brightness == BrightnessOption.light ? Colors.blue:  Colors.white,
+              ),
             ),
             SizedBox(
               height: 20,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Spacer(),
                 FlatButton(
                   onPressed: () {},
                   child: Container(
@@ -186,13 +224,13 @@ class _ReferralScreenState extends State<ReferralScreen> {
                             style: BorderStyle.solid,
                             width: 2),
                         color: Colors.blue,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
                         child: Text("Your Referral Code: " + user.referralCode,
                             style:
-                                TextStyle(color: Colors.white, fontSize: 18)),
+                                TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400)),
                       )),
                 ),
                 CircleAvatar(
@@ -202,7 +240,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                     child: IconButton(
                         icon: Icon(
                           Icons.share,
-                          size: 30,
+                          size: 27,
                         ),
                         color: Colors.white,
                         onPressed: () {
@@ -210,7 +248,9 @@ class _ReferralScreenState extends State<ReferralScreen> {
                               'Download Paradox from https://play.google.com/store/apps/details?id=com.exe.paradoxplay and use my referral code: ${user.referralAvailed} and earn 50 coins.');
                         }),
                   ),
-                )
+                ),
+                Spacer(),
+                Spacer(),
               ],
             )
           ],

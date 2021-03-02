@@ -1,14 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:paradox/models/brightness_options.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 class RulesScreen extends StatelessWidget {
   static String routeName = '/rules_screen';
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
+
     return Scaffold(
         appBar: AppBar(
-          title: Text('Paradox Rules'),
+          title: Text('Paradox Rules'.toUpperCase(),
+            style: TextStyle(
+              letterSpacing: 2,
+              fontWeight: brightness == BrightnessOption.dark ? FontWeight.w300 : FontWeight.w400,
+            ),
+          ),
+          automaticallyImplyLeading: false,
+          leading: Container(
+            padding: const EdgeInsets.all(10),
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: TweenAnimationBuilder(
@@ -24,7 +45,7 @@ class RulesScreen extends StatelessWidget {
                     ' our app to your friends. You and your friend will be awarded 100 coins for using your referral code.\n\n'
                     '4. Coins are earned on every successful submission and are used to unlock hints. Initially each user gets 100 coins'
                     ' and 100 coins on successful submissions of answers.\n\n'
-                    '5. Easy, Medium, Hard for categories for nimbus \n\n'
+                    '5. Easy, Medium, Hard are the categories for nimbus. \n\n'
                     '6. No negative points on wrong attempts.\n\n'
                     '7. The answers are case insensitive i.e. you can also answer using camel case.\n\n'
                     '8. The answer can have one or more words separated by space.\n\n'
@@ -32,10 +53,11 @@ class RulesScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
+                      letterSpacing: 1
                     ),
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 20),
                 FlatButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed(Home.routeName);
@@ -46,12 +68,13 @@ class RulesScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                         child: Text('Let\'s Play',
                             style:
-                                TextStyle(color: Colors.white, fontSize: 22)),
+                                TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w400, letterSpacing: 2)),
                       )),
-                )
+                ),
+                SizedBox(height: 40)
               ],
             ),
             duration: Duration(milliseconds: 1000),

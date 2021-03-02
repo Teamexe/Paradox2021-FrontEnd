@@ -6,10 +6,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
 import 'package:paradox/models/user.dart' as BaseUser;
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/question_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
@@ -152,6 +154,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
+
     /// start the animation
     animationController.forward();
 
@@ -391,7 +395,7 @@ class _HomePageState extends State<HomePage>
                                   'https://github.com/teamexe',
                                   '\n or visit our website ',
                                   'https://teamexe.in',
-                                  Colors.blue);
+                                  brightness == BrightnessOption.light ? Colors.blue : Colors.white54);
                             });
                       },
                       child: Text('Information',

@@ -21,6 +21,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
 
   @override
   void initState() {
+    super.initState();
     update();
   }
 
@@ -119,7 +120,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                               padding: EdgeInsets.all(10),
                               margin: EdgeInsets.all(10),
                               child: CircleAvatar(
-                                radius: 50,
+                                radius: 40,
                                 backgroundColor: Colors.white,
                                 backgroundImage: NetworkImage(userImage),
                               ),
