@@ -58,7 +58,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                 Navigator.pushNamed(context, ProfileScreen.routeName);
               },
             ),
-
           ],
         ),
         drawer: AppDrawer(),
@@ -81,6 +80,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
           FirebaseAuth.instance.currentUser.uid,
           FirebaseAuth.instance.currentUser.email,
           FirebaseAuth.instance.currentUser.displayName);
+      Provider.of<UserProvider>(context, listen: false).updateUserImage();
       await Future.wait([
         Provider.of<QuestionProvider>(context, listen: false).fetchQuestions(),
         Provider.of<QuestionProvider>(context, listen: false).fetchHints(),
@@ -91,7 +91,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
         load = false;
       });
     });
-
   }
 }
 

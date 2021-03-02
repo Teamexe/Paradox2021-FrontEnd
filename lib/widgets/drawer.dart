@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +6,14 @@ import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
-import 'package:paradox/screens/settings.dart';
 import 'package:paradox/screens/stats_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
-import 'package:paradox/utilities/logo_painter.dart';
 import '../utilities/member_screen.dart';
 import 'package:paradox/utilities/privacy_policy.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import '../widgets/dark_mode_toggle_widget.dart';
 class AppDrawer extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => AppDrawerState();
@@ -61,6 +58,7 @@ class AppDrawerState extends State<AppDrawer> {
                     Navigator.pushNamed(context, ProfileScreen.routeName);
                   },
                 ),
+                SettingsPage(),
                 ListTile(
                   leading: CircleAvatar(
                     child: Icon(Icons.leaderboard, color: Colors.white),
@@ -71,24 +69,6 @@ class AppDrawerState extends State<AppDrawer> {
                   onTap: () {
                     Navigator.pushNamed(context, LeaderBoard.route);
                   },
-                ),
-                Divider(),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child: Transform.rotate(
-                      angle: pi / 3,
-                      child: Container(
-                        margin: EdgeInsets.all(10),
-                        child: CustomPaint(
-                          painter: MyLogoPainter(Colors.white),
-                          child: Container(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  dense: true,
-                  title: Text('Paradox', style: textStyle),
                 ),
                 Divider(),
                 ListTile(
@@ -163,19 +143,6 @@ class AppDrawerState extends State<AppDrawer> {
                         pageBuilder: (ctx, animation, _) {
                           return RulesScreen();
                         }));
-                  },
-                ),
-                Divider(),
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child:
-                        Icon(Icons.settings_applications, color: Colors.white),
-                  ),
-                  title: Text('Settings', style: textStyle),
-                  dense: true,
-                  onTap: () {
-                    Navigator.pushNamed(context, SettingsScreen.routeName);
                   },
                 ),
                 Divider(),

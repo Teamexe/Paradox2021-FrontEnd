@@ -46,15 +46,13 @@ class UserCardWidget extends StatelessWidget {
                   children: [
                     GestureDetector(
                       child: CircleAvatar(
-                        backgroundImage: new NetworkImage(
-                            "https://placebeard.it/320X${(320 + index).toString()}"),
+                        backgroundImage: new NetworkImage(user.image),
                         radius: 35,
                       ),
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (ctx) => ExpandedImageView(
-                                image:
-                                    "https://placebeard.it/320X${(320 + index).toString()}")));
+                            builder: (ctx) =>
+                                ExpandedImageView(image: user.image)));
                       },
                     ),
                     Expanded(

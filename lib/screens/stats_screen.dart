@@ -37,7 +37,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   child: Column(
                     children: [
                       CustomCard2(
-                          heading1: 'Users : $users',
+                          heading1: 'Total Users : $users',
                           imagePath: 'assets/images/user.jpg'),
                       CustomCard2(
                           heading1: 'Questions : $question',
@@ -52,7 +52,7 @@ class _StatsScreenState extends State<StatsScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           child: Text(
-                            "This Page uses caching. It may take upto 5 minutes to update global stats.",
+                            "This Page uses caching. It may take upto 2 minutes to update global stats.",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w400
