@@ -80,6 +80,7 @@ flutter:
     - assets/images/right.gif
     - assets/images/wrong.gif
     - assets/images/correct.gif
+    - assets/images/hint.gif
 
   # To add assets to your application, add an assets section, like this:
   # assets:
