@@ -6,6 +6,18 @@ import 'package:paradox/models/question.dart';
 import 'package:paradox/utilities/constant.dart';
 
 class QuestionProvider extends ChangeNotifier {
+  List<Question> easyList =[];
+  List<Question> mediumList =[];
+  List<Question> hardList =[];
+  void clearList() {
+    /// Clear all the lists
+    [
+      easyList,
+      mediumList,
+      hardList,
+    ].forEach((list) => list.clear());
+  }
+
   List<Question> _questionList = [];
   bool loaded = false;
   bool loadedHints = false;
@@ -25,13 +37,23 @@ class QuestionProvider extends ChangeNotifier {
     Response response = await get(url);
     if (response.statusCode == 200) {
       _questionList.clear();
+      clearList();
       var data = jsonDecode(response.body);
       for (int i = 0; i < data.length; i++) {
         _questionList.add(Question(
           level: data[i]['level'],
           location: data[i]['location'],
+          difficulty: data[i]['category'],
         ));
+        if(_questionList[i].difficulty == 'Easy'){
+          easyList.add(_questionList[i]);
+        } else  if(_questionList[i].difficulty == 'Medium'){
+          mediumList.add(_questionList[i]);
+        }else  if(_questionList[i].difficulty == 'Hard'){
+          hardList.add(_questionList[i]);
+        }
       }
+
       notifyListeners();
     } else {
       throw Exception();

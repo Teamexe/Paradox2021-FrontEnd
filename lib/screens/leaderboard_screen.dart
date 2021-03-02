@@ -46,7 +46,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
     List<LeaderBoardUser> users =
         Provider.of<LeaderBoardProvider>(context, listen: true).userList;
     final currentUser = Provider.of<UserProvider>(context, listen: true).user;
-
+    final userImage = Provider.of<UserProvider>(context, listen: true).getUserProfileImage();
     final rank = users.indexWhere((userUid) => userUid.user == currentUser.uid);
     return Scaffold(
       // backgroundColor: Colors.white,
@@ -63,78 +63,79 @@ class _LeaderBoardState extends State<LeaderBoard> {
         child: SafeArea(
           child: Column(
             children: [
-              Container(
-                height: size.height * 0.25,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(40),
-                        bottomRight: Radius.circular(40)),
-                    gradient: LinearGradient(colors: [
-                      Color(0xff0083B0),
-                      Color(0xff00B4DB),
-                      // Color(0xff1A2980),
-                    ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xff0083B0),
-                        blurRadius: 12,
-                        offset: Offset(0, 6),
+              SingleChildScrollView(
+                child: Container(
+                  height: size.height * 0.25,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(40),
+                          bottomRight: Radius.circular(40)),
+                      gradient: LinearGradient(colors: [
+                        Color(0xff0083B0),
+                        Color(0xff00B4DB),
+                      ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0xff0083B0),
+                          blurRadius: 12,
+                          offset: Offset(0, 6),
+                        ),
+                      ]),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                        ),
                       ),
-                    ]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back_ios),
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                      Center(
+                        child: Text(
+                          'Leaderboard',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    Center(
-                      child: Text(
-                        'Leaderboard',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Center(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            'Rank: ${rank + 1}',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            margin: EdgeInsets.all(10),
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Colors.white,
-                              backgroundImage: NetworkImage(
-                                  FirebaseAuth.instance.currentUser.photoURL),
+                      Center(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              'Rank: ${rank + 1}',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          Text(
-                            'Score: ${currentUser.score ?? 0}',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.all(10),
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Colors.white,
+                                backgroundImage: NetworkImage(userImage),
+                              ),
+                            ),
+                            Text(
+                              'Score: ${currentUser.score ?? 0}',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Container(

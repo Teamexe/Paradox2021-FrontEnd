@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:paradox/screens/home_screen.dart';
 
 class StageCompleted extends StatelessWidget {
-
+static const routeName = '/stageCompletedScreen';
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
