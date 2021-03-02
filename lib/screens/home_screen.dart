@@ -13,7 +13,9 @@ import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/question_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
+import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
+import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
 import 'package:paradox/utilities/member_screen.dart';
 import 'package:paradox/utilities/type_writer_box.dart';
@@ -37,6 +39,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
@@ -149,12 +152,11 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    // start the animation
+    /// start the animation
     animationController.forward();
 
     List<LeaderBoardUser> users =
         Provider.of<LeaderBoardProvider>(context, listen: true).topPlayerList;
-    // bool showReferralCode = false;
     BaseUser.User user = Provider.of<UserProvider>(context, listen: true).user;
 
     return SafeArea(
@@ -486,8 +488,11 @@ class _HomePageState extends State<HomePage>
 }
 
 class ParadoxPlayEasy extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    final easyList = Provider.of<QuestionProvider>(context).easyList;
+    final level = Provider.of<UserProvider>(context).user.level;
     return GestureDetector(
       child: Container(
         child: Card(
@@ -550,6 +555,13 @@ class ParadoxPlayEasy extends StatelessWidget {
         width: double.infinity,
       ),
       onTap: () {
+        if(easyList.length == 0){
+          createToast('No questions present. Please try again later!');
+        } else if(easyList.length < level){
+        Navigator.pushNamed(context, StageCompleted.routeName);
+        }else{
+          Navigator.pushNamed(context, QuestionScreen.routeName);
+        }
         // TODO: navigating to the question page
       },
     );
@@ -559,6 +571,9 @@ class ParadoxPlayEasy extends StatelessWidget {
 class ParadoxPlayMedium extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final mediumList = Provider.of<QuestionProvider>(context).mediumList;
+    final easyList = Provider.of<QuestionProvider>(context).easyList;
+    final level = Provider.of<UserProvider>(context).user.level;
     return GestureDetector(
       child: Container(
         child: Card(
@@ -638,6 +653,16 @@ class ParadoxPlayMedium extends StatelessWidget {
         width: double.infinity,
       ),
       onTap: () {
+        if(mediumList.length == 0){
+          createToast('No questions present. Please try again later!');
+        }else if(easyList.length>=level){
+          createToast('Please complete previous levels first');
+        }
+        else if(mediumList.length < (level - easyList.length)){
+          Navigator.pushNamed(context, StageCompleted.routeName);
+        }else{
+          Navigator.pushNamed(context, QuestionScreen.routeName);
+        }
         // TODO: navigating to the question page
       },
     );
@@ -647,6 +672,10 @@ class ParadoxPlayMedium extends StatelessWidget {
 class ParadoxPlayHard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final mediumList = Provider.of<QuestionProvider>(context).mediumList;
+    final easyList = Provider.of<QuestionProvider>(context).easyList;
+    final hardList = Provider.of<QuestionProvider>(context).hardList;
+    final level = Provider.of<UserProvider>(context).user.level;
     return GestureDetector(
       child: Container(
         width: double.infinity,
@@ -736,8 +765,21 @@ class ParadoxPlayHard extends StatelessWidget {
           ),
         ),
       ),
+
       onTap: () {
-        Navigator.of(context).pushNamed(QuestionScreen.routeName);
+        print(easyList);
+        print(mediumList);
+        print(hardList);
+        if(hardList.length == 0){
+          createToast('No questions present. Please try again later!');
+        }else if(easyList.length+ mediumList.length >=level){
+          createToast('Please complete previous levels first');
+        } else if(hardList.length < level-(easyList.length+ mediumList.length)){
+          Navigator.pushNamed(context, StageCompleted.routeName);
+        }else{
+          Navigator.pushNamed(context, QuestionScreen.routeName);
+        }
+        // TODO: navigating to the question page
       },
     );
   }
