@@ -27,7 +27,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     if (loading == false || loadingHints == false || loadedUser == false) {
       return Center(
           child: Container(
-        child: Text("Loading"),
+            child: Text("Loading"),
       ));
     }
     return Scaffold(

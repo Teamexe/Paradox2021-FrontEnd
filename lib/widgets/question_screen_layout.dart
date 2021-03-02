@@ -296,11 +296,42 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                       //       border: Border.all(color: Colors.blue[900])),
                       //   height: 25,
                       //   child: FlatButton(
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         index++;
-                      //       });
-                      //     },
+                      //     onPressed: () async {
+                      //                                   setState(() {
+                      //                                     isLoading = true;
+                      //                                   });
+                      //                                   var body =
+                      //                                       await Provider.of<QuestionProvider>(
+                      //                                               context,
+                      //                                               listen: false)
+                      //                                           .checkAnswer(
+                      //                                               answerController.text,
+                      //                                               widget.questList[index].level,
+                      //                                               id);
+                      //                                   answerController.clear();
+                      //                                   if (body == null) {
+                      //                                     displayDialog(
+                      //                                         title: 'Incorrect Answer',
+                      //                                         imgName: 'wrong.gif',
+                      //                                         text: 'Retry!',color: Colors.red,);
+                      //                                   } else {
+                      //                                     displayDialog(
+                      //                                         title: 'Correct Answer',
+                      //                                         imgName: 'right.gif',
+                      //                                         text: 'Next!',color: Colors.green,);
+                      //                                     Provider.of<UserProvider>(context,
+                      //                                             listen: false)
+                      //                                         .updateData(
+                      //                                       level: body['level'],
+                      //                                       coins: body['coins'],
+                      //                                     );
+                      //                                     setState(() {
+                      //                                       index++;
+                      //                                     });
+                      //                                   }
+                      //                                   setState(() {
+                      //                                     isLoading = false;
+                      //                                   });
                       //     child: Text(
                       //       'Submit',
                       //       style: TextStyle(fontWeight: FontWeight.bold),

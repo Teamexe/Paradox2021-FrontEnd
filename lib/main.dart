@@ -33,7 +33,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeProvider themeProvider = new ThemeProvider();
+  ThemeProvider themeProvider;
 
   @override
   void initState() {
@@ -42,12 +42,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void getTheme() async {
-    await themeProvider.darkThemePreferences.getTheme().then((value) => {
-          if (value)
-            {themeProvider.brightnessOption = BrightnessOption.dark}
-          else
-            {themeProvider.brightnessOption = BrightnessOption.dark}
-        });
+    themeProvider = new ThemeProvider();
   }
 
   @override
