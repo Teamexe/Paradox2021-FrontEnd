@@ -25,8 +25,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'PROFILE',
+
+        title: Text('PROFILE',
           style: TextStyle(
             letterSpacing: 2,
             fontWeight: brightness == BrightnessOption.dark
@@ -182,6 +182,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   heading2: 'Attempts: ${user.attempts}',
                                   imagePath: "assets/images/trophy.png",
                                 ),
+
+                          brightness == BrightnessOption.dark ?
+                          DarkCustomCard(
+                            heading1: 'Level: ${user.level ?? 1} ',
+                            heading2: 'Coins: ${user.coins ?? 0}',
+                            imagePath: "assets/images/badge.png",
+                          )
+                              : CustomCard(
+                            heading1: 'Level: ${user.level ?? 1} ',
+                            heading2: 'Coins: ${user.coins ?? 0}',
+                            imagePath: "assets/images/badge.png",
+                          ),
+                          brightness == BrightnessOption.dark ?
+                          DarkCustomCard(
+                            heading1: 'Score: ${user.score ?? 0}',
+                            heading2: 'Attempts: ${user.attempts}',
+                            imagePath: "assets/images/trophy.png",
+                          )
+                              : CustomCard(
+                            heading1: 'Score: ${user.score ?? 0}',
+                            heading2: 'Attempts: ${user.attempts}',
+                            imagePath: "assets/images/trophy.png",
+                          ),
+
                           SizedBox(height: 10),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
