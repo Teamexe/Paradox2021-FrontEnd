@@ -106,7 +106,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                     ], begin: Alignment.topLeft, end: Alignment.bottomRight),
                     boxShadow: [
                       brightness == BrightnessOption.light ?
-                      BoxShadow(
+                      BoxShadow   (
                         color: Color(0xff0083B0),
                         blurRadius: 12,
                         offset: Offset(0, 6),

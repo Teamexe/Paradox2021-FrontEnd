@@ -297,21 +297,19 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                             Container(
                               width: 150,
                               padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    side: BorderSide(
-                                        color: Colors.white, width: 2)),
-                                color: Colors.blue[600],
-                                child: isLoading
-                                    ? Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: SpinKitCircle(
-                                          color: Colors.white,
-                                          size: 30,
-                                        ),
+                              child:RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                          side: BorderSide(
+                                              color: Colors.white, width: 2)),
+                                      color: Colors.blue[600],
+                                      child:  isLoading
+                                          ? SpinKitCircle(
+                                        color: Colors.white,
+                                        size: 30,
                                       )
-                                    : Padding(
+                                         : Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
                                           'Submit',
