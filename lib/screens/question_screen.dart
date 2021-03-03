@@ -6,6 +6,8 @@ import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/utilities/myBehaviour.dart';
 import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/widgets/hint_fab.dart';
+import 'package:paradox/widgets/question_display.dart';
 import 'package:provider/provider.dart';
 import '../widgets/question_screen_layout.dart';
 
@@ -36,6 +38,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
     }
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        backgroundColor: brightness == BrightnessOption.light ? Color(0xff0083B0) : Colors.grey[900] ,
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: (){
+          Navigator.pop(context);
+        }),
+        elevation: 0,
+      ),
       body: ScrollConfiguration(
         behavior: MyBehavior(),
         child: Container(
@@ -45,7 +54,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               brightness == BrightnessOption.light ? Color(0xff0083B0) : Colors.grey[900],
               brightness == BrightnessOption.light ? Color(0xff00B4DB) : Colors.grey[900],
               // Color(0xff1A2980),
-            ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+            ], begin: Alignment.topCenter, end: Alignment.bottomRight),
             boxShadow: [
               BoxShadow(
                 color: Color(0xff0083B0),
@@ -58,31 +67,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
               ? SpinKitCircle(
             color: Colors.white,
           )
-              : QuestionPageLayout(
+              : QuestionDisplay(
             questList: questList,
             level: level,
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        // alignment: Alignment.topLeft,
-        height: 40,
-        decoration:BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Color(0xff00A9D3),
-            Color(0xff00B4DB),
-            // Color(0xff1A2980),
-          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-        ) ,
-
-        child: IconButton(
-          icon: Icon(Icons.keyboard_arrow_down_sharp),
-          color: Colors.white,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+    floatingActionButton: HintsFab(),
     );
   }
 }
