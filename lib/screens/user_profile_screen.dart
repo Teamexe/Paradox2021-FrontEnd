@@ -194,18 +194,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         .pushNamed(ReferralScreen.routeName);
                                   },
                                   height: 48,
-                                  color: brightness == BrightnessOption.dark
-                                      ? Colors.grey[200]
-                                      : Colors.blue,
+                                  color: Colors.blue,
                                   child: Padding(
                                     padding: const EdgeInsets.all(15.0),
                                     child: Text(
                                       'Referral',
                                       style: TextStyle(
-                                          color: brightness ==
-                                                  BrightnessOption.dark
-                                              ? Colors.black54
-                                              : Colors.white,
+                                          color: Colors.white,
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.w500),
                                     ),
