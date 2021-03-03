@@ -4,9 +4,11 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
+import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/models/question.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
@@ -44,6 +46,8 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
     final mediumList = Provider.of<QuestionProvider>(context).mediumList;
     final easyList = Provider.of<QuestionProvider>(context).easyList;
     final hardList = Provider.of<QuestionProvider>(context).hardList;
+    final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
+
     List<Question> checkList() {
       if (widget.level <= easyList.length) {
         print('1');
@@ -83,7 +87,11 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
           title: Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+            style: TextStyle(
+                fontSize: 22.0,
+                color: Colors.blue,
+                fontWeight: FontWeight.w600,
+            ),
           ),
           description: Text(
             'Press $text to continue',
@@ -170,7 +178,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
         ? StageCompleted()
         : Container(
             margin: EdgeInsets.only(
-              top: 100,
+              top: 90,
               left: 20,
               right: 20,
             ),
@@ -178,7 +186,8 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 SlimyCard(
-                  color: Colors.white,
+                  color: brightness == BrightnessOption.light ?
+                  Colors.white : Colors.grey[800],
                   width: size.width * 0.9,
                   topCardHeight: size.height * 0.55,
                   bottomCardHeight: size.height * 0.15,
@@ -191,20 +200,30 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Container(
-                              width: double.infinity,
+                            Center(
+                              // width: double.infinity,
                               child: Text(
                                 'Are you Ready for',
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(
+                                  letterSpacing: 3,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 18,
+                                  color: brightness == BrightnessOption.dark ? Colors.white : Colors.grey,
+                                ),
                                 textAlign: TextAlign.left,
                               ),
                             ),
-                            Container(
-                              width: double.infinity,
+                            SizedBox(height: 5),
+                            Center(
+                              // width: double.infinity,
                               child: Text(
                                 'Level $index!',
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                  letterSpacing: 2,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                  color: brightness == BrightnessOption.dark ? Colors.white : Colors.grey,
+                                ),
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -224,7 +243,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                   fit: BoxFit.contain,
                                 ),
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(10),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.1),
@@ -234,10 +253,10 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 15),
+                            SizedBox(height: 20),
                             Container(
                               height: 40,
-                              width: 300,
+                              width: 280,
                               child: TextField(
                                 textAlign: TextAlign.center,
                                 controller: answerController,
@@ -248,19 +267,19 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                   hintStyle: TextStyle(
                                     fontSize: 14,
                                   ),
-                                  fillColor: Colors.grey[200],
+                                  fillColor: brightness == BrightnessOption.light ? Colors.grey[200] : Colors.grey,
                                   filled: true,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                                        BorderRadius.all(Radius.circular(10)),
                                     borderSide: new BorderSide(
-                                        width: 1, color: Colors.blueGrey),
+                                        width: 2, color: brightness == BrightnessOption.light ? Colors.blueGrey : Colors.white60),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                                        BorderRadius.all(Radius.circular(10)),
                                     borderSide: new BorderSide(
-                                        width: 1, color: Colors.grey[200]),
+                                        width: 2, color: brightness == BrightnessOption.light ? Colors.blueGrey : Colors.white60),
                                   ),
                                 ),
                               ),

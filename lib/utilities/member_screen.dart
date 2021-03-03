@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/members_provider.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/widgets/memberCard.dart';
 import 'package:provider/provider.dart';
@@ -37,8 +39,9 @@ class _MemberScreenState extends State<MemberScreen> {
   Widget build(BuildContext context) {
     final members = Provider.of<ExeMembersProvider>(context);
     print(members.developers);
+    final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: brightness == BrightnessOption.light ? Colors.blue : Colors.grey[400],
       body: load
           ? SpinKitFoldingCube(
               color: Colors.white,
