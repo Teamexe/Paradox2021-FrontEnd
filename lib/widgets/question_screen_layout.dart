@@ -10,6 +10,7 @@ import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/photo_view.dart';
 import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:provider/provider.dart';
@@ -230,27 +231,35 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                             SizedBox(
                               height: 15,
                             ),
-                            Container(
-                              height: size.height * 0.3,
-                              width: double.infinity,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  repeat: ImageRepeat.noRepeat,
-                                  alignment: Alignment.center,
-                                  image: NetworkImage(
-                                      '${widget.questList[index - 1].location}'),
-                                  fit: BoxFit.contain,
-                                ),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 10,
-                                    spreadRadius: 0.5,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => ExpandedImageView(
+                                        image:
+                                            '${widget.questList[index - 1].location}')));
+                              },
+                              child: Container(
+                                height: size.height * 0.3,
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    repeat: ImageRepeat.noRepeat,
+                                    alignment: Alignment.center,
+                                    image: NetworkImage(
+                                        '${widget.questList[index - 1].location}'),
+                                    fit: BoxFit.contain,
                                   ),
-                                ],
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 10,
+                                      spreadRadius: 0.5,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(height: 20),
@@ -286,28 +295,42 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                             ),
                             // SizedBox(height: ),
                             Container(
+                              width: 150,
                               padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-                              child: isLoading
-                                  ? SpinKitCircle(
-                                      color: Colors.blue[600],
-                                      size: 30,
-                                    )
-                                  : RaisedButton(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(18.0),
-                                          side: BorderSide(
-                                              color: Colors.white, width: 2)),
-                                      color: Colors.blue[600],
-                                      child: Text(
-                                        'Submit',
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.w600,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    side: BorderSide(
+                                        color: Colors.white, width: 2)),
+                                color: Colors.blue[600],
+                                child: isLoading
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: SpinKitCircle(
                                           color: Colors.white,
+                                          size: 30,
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Submit',
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
-                                      onPressed: () async {
+                                onPressed: isLoading
+                                    ? () {}
+                                    : () async {
+                                        if (answerController.text == null ||
+                                            answerController.text == "") {
+                                          createToast(
+                                              "Please enter an answer to continue.");
+                                          return;
+                                        }
                                         setState(() {
                                           isLoading = true;
                                         });
@@ -358,7 +381,7 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                                 context)
                                             .fetchAndSetLeaderBoard();
                                       },
-                                    ),
+                              ),
                             ),
                             SizedBox(height: 20),
                           ],
