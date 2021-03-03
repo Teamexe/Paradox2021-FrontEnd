@@ -32,10 +32,11 @@ class MemberCard extends StatelessWidget {
               child: Container(
                   child: CachedNetworkImage(
                     imageUrl: exeMemberProfile.image,
-                    placeholder: (context, url) => Center(
+                    placeholder: (context, url) => Container(
                       child: SpinKitCircle(
                       color: Colors.white,
-                    )),
+                      ),
+                    ),
                     errorWidget: (context, url, error) => Icon(Icons.error),
                     fit: BoxFit.cover,
               )),

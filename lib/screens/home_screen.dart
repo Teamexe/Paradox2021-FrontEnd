@@ -83,6 +83,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
 
   @override
   void initState() {
+    super.initState();
     setState(() {
       load = true;
     });

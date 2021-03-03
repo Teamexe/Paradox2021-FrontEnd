@@ -48,10 +48,14 @@ class AppDrawerState extends State<AppDrawer> {
                   child: UserAccountsDrawerHeader(
                     accountName: Text(name,
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500)),
+                            fontSize: 18, fontWeight: FontWeight.w400, letterSpacing: 2)),
                     accountEmail: Text(email,
                         style: TextStyle(
-                            fontWeight: FontWeight.w400, fontSize: 18)),
+                          fontWeight: FontWeight.w300,
+                          color: Colors.grey[100],
+                          fontSize: 16,
+                      ),
+                    ),
                     currentAccountPicture: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
                       child: Image(

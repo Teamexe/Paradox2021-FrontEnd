@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/members_provider.dart';
 import 'package:paradox/providers/referral_provider.dart';
