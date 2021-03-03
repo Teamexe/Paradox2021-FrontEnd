@@ -31,7 +31,7 @@ class PlayerCard extends StatelessWidget {
           ),
           color: themeProvider.brightness == BrightnessOption.light
               ? Colors.white
-              : Colors.white54,
+              : Colors.black54,
           child: Container(
             padding: EdgeInsets.all(10),
             child: Column(
