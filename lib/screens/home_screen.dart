@@ -534,7 +534,15 @@ class ParadoxPlayEasy extends StatelessWidget {
                         FlatButton(
                             splashColor: Colors.transparent,
                             highlightColor: Colors.transparent,
-                            onPressed: () {},
+                            onPressed: () {
+                              if (easyList.length == 0) {
+                                createToast('No questions present. Please try again later!');
+                              } else if (easyList.length < level) {
+                                Navigator.pushNamed(context, StageCompleted.routeName);
+                              } else {
+                                Navigator.pushNamed(context, QuestionScreen.routeName);
+                              }
+                            },
                             child: Text('Easy Level'.toUpperCase(),
                                 style: TextStyle(
                                     color: Colors.white,
@@ -543,7 +551,15 @@ class ParadoxPlayEasy extends StatelessWidget {
                         FlatButton(
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          onPressed: () {},
+                          onPressed: () {
+                            if (easyList.length == 0) {
+                              createToast('No questions present. Please try again later!');
+                            } else if (easyList.length < level) {
+                              Navigator.pushNamed(context, StageCompleted.routeName);
+                            } else {
+                              Navigator.pushNamed(context, QuestionScreen.routeName);
+                            }
+                          },
                           child: Text('nimbus'.toUpperCase(),
                               style: TextStyle(
                                   color: Colors.white,
@@ -559,16 +575,16 @@ class ParadoxPlayEasy extends StatelessWidget {
         width: double.infinity,
       ),
       onTap: () {
-        if(easyList.length == 0){
+        if (easyList.length == 0) {
           createToast('No questions present. Please try again later!');
-        } else if(easyList.length < level){
-        Navigator.pushNamed(context, StageCompleted.routeName);
-        }else{
+        } else if (easyList.length < level) {
+          Navigator.pushNamed(context, StageCompleted.routeName);
+        } else {
           Navigator.pushNamed(context, QuestionScreen.routeName);
         }
-        // TODO: navigating to the question page
       },
     );
+
   }
 }
 
@@ -634,14 +650,36 @@ class ParadoxPlayMedium extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if( mediumList.length == 0) {
+                                createToast('No questions present. Please try again later!');
+                              } else if (easyList.length >= level) {
+                                createToast('Please complete previous levels first');
+                              }
+                              else if (mediumList.length < (level - easyList.length)) {
+                                Navigator.pushNamed(context, StageCompleted.routeName);
+                              } else {
+                                Navigator.pushNamed(context, QuestionScreen.routeName);
+                              }
+                            },
                             child: Text('Medium Level'.toUpperCase(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
                                     letterSpacing: 3))),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if( mediumList.length == 0) {
+                              createToast('No questions present. Please try again later!');
+                            } else if (easyList.length >= level) {
+                              createToast('Please complete previous levels first');
+                            }
+                            else if (mediumList.length < (level - easyList.length)) {
+                              Navigator.pushNamed(context, StageCompleted.routeName);
+                            } else {
+                              Navigator.pushNamed(context, QuestionScreen.routeName);
+                            }
+                          },
                           child: Text('nimbus'.toUpperCase(),
                               style: TextStyle(
                                   color: Colors.white,
@@ -657,17 +695,16 @@ class ParadoxPlayMedium extends StatelessWidget {
         width: double.infinity,
       ),
       onTap: () {
-        if(mediumList.length == 0){
+        if( mediumList.length == 0) {
           createToast('No questions present. Please try again later!');
-        }else if(easyList.length>=level){
+        } else if (easyList.length >= level) {
           createToast('Please complete previous levels first');
         }
-        else if(mediumList.length < (level - easyList.length)){
+        else if (mediumList.length < (level - easyList.length)) {
           Navigator.pushNamed(context, StageCompleted.routeName);
-        }else{
+        } else {
           Navigator.pushNamed(context, QuestionScreen.routeName);
         }
-        // TODO: navigating to the question page
       },
     );
   }
@@ -748,14 +785,34 @@ class ParadoxPlayHard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (hardList.length == 0) {
+                                createToast('No questions present. Please try again later!');
+                              } else if (easyList.length + mediumList.length >= level) {
+                                createToast('Please complete previous levels first');
+                              } else if (hardList.length < level-(easyList.length + mediumList.length)) {
+                                Navigator.pushNamed(context, StageCompleted.routeName);
+                              } else {
+                                Navigator.pushNamed(context, QuestionScreen.routeName);
+                              }
+                            },
                             child: Text('Hard Level'.toUpperCase(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
                                     letterSpacing: 3))),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (hardList.length == 0) {
+                              createToast('No questions present. Please try again later!');
+                            } else if (easyList.length + mediumList.length >= level){
+                              createToast('Please complete previous levels first');
+                            } else if (hardList.length < level-(easyList.length + mediumList.length)) {
+                              Navigator.pushNamed(context, StageCompleted.routeName);
+                            } else {
+                              Navigator.pushNamed(context, QuestionScreen.routeName);
+                            }
+                          },
                           child: Text('nimbus'.toUpperCase(),
                               style: TextStyle(
                                   color: Colors.white,
@@ -774,16 +831,15 @@ class ParadoxPlayHard extends StatelessWidget {
         print(easyList);
         print(mediumList);
         print(hardList);
-        if(hardList.length == 0){
+        if (hardList.length == 0) {
           createToast('No questions present. Please try again later!');
-        }else if(easyList.length+ mediumList.length >=level){
+        } else if (easyList.length + mediumList.length >= level){
           createToast('Please complete previous levels first');
-        } else if(hardList.length < level-(easyList.length+ mediumList.length)){
+        } else if (hardList.length < level-(easyList.length + mediumList.length)) {
           Navigator.pushNamed(context, StageCompleted.routeName);
-        }else{
+        } else {
           Navigator.pushNamed(context, QuestionScreen.routeName);
         }
-        // TODO: navigating to the question page
       },
     );
   }

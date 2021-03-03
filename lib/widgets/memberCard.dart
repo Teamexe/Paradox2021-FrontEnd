@@ -31,13 +31,13 @@ class MemberCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: Container(
                   child: CachedNetworkImage(
-                imageUrl: exeMemberProfile.image,
-                placeholder: (context, url) => Center(
-                    child: SpinKitCircle(
-                  color: Colors.white,
-                )),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-                fit: BoxFit.cover,
+                    imageUrl: exeMemberProfile.image,
+                    placeholder: (context, url) => Center(
+                      child: SpinKitCircle(
+                      color: Colors.white,
+                    )),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    fit: BoxFit.cover,
               )),
             )),
       ),
