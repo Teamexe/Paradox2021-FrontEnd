@@ -61,7 +61,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icons"
   ios: true
-  image_path: "assets/images/logo.png"
+  image_path: "assets/images/output-onlinepngtools.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
