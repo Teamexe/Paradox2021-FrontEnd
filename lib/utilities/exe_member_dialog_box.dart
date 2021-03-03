@@ -119,7 +119,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                     IconButton(
                       icon: Icon(
                         FontAwesomeIcons.github,
-                        color: Color(0xFF211F1F),
+                        color: brightness == BrightnessOption.light ? Color(0xFF211F1F) : Colors.white,
                       ),
                       onPressed: () async {
                         String url = widget.exeMemberProfile.githubUrl;
@@ -134,7 +134,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                     IconButton(
                       icon: Icon(
                         FontAwesomeIcons.linkedin,
-                        color: Color(0xFF2867B2),
+                        color: brightness == BrightnessOption.light ? Color(0xFF2867B2): Colors.blue,
                       ),
                       onPressed: () async {
                         String url = widget.exeMemberProfile.linkedInUrl;

@@ -110,12 +110,6 @@ class UserProvider extends ChangeNotifier {
     if (currentUser == null) {
       return;
     }
-    await ApiAuthentication().userIsPresent().then((value) async => {
-          if (value)
-            {print('user already in database')}
-          else
-            {await ApiAuthentication().createUser()}
-        });
   }
 
   /// function to logout

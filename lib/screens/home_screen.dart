@@ -9,6 +9,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
 import 'package:paradox/models/user.dart' as BaseUser;
+import 'package:paradox/providers/api_authentication.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/providers/theme_provider.dart';
@@ -41,12 +42,12 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          title: Text('Paradox',
-              style: TextStyle(
+          title: Text(
+            'Paradox',
+            style: TextStyle(
               letterSpacing: 2,
               fontWeight: FontWeight.w300,
             ),
@@ -85,7 +86,14 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
     setState(() {
       load = true;
     });
+
     Future.delayed(Duration.zero, () async {
+      await ApiAuthentication().userIsPresent().then((value) async => {
+            if (value)
+              {print('user already in database')}
+            else
+              {await ApiAuthentication().createUser()}
+          });
       Provider.of<UserProvider>(context, listen: false).assignUser(
           FirebaseAuth.instance.currentUser.uid,
           FirebaseAuth.instance.currentUser.email,
@@ -154,7 +162,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
+    final brightness =
+        Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
 
     /// start the animation
     animationController.forward();
@@ -395,7 +404,9 @@ class _HomePageState extends State<HomePage>
                                   'https://github.com/teamexe',
                                   '\n or visit our website ',
                                   'https://teamexe.in',
-                                  brightness == BrightnessOption.light ? Colors.blue : Colors.white54);
+                                  brightness == BrightnessOption.light
+                                      ? Colors.blue
+                                      : Colors.white54);
                             });
                       },
                       child: Text('Information',
@@ -492,7 +503,6 @@ class _HomePageState extends State<HomePage>
 }
 
 class ParadoxPlayEasy extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final easyList = Provider.of<QuestionProvider>(context).easyList;
@@ -536,11 +546,14 @@ class ParadoxPlayEasy extends StatelessWidget {
                             highlightColor: Colors.transparent,
                             onPressed: () {
                               if (easyList.length == 0) {
-                                createToast('No questions present. Please try again later!');
+                                createToast(
+                                    'No questions present. Please try again later!');
                               } else if (easyList.length < level) {
-                                Navigator.pushNamed(context, StageCompleted.routeName);
+                                Navigator.pushNamed(
+                                    context, StageCompleted.routeName);
                               } else {
-                                Navigator.pushNamed(context, QuestionScreen.routeName);
+                                Navigator.pushNamed(
+                                    context, QuestionScreen.routeName);
                               }
                             },
                             child: Text('Easy Level'.toUpperCase(),
@@ -553,11 +566,14 @@ class ParadoxPlayEasy extends StatelessWidget {
                           highlightColor: Colors.transparent,
                           onPressed: () {
                             if (easyList.length == 0) {
-                              createToast('No questions present. Please try again later!');
+                              createToast(
+                                  'No questions present. Please try again later!');
                             } else if (easyList.length < level) {
-                              Navigator.pushNamed(context, StageCompleted.routeName);
+                              Navigator.pushNamed(
+                                  context, StageCompleted.routeName);
                             } else {
-                              Navigator.pushNamed(context, QuestionScreen.routeName);
+                              Navigator.pushNamed(
+                                  context, QuestionScreen.routeName);
                             }
                           },
                           child: Text('nimbus'.toUpperCase(),
@@ -584,7 +600,6 @@ class ParadoxPlayEasy extends StatelessWidget {
         }
       },
     );
-
   }
 }
 
@@ -651,15 +666,19 @@ class ParadoxPlayMedium extends StatelessWidget {
                       children: [
                         FlatButton(
                             onPressed: () {
-                              if( mediumList.length == 0) {
-                                createToast('No questions present. Please try again later!');
+                              if (mediumList.length == 0) {
+                                createToast(
+                                    'No questions present. Please try again later!');
                               } else if (easyList.length >= level) {
-                                createToast('Please complete previous levels first');
-                              }
-                              else if (mediumList.length < (level - easyList.length)) {
-                                Navigator.pushNamed(context, StageCompleted.routeName);
+                                createToast(
+                                    'Please complete previous levels first');
+                              } else if (mediumList.length <
+                                  (level - easyList.length)) {
+                                Navigator.pushNamed(
+                                    context, StageCompleted.routeName);
                               } else {
-                                Navigator.pushNamed(context, QuestionScreen.routeName);
+                                Navigator.pushNamed(
+                                    context, QuestionScreen.routeName);
                               }
                             },
                             child: Text('Medium Level'.toUpperCase(),
@@ -669,15 +688,19 @@ class ParadoxPlayMedium extends StatelessWidget {
                                     letterSpacing: 3))),
                         FlatButton(
                           onPressed: () {
-                            if( mediumList.length == 0) {
-                              createToast('No questions present. Please try again later!');
+                            if (mediumList.length == 0) {
+                              createToast(
+                                  'No questions present. Please try again later!');
                             } else if (easyList.length >= level) {
-                              createToast('Please complete previous levels first');
-                            }
-                            else if (mediumList.length < (level - easyList.length)) {
-                              Navigator.pushNamed(context, StageCompleted.routeName);
+                              createToast(
+                                  'Please complete previous levels first');
+                            } else if (mediumList.length <
+                                (level - easyList.length)) {
+                              Navigator.pushNamed(
+                                  context, StageCompleted.routeName);
                             } else {
-                              Navigator.pushNamed(context, QuestionScreen.routeName);
+                              Navigator.pushNamed(
+                                  context, QuestionScreen.routeName);
                             }
                           },
                           child: Text('nimbus'.toUpperCase(),
@@ -695,12 +718,11 @@ class ParadoxPlayMedium extends StatelessWidget {
         width: double.infinity,
       ),
       onTap: () {
-        if( mediumList.length == 0) {
+        if (mediumList.length == 0) {
           createToast('No questions present. Please try again later!');
         } else if (easyList.length >= level) {
           createToast('Please complete previous levels first');
-        }
-        else if (mediumList.length < (level - easyList.length)) {
+        } else if (mediumList.length < (level - easyList.length)) {
           Navigator.pushNamed(context, StageCompleted.routeName);
         } else {
           Navigator.pushNamed(context, QuestionScreen.routeName);
@@ -787,13 +809,20 @@ class ParadoxPlayHard extends StatelessWidget {
                         FlatButton(
                             onPressed: () {
                               if (hardList.length == 0) {
-                                createToast('No questions present. Please try again later!');
-                              } else if (easyList.length + mediumList.length >= level) {
-                                createToast('Please complete previous levels first');
-                              } else if (hardList.length < level-(easyList.length + mediumList.length)) {
-                                Navigator.pushNamed(context, StageCompleted.routeName);
+                                createToast(
+                                    'No questions present. Please try again later!');
+                              } else if (easyList.length + mediumList.length >=
+                                  level) {
+                                createToast(
+                                    'Please complete previous levels first');
+                              } else if (hardList.length <
+                                  level -
+                                      (easyList.length + mediumList.length)) {
+                                Navigator.pushNamed(
+                                    context, StageCompleted.routeName);
                               } else {
-                                Navigator.pushNamed(context, QuestionScreen.routeName);
+                                Navigator.pushNamed(
+                                    context, QuestionScreen.routeName);
                               }
                             },
                             child: Text('Hard Level'.toUpperCase(),
@@ -804,13 +833,19 @@ class ParadoxPlayHard extends StatelessWidget {
                         FlatButton(
                           onPressed: () {
                             if (hardList.length == 0) {
-                              createToast('No questions present. Please try again later!');
-                            } else if (easyList.length + mediumList.length >= level){
-                              createToast('Please complete previous levels first');
-                            } else if (hardList.length < level-(easyList.length + mediumList.length)) {
-                              Navigator.pushNamed(context, StageCompleted.routeName);
+                              createToast(
+                                  'No questions present. Please try again later!');
+                            } else if (easyList.length + mediumList.length >=
+                                level) {
+                              createToast(
+                                  'Please complete previous levels first');
+                            } else if (hardList.length <
+                                level - (easyList.length + mediumList.length)) {
+                              Navigator.pushNamed(
+                                  context, StageCompleted.routeName);
                             } else {
-                              Navigator.pushNamed(context, QuestionScreen.routeName);
+                              Navigator.pushNamed(
+                                  context, QuestionScreen.routeName);
                             }
                           },
                           child: Text('nimbus'.toUpperCase(),
@@ -826,16 +861,16 @@ class ParadoxPlayHard extends StatelessWidget {
           ),
         ),
       ),
-
       onTap: () {
         print(easyList);
         print(mediumList);
         print(hardList);
         if (hardList.length == 0) {
           createToast('No questions present. Please try again later!');
-        } else if (easyList.length + mediumList.length >= level){
+        } else if (easyList.length + mediumList.length >= level) {
           createToast('Please complete previous levels first');
-        } else if (hardList.length < level-(easyList.length + mediumList.length)) {
+        } else if (hardList.length <
+            level - (easyList.length + mediumList.length)) {
           Navigator.pushNamed(context, StageCompleted.routeName);
         } else {
           Navigator.pushNamed(context, QuestionScreen.routeName);
