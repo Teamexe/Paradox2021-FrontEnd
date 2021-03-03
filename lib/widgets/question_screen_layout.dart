@@ -268,19 +268,19 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                             // SizedBox(height: ),
                             Container(
                               padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-                              child: isLoading
-                                  ? SpinKitCircle(
-                                      color: Colors.blue[600],
-                                      size: 30,
-                                    )
-                                  : RaisedButton(
+                              child:RaisedButton(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(18.0),
                                           side: BorderSide(
                                               color: Colors.white, width: 2)),
                                       color: Colors.blue[600],
-                                      child: Text(
+                                      child:  isLoading
+                                          ? SpinKitCircle(
+                                        color: Colors.white,
+                                        size: 30,
+                                      )
+                                          : Text(
                                         'Submit',
                                         style: TextStyle(
                                           fontSize: 18.0,

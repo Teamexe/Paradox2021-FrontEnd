@@ -111,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         CustomCard(
                           heading1: ' Score : ${user.score ?? 0}',
-                          heading2: ' Attempts : ${user.attempts}',
+                          heading2: ' Attempts : ${user.attempts??0}',
                           imagePath: "assets/images/trophy.png",
                         ),
                         SizedBox(
