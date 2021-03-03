@@ -41,7 +41,7 @@ class _MemberScreenState extends State<MemberScreen> {
     print(members.developers);
     final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
     return Scaffold(
-      backgroundColor: brightness == BrightnessOption.light ? Colors.blue : Colors.grey[400],
+      backgroundColor: brightness == BrightnessOption.light ? Colors.blue : Colors.black54,
       body: load
           ? SpinKitFoldingCube(
               color: Colors.white,
