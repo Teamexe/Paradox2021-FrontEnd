@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:paradox/models/brightness_options.dart';
+import 'package:paradox/providers/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 String privacyPolicy = '''
 
@@ -68,8 +71,10 @@ If you have any questions or suggestions about our Privacy Policy, do not hesita
 class PrivacyPolicyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: brightness == BrightnessOption.light ? Colors.white : Colors.grey[850],
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TweenAnimationBuilder(

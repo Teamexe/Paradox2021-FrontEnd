@@ -1,7 +1,10 @@
 import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:paradox/models/brightness_options.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/utilities/logo_painter.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomDialogBox extends StatefulWidget {
@@ -17,17 +20,19 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
       elevation: 0,
       backgroundColor: Colors.transparent,
-      child: contentBox(context, widget.color),
+      child: contentBox(context, widget.color, brightness),
     );
   }
 
-  contentBox(context, customColor) {
+  contentBox(context, customColor, brightness) {
     return Stack(
       children: [
         Container(
@@ -38,20 +43,27 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
               color: customColor,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(color: Colors.grey, offset: Offset(0, 0), blurRadius: 10),
+                BoxShadow(color: brightness == BrightnessOption.dark ? Colors.white10 : Colors.grey, offset: Offset(0, 0), blurRadius: 10),
               ]
           ),
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                color: Colors.white,
+                color: brightness == BrightnessOption.light ? Colors.white : Colors.grey[850],
                 borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(widget.title, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25, color: Colors.blue.shade600), textAlign: TextAlign.center,),
+                Text(widget.title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 25,
+                      color: brightness == BrightnessOption.light ? Colors.blue.shade600 : Colors.white70,
+                  ),
+                  textAlign: TextAlign.center
+                ),
                 SizedBox(height: 22),
                 RichText(
                     textAlign: TextAlign.center,
@@ -142,7 +154,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
               backgroundColor: customColor,
               radius: 40,
               child: CircleAvatar(
-                backgroundColor: Colors.white,
+                backgroundColor: brightness == BrightnessOption.light ? Colors.white : Colors.grey[850],
                 radius: 36,
                 child: Transform.rotate(
                   angle: pi / 3,
@@ -151,7 +163,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                     height: 30,
                     margin: EdgeInsets.all(10),
                     child: CustomPaint(
-                      painter: MyLogoPainter(Colors.blue),
+                      painter: MyLogoPainter(customColor),
                       child: Container(),
                     ),
                   ),

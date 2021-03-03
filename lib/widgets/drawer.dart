@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox/authentication/sign_in.dart';
+import 'package:paradox/models/brightness_options.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
@@ -10,10 +12,12 @@ import 'package:paradox/screens/stats_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
+import 'package:provider/provider.dart';
 import '../utilities/member_screen.dart';
 import 'package:paradox/utilities/privacy_policy.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/dark_mode_toggle_widget.dart';
+
 class AppDrawer extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => AppDrawerState();
@@ -26,6 +30,8 @@ class AppDrawerState extends State<AppDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
+
     TextStyle textStyle = TextStyle(
       color: Colors.grey.shade500,
       fontSize: 15,
@@ -126,7 +132,7 @@ class AppDrawerState extends State<AppDrawer> {
                               'https://github.com/teamexe',
                               '\n or visit our website ',
                               'https://teamexe.in',
-                              Colors.blue);
+                              brightness == BrightnessOption.light ? Colors.blue : Colors.white60);
                         });
                   },
                 ),

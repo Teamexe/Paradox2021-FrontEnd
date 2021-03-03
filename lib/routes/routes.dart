@@ -3,7 +3,6 @@ import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/screens/stats_screen.dart';
 import '../utilities/member_screen.dart';
-import 'package:paradox/screens/settings.dart';
 import 'package:paradox/utilities/member_screen.dart';
 import '../screens/question_screen.dart';
 import '../screens/leaderboard_screen.dart';
@@ -22,7 +21,6 @@ Map<String, Widget Function(BuildContext)> routes = {
   RulesScreen.routeName: (context) => RulesScreen(),
   ReferralScreen.routeName: (context) => ReferralScreen(),
   MemberScreen.routeName: (context) => MemberScreen(),
-  SettingsScreen.routeName: (context) => SettingsScreen(),
   StatsScreen.routeName : (context) => StatsScreen(),
   StageCompleted.routeName:(context)=>StageCompleted(),
 };
