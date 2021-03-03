@@ -39,7 +39,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
       children: [
         Container(
           padding: EdgeInsets.all(4),
-          margin: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+          margin: EdgeInsets.symmetric(vertical: 40, horizontal: 2),
           decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: customColor,
@@ -49,7 +49,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                     color: brightness == BrightnessOption.dark ? Colors.white10 : Colors.grey, offset: Offset(0, 0), blurRadius: 10),
               ]),
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 50, horizontal: 10),
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: brightness == BrightnessOption.light ? Colors.white : Colors.grey[850],
@@ -59,14 +59,15 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  widget.exeMemberProfile.name,
+                  widget.exeMemberProfile.name.toUpperCase(),
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 25,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2,
                       color: brightness == BrightnessOption.light ? Colors.blue.shade600 : Colors.white70),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 15),
                 Column(
                   children: [
                     ClipRRect(
@@ -87,14 +88,17 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 10),
                     if (widget.exeMemberProfile.position == "Developer")
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          widget.exeMemberProfile.category,
+                          widget.exeMemberProfile.category.toUpperCase(),
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 2,
+                              color: brightness == BrightnessOption.light ? Colors.blue.shade600 : Colors.white70),
                         ),
                       ),
                     if (widget.exeMemberProfile.position == 'Pre-Final year' &&
@@ -105,9 +109,13 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'Core Coordinator',
+                          'Core Coordinator'.toUpperCase(),
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 2,
+                              color: brightness == BrightnessOption.light ? Colors.blue.shade600 : Colors.white70,
+                          ),
                         ),
                       ),
                   ],

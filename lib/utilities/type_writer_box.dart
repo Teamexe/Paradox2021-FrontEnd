@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:paradox/models/brightness_options.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/utilities/type_writer_text.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
 
@@ -14,6 +17,8 @@ class TypeWriterBox extends StatefulWidget {
 class _TypeWriterBoxState extends State<TypeWriterBox> {
   @override
   Widget build(BuildContext context) {
+    final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
+
     return Center(
       child: PlayAnimation<double>(
         duration: Duration(milliseconds: 400),
@@ -35,7 +40,7 @@ class _TypeWriterBoxState extends State<TypeWriterBox> {
                             color: Colors.grey.withAlpha(50),
                             blurRadius: 15,
                             offset: Offset(0, 8),
-                            spreadRadius: 5
+                            spreadRadius: brightness == BrightnessOption.light ? 5 : 2,
                         )
                       ]
                   ),

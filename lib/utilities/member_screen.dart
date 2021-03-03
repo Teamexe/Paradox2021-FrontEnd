@@ -7,7 +7,7 @@ import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/widgets/memberCard.dart';
 import 'package:provider/provider.dart';
 
-const TextStyle textStyle = TextStyle(color: Colors.white, fontSize: 22);
+const TextStyle textStyle = TextStyle(color: Colors.white, fontSize: 22, letterSpacing: 2, fontWeight: FontWeight.w400);
 
 class MemberScreen extends StatefulWidget {
   static String routeName = "/member-screen";
@@ -21,6 +21,7 @@ class _MemberScreenState extends State<MemberScreen> {
 
   @override
   void initState() {
+    super.initState();
     Future.delayed(Duration.zero, () async {
       try {
         await Provider.of<ExeMembersProvider>(context, listen: false)
@@ -40,8 +41,33 @@ class _MemberScreenState extends State<MemberScreen> {
     final members = Provider.of<ExeMembersProvider>(context);
     print(members.developers);
     final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
+    bool alumniListNotEmpty = members.alumni.length != 0,
+        finalListNotEmpty = members.finalYear.length != 0,
+        preFinalListNotEmpty = members.preFinal.length != 0,
+        developersListNotEmpty  = members.developers.length != 0,
+        execListNotEmpty = members.executive.length != 0;
+
     return Scaffold(
-      backgroundColor: brightness == BrightnessOption.light ? Colors.blue : Colors.black54,
+      appBar: AppBar(
+        title: Text('members'.toUpperCase(),
+          style: TextStyle(
+            fontWeight: brightness == BrightnessOption.light ? FontWeight.w400 : FontWeight.w300,
+            letterSpacing: 2,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        leading: Container(
+          padding: const EdgeInsets.all(10),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ),
+      backgroundColor: brightness == BrightnessOption.light ? Colors.blue : Colors.grey[800],
       body: load
           ? SpinKitFoldingCube(
               color: Colors.white,
@@ -51,6 +77,7 @@ class _MemberScreenState extends State<MemberScreen> {
                 child: Container(
                   child: Column(
                     children: [
+                      SizedBox(height: 20),
                       if (members.alumni.length != 0)
                         Text("Alumni", style: textStyle),
                       if (members.alumni.length != 0)
@@ -64,6 +91,13 @@ class _MemberScreenState extends State<MemberScreen> {
                               },
                               itemCount: members.alumni.length),
                         ),
+                      if (alumniListNotEmpty)
+                        Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16),
+                            child: Divider()
+                        ),
+                      if (alumniListNotEmpty)
+                        SizedBox(height: 10),
                       if (members.finalYear.length != 0)
                         Text("Final Year", style: textStyle),
                       if (members.finalYear.length != 0)
@@ -77,6 +111,13 @@ class _MemberScreenState extends State<MemberScreen> {
                               },
                               itemCount: members.finalYear.length),
                         ),
+                      if (finalListNotEmpty)
+                        Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16),
+                            child: Divider()
+                        ),
+                      if (finalListNotEmpty)
+                        SizedBox(height: 10),
                       if (members.preFinal.length != 0)
                         Text("Pre Final Year", style: textStyle),
                       if (members.preFinal.length != 0)
@@ -90,6 +131,13 @@ class _MemberScreenState extends State<MemberScreen> {
                               },
                               itemCount: members.preFinal.length),
                         ),
+                      if (preFinalListNotEmpty)
+                        Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16),
+                            child: Divider()
+                        ),
+                      if (preFinalListNotEmpty)
+                        SizedBox(height: 10),
                       if (members.developers.length != 0)
                         Container(
                           child: Text(
@@ -109,6 +157,13 @@ class _MemberScreenState extends State<MemberScreen> {
                               },
                               itemCount: members.developers.length),
                         ),
+                      if (developersListNotEmpty)
+                        Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16),
+                            child: Divider()
+                        ),
+                      if (developersListNotEmpty)
+                        SizedBox(height: 10),
                       if (members.executive.length != 0)
                         Text("Executive Members", style: textStyle),
                       if (members.executive.length != 0)
@@ -122,6 +177,13 @@ class _MemberScreenState extends State<MemberScreen> {
                               },
                               itemCount: members.executive.length),
                         ),
+                      if (execListNotEmpty)
+                        Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16),
+                            child: Divider()
+                        ),
+                      if (execListNotEmpty)
+                        SizedBox(height: 10),
                       if (members.volunteer.length != 0)
                         Text("Volunteers", style: textStyle),
                       if (members.volunteer.length != 0)
