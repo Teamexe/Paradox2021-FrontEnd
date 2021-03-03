@@ -20,7 +20,7 @@ import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
-import 'package:paradox/utilities/member_screen.dart';
+import 'package:paradox/screens/member_screen.dart';
 import 'package:paradox/utilities/type_writer_box.dart';
 import 'package:paradox/widgets/drawer.dart';
 import 'package:paradox/widgets/top_player_card.dart';
