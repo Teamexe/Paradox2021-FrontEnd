@@ -174,330 +174,352 @@ class _HomePageState extends State<HomePage>
     BaseUser.User user = Provider.of<UserProvider>(context, listen: true).user;
 
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Container(
-          padding: null,
-          margin: null,
-          child: Column(
-            children: [
-              Container(
-                // margin: EdgeInsets.all(10),
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 180,
-                          height: 50,
-                          margin: EdgeInsets.only(left: 10, top: 10),
-                          child: TypeWriterBox('Paradox'),
+      child: TweenAnimationBuilder(
+        tween: Tween(begin: 0.0, end: 1.0),
+        child: SingleChildScrollView(
+          child: Container(
+            padding: null,
+            margin: null,
+            child: Column(
+              children: [
+                Container(
+                  // margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 180,
+                            height: 50,
+                            margin: EdgeInsets.only(left: 10, top: 10),
+                            child: TypeWriterBox('Paradox'),
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              height: 45,
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.all(5),
+                              margin: EdgeInsets.only(top: 10, right: 10),
+                              child: ScaleTransition(
+                                scale: scaleAnimation,
+                                child: Text('View Rules',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.blue.withOpacity(0.85))),
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pushNamed(context, RulesScreen.routeName);
+                            },
+                          ),
+                        ],
+                      ),
+                      ScaleTransition(
+                        scale: scaleAnimation,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 16),
+                          child: CarouselSlider(
+                            options: CarouselOptions(
+                                height: 230,
+                                autoPlay: true,
+                                autoPlayInterval: Duration(seconds: 3),
+                                autoPlayAnimationDuration:
+                                    Duration(milliseconds: 800),
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                                pauseAutoPlayOnTouch: true,
+                                aspectRatio: 2.0,
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    _currentIndex = index;
+                                  });
+                                }),
+                            items: itemList.map((paradoxCard) {
+                              return Builder(builder: (BuildContext context) {
+                                return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Transform.scale(
+                                    scale: 1,
+                                    child: paradoxCard,
+                                  ),
+                                );
+                              });
+                            }).toList(),
+                          ),
                         ),
-                        GestureDetector(
-                          child: Container(
+                      ),
+                      ScaleTransition(
+                        scale: scaleAnimation,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: map(itemList, (index, dot) {
+                            return Container(
+                              width: 10,
+                              height: 10,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 2),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _currentIndex == index
+                                    ? Colors.blue.withOpacity(0.7)
+                                    : Colors.grey.withOpacity(0.55),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      ScaleTransition(
+                        scale: scaleAnimation,
+                        child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 16),
+                            child: Divider()),
+                      ),
+                      SizedBox(height: 15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Container(
+                              margin: EdgeInsets.only(left: 10),
+                              width: 200,
+                              height: 50,
+                              child: TypeWriterBox('Top Players'),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
                             height: 45,
                             alignment: Alignment.center,
                             padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.only(top: 10, right: 10),
                             child: ScaleTransition(
                               scale: scaleAnimation,
-                              child: Text('View Rules',
+                              child: Text('nimbus'.toUpperCase(),
                                   style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.blue.withOpacity(0.85))),
                             ),
                           ),
-                          onTap: () {
-                            Navigator.pushNamed(context, RulesScreen.routeName);
-                          },
-                        ),
-                      ],
-                    ),
-                    ScaleTransition(
-                      scale: scaleAnimation,
-                      child: Container(
-                        margin: EdgeInsets.only(top: 16),
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                              height: 230,
-                              autoPlay: true,
-                              autoPlayInterval: Duration(seconds: 3),
-                              autoPlayAnimationDuration:
-                                  Duration(milliseconds: 800),
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              pauseAutoPlayOnTouch: true,
-                              aspectRatio: 2.0,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  _currentIndex = index;
-                                });
-                              }),
-                          items: itemList.map((paradoxCard) {
-                            return Builder(builder: (BuildContext context) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Transform.scale(
-                                  scale: 1,
-                                  child: paradoxCard,
-                                ),
-                              );
-                            });
-                          }).toList(),
-                        ),
+                        ],
                       ),
-                    ),
-                    ScaleTransition(
-                      scale: scaleAnimation,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: map(itemList, (index, dot) {
-                          return Container(
-                            width: 10,
-                            height: 10,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 2),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: _currentIndex == index
-                                  ? Colors.blue.withOpacity(0.7)
-                                  : Colors.grey.withOpacity(0.55),
-                            ),
-                          );
-                        }),
+                      SizedBox(height: 20),
+                      Container(
+                        height: 250,
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: users.length == 0
+                            ? SpinKitDualRing(color: Colors.blue)
+                            : ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (ctx, index) {
+                                  return PlayerCard(users[index], index + 1);
+                                },
+                                itemCount: users.length,
+                              ),
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    ScaleTransition(
-                      scale: scaleAnimation,
-                      child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          child: Divider()),
-                    ),
-                    SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            margin: EdgeInsets.only(left: 10),
-                            width: 200,
-                            height: 50,
-                            child: TypeWriterBox('Top Players'),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          height: 45,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.all(5),
-                          child: ScaleTransition(
-                            scale: scaleAnimation,
-                            child: Text('nimbus'.toUpperCase(),
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.blue.withOpacity(0.85))),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      height: 250,
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: users.length == 0
-                          ? SpinKitDualRing(color: Colors.blue)
-                          : ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (ctx, index) {
-                                return PlayerCard(users[index], index + 1);
-                              },
-                              itemCount: users.length,
-                            ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 5),
-              ScaleTransition(
-                scale: scaleAnimation,
-                child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    child: Divider()),
-              ),
-              SizedBox(height: 8),
-              Container(
-                child: Text('Use referral code',
-                    style: TextStyle(
-                        color: Colors.blue.withOpacity(0.8),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400)),
-              ),
-              SizedBox(height: 13),
-              ScaleTransition(
-                scale: scaleAnimation,
-                child: Container(
-                  // margin: EdgeInsets.symmetric(horizontal: 10),
-                  color: Colors.blue.withOpacity(0.84),
-                  height: 40,
-                  alignment: Alignment.center,
+                SizedBox(height: 5),
+                ScaleTransition(
+                  scale: scaleAnimation,
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                            margin: EdgeInsets.only(left: 10),
-                            child: Text(
-                                'Your referral code is: ${user.referralCode}',
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      child: Divider()),
+                ),
+                SizedBox(height: 8),
+                Container(
+                  child: Text('Use referral code',
+                      style: TextStyle(
+                          color: Colors.blue.withOpacity(0.8),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400)),
+                ),
+                SizedBox(height: 13),
+                ScaleTransition(
+                  scale: scaleAnimation,
+                  child: Container(
+                    // margin: EdgeInsets.symmetric(horizontal: 10),
+                    color: Colors.blue.withOpacity(0.84),
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                              margin: EdgeInsets.only(left: 10),
+                              child: Text(
+                                  'Your referral code is: ${user.referralCode}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16))),
+                          FlatButton(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onPressed: () {
+                              Share.share(
+                                  'Download Paradox from https://play.google.com/store/apps/details?id=com.exe.paradoxplay and use my referral code: ${user.referralCode} and earn 50 coins.');
+                            },
+                            child: Text('Share'.toUpperCase(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 16))),
-                        FlatButton(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: () {
-                            Share.share(
-                                'Download Paradox from https://play.google.com/store/apps/details?id=com.exe.paradoxplay and use my referral code: ${user.referralCode} and earn 50 coins.');
-                          },
-                          child: Text('Share'.toUpperCase(),
-                              textAlign: TextAlign.center,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 7),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Spacer(),
+                      FlatButton(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onPressed: () {
+                          Navigator.pushNamed(context, MemberScreen.routeName);
+                        },
+                        child: Text('Members',
+                            style: TextStyle(
+                                fontSize: 17,
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.blue.withOpacity(0.85))),
+                      ),
+                      FlatButton(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CustomDialogBox(
+                                    'Information',
+                                    'View our projects on ',
+                                    'https://github.com/teamexe',
+                                    '\n or visit our website ',
+                                    'https://teamexe.in',
+                                    brightness == BrightnessOption.light
+                                        ? Colors.blue
+                                        : Colors.white54);
+                              });
+                        },
+                        child: Text('Information',
+                            style: TextStyle(
+                                fontSize: 17,
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.blue.withOpacity(0.85))),
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  height: 50,
+                  color: Colors.blue.withOpacity(0.85),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: RichText(
+                      text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 2,
+                          ),
+                          children: [
+                            TextSpan(text: 'Made with '),
+                            TextSpan(
+                                text: String.fromCharCode(0x2665),
+                                style: TextStyle(fontFamily: 'Material Icons')),
+                            TextSpan(text: ' by '),
+                            TextSpan(
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  if (await canLaunch('https://teamexe.in')) {
+                                    launch('https://teamexe.in');
+                                  } else {
+                                    throw 'Could not launch https://teamexe.in';
+                                  }
+                                },
+                              text: 'Team .E',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16)),
-                        ),
-                      ],
+                                fontSize: 20,
+                                color: Colors.lightBlue[900].withAlpha(1000),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            TextSpan(
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  if (await canLaunch('https://teamexe.in')) {
+                                    launch('https://teamexe.in');
+                                  } else {
+                                    throw 'Could not launch https://teamexe.in';
+                                  }
+                                },
+                              text: 'X',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.lightBlue[100],
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            TextSpan(
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  if (await canLaunch('https://teamexe.in')) {
+                                    launch('https://teamexe.in');
+                                  } else {
+                                    throw 'Could not launch https://teamexe.in';
+                                  }
+                                },
+                              text: 'E',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.lightBlue[900].withAlpha(1000),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ]),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 7),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Spacer(),
-                    FlatButton(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onPressed: () {
-                        Navigator.pushNamed(context, MemberScreen.routeName);
-                      },
-                      child: Text('Members',
-                          style: TextStyle(
-                              fontSize: 17,
-                              letterSpacing: 2,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.blue.withOpacity(0.85))),
-                    ),
-                    FlatButton(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CustomDialogBox(
-                                  'Information',
-                                  'View our projects on ',
-                                  'https://github.com/teamexe',
-                                  '\n or visit our website ',
-                                  'https://teamexe.in',
-                                  brightness == BrightnessOption.light
-                                      ? Colors.blue
-                                      : Colors.white54);
-                            });
-                      },
-                      child: Text('Information',
-                          style: TextStyle(
-                              fontSize: 17,
-                              letterSpacing: 2,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.blue.withOpacity(0.85))),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Container(
-                height: 50,
-                color: Colors.blue.withOpacity(0.85),
-                padding: EdgeInsets.symmetric(vertical: 10),
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  alignment: Alignment.center,
-                  child: RichText(
-                    text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w300,
-                          letterSpacing: 2,
-                        ),
-                        children: [
-                          TextSpan(text: 'Made with '),
-                          TextSpan(
-                              text: String.fromCharCode(0x2665),
-                              style: TextStyle(fontFamily: 'Material Icons')),
-                          TextSpan(text: ' by '),
-                          TextSpan(
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                if (await canLaunch('https://teamexe.in')) {
-                                  launch('https://teamexe.in');
-                                } else {
-                                  throw 'Could not launch https://teamexe.in';
-                                }
-                              },
-                            text: 'Team .E',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.lightBlue[900].withAlpha(1000),
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          TextSpan(
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                if (await canLaunch('https://teamexe.in')) {
-                                  launch('https://teamexe.in');
-                                } else {
-                                  throw 'Could not launch https://teamexe.in';
-                                }
-                              },
-                            text: 'X',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.lightBlue[100],
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          TextSpan(
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                if (await canLaunch('https://teamexe.in')) {
-                                  launch('https://teamexe.in');
-                                } else {
-                                  throw 'Could not launch https://teamexe.in';
-                                }
-                              },
-                            text: 'E',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.lightBlue[900].withAlpha(1000),
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ]),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+        duration: Duration(milliseconds: 1000),
+        builder: (ctx, value, child) {
+          return ShaderMask(
+            shaderCallback: (rect) {
+              return RadialGradient(
+                  colors: [
+                    Colors.white,
+                    Colors.white,
+                    Colors.transparent,
+                    Colors.transparent
+                  ],
+                  radius: value * 5,
+                  stops: [0.0, .55, .66, 1.0],
+                  center: FractionalOffset(.1, .6)
+              ).createShader(rect);
+            },
+            child: child,
+          );
+        },
       ),
     );
   }
@@ -561,7 +583,7 @@ class ParadoxPlayEasy extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
-                                    letterSpacing: 3))),
+                                    letterSpacing: 2))),
                         FlatButton(
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
@@ -581,7 +603,7 @@ class ParadoxPlayEasy extends StatelessWidget {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500,
-                                  letterSpacing: 3)),
+                                  letterSpacing: 2)),
                         ),
                       ]),
                 ),
@@ -686,7 +708,7 @@ class ParadoxPlayMedium extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
-                                    letterSpacing: 3))),
+                                    letterSpacing: 2))),
                         FlatButton(
                           onPressed: () {
                             if (mediumList.length == 0) {
@@ -708,7 +730,7 @@ class ParadoxPlayMedium extends StatelessWidget {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500,
-                                  letterSpacing: 3)),
+                                  letterSpacing: 2)),
                         ),
                       ]),
                 ),
@@ -830,7 +852,7 @@ class ParadoxPlayHard extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
-                                    letterSpacing: 3))),
+                                    letterSpacing: 2))),
                         FlatButton(
                           onPressed: () {
                             if (hardList.length == 0) {
@@ -853,7 +875,7 @@ class ParadoxPlayHard extends StatelessWidget {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500,
-                                  letterSpacing: 3)),
+                                  letterSpacing: 2)),
                         ),
                       ]),
                 ),
