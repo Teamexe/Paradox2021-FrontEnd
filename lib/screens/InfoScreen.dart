@@ -3,6 +3,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/GalleryProvider.dart';
 import 'package:paradox/providers/theme_provider.dart';
@@ -51,7 +52,7 @@ class _InfoScreenState extends State<InfoScreen> {
     title = 'Information';
     descriptionText1 = 'View our projects on ';
     url1 = 'https://github.com/teamexe';
-    descriptionText2 = '\n or visit our website ';
+    descriptionText2 = ' or visit our website ';
     url2 = 'https://teamexe.in';
     final brightness =
         Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
@@ -205,48 +206,51 @@ class _InfoScreenState extends State<InfoScreen> {
                           ),
                           textAlign: TextAlign.center),
                       SizedBox(height: 22),
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          style: TextStyle(
-                              fontSize: 16, color: Colors.grey.shade500),
-                          children: [
-                            TextSpan(text: descriptionText1),
-                            TextSpan(
-                                text: url1,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () async {
-                                    if (await canLaunch(url1)) {
-                                      launch(url1);
-                                    } else {
-                                      throw 'Could not launch ${url1}';
-                                    }
-                                  }),
-                            TextSpan(text: descriptionText2),
-                            TextSpan(
-                                text: url2,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () async {
-                                    if (await canLaunch(url2)) {
-                                      launch(url2);
-                                    } else {
-                                      throw 'Could not launch ${url2}';
-                                    }
-                                  }),
-                          ],
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: TextStyle(
+                                fontSize: 16, color: Colors.grey.shade500),
+                            children: [
+                              TextSpan(text: descriptionText1),
+                              TextSpan(
+                                  text: url1,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.blue,
+                                      decoration: TextDecoration.underline),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      if (await canLaunch(url1)) {
+                                        launch(url1);
+                                      } else {
+                                        throw 'Could not launch ${url1}';
+                                      }
+                                    }),
+                              TextSpan(text: descriptionText2),
+                              TextSpan(
+                                  text: url2,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.blue,
+                                      decoration: TextDecoration.underline),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      if (await canLaunch(url2)) {
+                                        launch(url2);
+                                      } else {
+                                        throw 'Could not launch ${url2}';
+                                      }
+                                    }),
+                            ],
+                          ),
                         ),
                       ),
-                      SizedBox(height: 24),
+                      SizedBox(height: 25),
                       Padding(
-                        padding: const EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 28),
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: Column(
@@ -298,13 +302,105 @@ class _InfoScreenState extends State<InfoScreen> {
                                         style: TextStyle(
                                             color: Colors.grey, fontSize: 15))),
                               ),
-                              SizedBox(
-                                height: 30,
-                              ),
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(height: 30),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        color: brightness == BrightnessOption.light ? Colors.blue: Colors.grey[900],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            GestureDetector(
+                              child: Container(
+                                child: Icon(
+                                    FontAwesomeIcons.github,
+                                    size: 32,
+                                    color: brightness == BrightnessOption.light ? Colors.black45: Colors.grey,
+                                ),
+                              ),
+                              onTap: () async {
+                                if (await canLaunch(url1)) {
+                                  launch(url1);
+                                } else {
+                                  throw 'Could not launch $url1';
+                                }
+                              },
+                            ),
+                            GestureDetector(
+                              child: Container(
+                                child: Icon(
+                                  FontAwesomeIcons.globeAsia,
+                                  size: 32,
+                                  color: brightness == BrightnessOption.light ? Colors.white70: Colors.grey[600]
+                                ),
+                              ),
+                              onTap: () async {
+                                if (await canLaunch(url2)) {
+                                  launch(url1);
+                                } else {
+                                  throw 'Could not launch $url2';
+                                }
+                              },
+                            ),
+                            GestureDetector(
+                              child: Container(
+                                child: Icon(
+                                    Icons.mail_outline_rounded,
+                                    size: 40,
+                                    color: brightness == BrightnessOption.light ? Colors.grey[300]: Colors.blue
+                                ),
+                              ),
+                              onTap: () async {
+                                if (await canLaunch(
+                                    'mailto:teamexenith@gmail.com'))
+                                  launch('mailto:teamexenith@gmail.com');
+                                else {
+                                  throw 'Could not launch mailto:teamexenith@gmail.com';
+                                }
+                              },
+                            ),
+                            GestureDetector(
+                              child: Container(
+                                child: Icon(
+                                    FontAwesomeIcons.wpforms,
+                                    size: 32,
+                                    color: brightness == BrightnessOption.light ? Colors.blue.shade200: Colors.blue
+                                ),
+                              ),
+                              onTap: () async {
+                                if (await canLaunch(
+                                    'https://docs.google.com/forms/d/e/1FAIpQLSdf7fcO6cUbLcHCt7uxJoOSeVY7eTxRCE25E_BKyPRzEyZMng/viewform')) {
+                                  launch(
+                                      'https://docs.google.com/forms/d/e/1FAIpQLSdf7fcO6cUbLcHCt7uxJoOSeVY7eTxRCE25E_BKyPRzEyZMng/viewform');
+                                } else {
+                                  throw 'Could not launch https://docs.google.com/forms/d/e/1FAIpQLSdf7fcO6cUbLcHCt7uxJoOSeVY7eTxRCE25E_BKyPRzEyZMng/viewform';
+                                }
+                              },
+                            ),
+                            GestureDetector(
+                              child: Container(
+                                child: Icon(
+                                    FontAwesomeIcons.instagram,
+                                    size: 35,
+                                    color: Colors.pink.shade700
+                                ),
+                              ),
+                              onTap: () async {
+                                if (await canLaunch(
+                                    'https://instagram.com/teamexenith?igshid=q1zcaikgc08s')) {
+                                  launch(
+                                      'https://instagram.com/teamexenith?igshid=q1zcaikgc08s');
+                                } else {
+                                  throw 'Could not launch https://instagram.com/teamexenith?igshid=q1zcaikgc08s';
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
