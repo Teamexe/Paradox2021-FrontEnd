@@ -72,7 +72,13 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
             ),
           ],
         ),
-        drawer: AppDrawer(),
+        drawer: load
+            ? Drawer(
+                child: Center(
+                  child: SpinKitDualRing(color: Colors.blue),
+                ),
+              )
+            : AppDrawer(),
         body: load != true
             ? HomePage()
             : Center(
