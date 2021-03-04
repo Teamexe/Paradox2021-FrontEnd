@@ -6,20 +6,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
 import 'package:paradox/models/user.dart' as BaseUser;
 import 'package:paradox/providers/api_authentication.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
-import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/InfoScreen.dart';
 import 'package:paradox/screens/question_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
 import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
-import 'package:paradox/utilities/custom_dialog.dart';
 import 'package:paradox/screens/member_screen.dart';
 import 'package:paradox/utilities/type_writer_box.dart';
 import 'package:paradox/widgets/drawer.dart';
@@ -163,9 +161,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final brightness =
-        Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
-
     /// start the animation
     animationController.forward();
 
@@ -398,19 +393,7 @@ class _HomePageState extends State<HomePage>
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CustomDialogBox(
-                                    'Information',
-                                    'View our projects on ',
-                                    'https://github.com/teamexe',
-                                    '\n or visit our website ',
-                                    'https://teamexe.in',
-                                    brightness == BrightnessOption.light
-                                        ? Colors.blue
-                                        : Colors.white54);
-                              });
+                          Navigator.pushNamed(context, InfoScreen.routeName);
                         },
                         child: Text('Information',
                             style: TextStyle(

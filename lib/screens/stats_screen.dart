@@ -71,14 +71,14 @@ class _StatsScreenState extends State<StatsScreen> {
                         Spacer(),
                         Container(
                           padding: EdgeInsets.all(10),
-                          color: Colors.blue,
+                          color: brightness == BrightnessOption.light ? Colors.blue : Colors.grey[900],
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
                                 child: CircleAvatar(
                                   backgroundColor: Colors.white,
-                                  child: Icon(Icons.info, color: Colors.blue),
+                                  child: Icon(Icons.info, color: brightness == BrightnessOption.light ? Colors.blue : Colors.grey[900]),
                                 ),
                               ),
                               Expanded(

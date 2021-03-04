@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 
 String privacyPolicy = '''
 
-# Privacy Policy
-
 Team .EXE built the Paradox by Team .EXE app as a Free app. This SERVICE is provided by Team .EXE at no cost and is intended for use as is.
 
 This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.
@@ -74,6 +72,25 @@ class PrivacyPolicyWidget extends StatelessWidget {
     final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Privacy Policy'.toUpperCase(),
+          style: TextStyle(
+            letterSpacing: 2,
+            fontWeight: brightness == BrightnessOption.dark ? FontWeight.w300 : FontWeight.w400,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        leading: Container(
+          padding: const EdgeInsets.all(10),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ),
       backgroundColor: brightness == BrightnessOption.light ? Colors.white : Colors.grey[850],
       body: Padding(
         padding: const EdgeInsets.all(8.0),
