@@ -339,7 +339,7 @@ class _InfoScreenState extends State<InfoScreen> {
                               ),
                               onTap: () async {
                                 if (await canLaunch(url2)) {
-                                  launch(url1);
+                                  launch(url2);
                                 } else {
                                   throw 'Could not launch $url2';
                                 }
