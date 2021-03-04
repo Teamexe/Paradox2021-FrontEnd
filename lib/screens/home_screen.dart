@@ -811,32 +811,32 @@ class ParadoxPlayHard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 20, left: 10),
+                        margin: EdgeInsets.only(left: 10),
                         child: Transform.rotate(
                           angle: -pi / 3,
                           child: Container(
-                            height: 100,
-                            width: 100,
+                            height: 80,
+                            width: 80,
                             child: Image.asset('assets/images/logo.png',
-                                height: 100, width: 100),
+                                height: 80, width: 80),
                           ),
                         ),
                       ),
                       Container(
-                        height: 100,
-                        width: 100,
+                        height: 80,
+                        width: 80,
                         child: Image.asset('assets/images/logo.png',
-                            height: 100, width: 100),
+                            height: 80, width: 80),
                       ),
                       Container(
-                        margin: EdgeInsets.only(bottom: 20),
+                        margin: EdgeInsets.only(bottom: 5),
                         child: Transform.rotate(
                           angle: pi / 3,
                           child: Container(
-                            height: 100,
-                            width: 100,
+                            height: 80,
+                            width: 80,
                             child: Image.asset('assets/images/logo.png',
-                                height: 100, width: 100),
+                                height: 80, width: 80),
                           ),
                         ),
                       ),

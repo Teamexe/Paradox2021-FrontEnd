@@ -98,9 +98,9 @@ class _InfoScreenState extends State<InfoScreen> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 30,
+                        height: 20,
                       ),
-                      if (videos.length != 0)
+                      if (images.length != 0)
                         Center(
                           child: Text(
                             'image gallery'.toUpperCase(),
@@ -117,15 +117,15 @@ class _InfoScreenState extends State<InfoScreen> {
                           ),
                         ),
                       SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       if (images.length != 0)
                         Container(
-                          padding: EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
                           width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * .35,
+                          height: MediaQuery.of(context).size.height * .3,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(40),
+                            borderRadius: BorderRadius.circular(20),
                             child: Carousel(
                                 dotSize: 4.0,
                                 autoplayDuration: Duration(seconds: 3),
@@ -153,8 +153,15 @@ class _InfoScreenState extends State<InfoScreen> {
                           ),
                         ),
                       SizedBox(
-                        height: 10,
+                        height: 20,
                       ),
+                      if (images.length != 0)
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 25),
+                          child: Divider(),
+                        ),
+                      if (images.length != 0)
+                        SizedBox(height: 5),
                       if (videos.length != 0)
                         Center(
                           child: Text(
@@ -171,7 +178,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           ),
                         ),
                       SizedBox(
-                        height: 10,
+                        height: 5,
                       ),
                       if (videos.length != 0)
                         Column(
@@ -179,8 +186,15 @@ class _InfoScreenState extends State<InfoScreen> {
                               videos.map((e) => VideoCard(video: e)).toList(),
                         ),
                       SizedBox(
-                        height: 30,
+                        height: 5,
                       ),
+                      if (images.length != 0)
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 25),
+                          child: Divider(),
+                        ),
+                      if (images.length != 0)
+                        SizedBox(height: 5),
                       Text(title,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
