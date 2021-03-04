@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/stats_provider.dart';
 import 'package:paradox/providers/theme_provider.dart';
+import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/widgets/customCard.dart';
 import 'package:provider/provider.dart';
 
@@ -24,104 +25,145 @@ class _StatsScreenState extends State<StatsScreen> {
     int answered = Provider.of<StatsProvider>(context).totalQuestionsAnswered;
     final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Global Stats".toUpperCase(),
-            style: TextStyle(
-              letterSpacing: 2,
-              fontWeight: brightness == BrightnessOption.dark ? FontWeight.w300 : FontWeight.w400,
-            ),
-          ),
-          automaticallyImplyLeading: false,
-          leading: Container(
-            padding: const EdgeInsets.all(10),
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+      appBar: AppBar(
+        title: Text(
+          "Global Stats".toUpperCase(),
+          style: TextStyle(
+            letterSpacing: 2,
+            fontWeight: brightness == BrightnessOption.dark
+                ? FontWeight.w300
+                : FontWeight.w400,
           ),
         ),
-        body: loading
-            ? Center(
-                child: SpinKitFadingGrid(
-                  color: Colors.blue,
-                  size: 80,
-                ),
-              )
-            : TweenAnimationBuilder(
-              tween: Tween(begin: 0.0, end: 1.0),
-              child: SafeArea(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        CustomCard2(
-                            heading1: 'Total Users : $users',
-                            imagePath: 'assets/images/user.jpg'),
-                        CustomCard2(
-                            heading1: 'Questions : $question',
-                            imagePath: 'assets/images/question.jpeg'),
-                        CustomCard2(
-                            heading1: 'Attempts : $attempts',
-                            imagePath: 'assets/images/attempts.jpg'),
-                        CustomCard2(
-                            heading1: 'Correctly Attempted : $answered',
-                            imagePath: 'assets/images/correct_answer.jpg'),
-                        Spacer(),
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          color: Colors.blue,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Icon(Icons.info, color: Colors.blue),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                                  child: Text(
-                                    "This Page uses caching. It may take up-to 2 minutes to update global stats.",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
+        automaticallyImplyLeading: false,
+        leading: Container(
+          padding: const EdgeInsets.all(10),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        actions: [
+          loading
+              ? Center(
+                  child: SpinKitCircle(
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                )
+              : IconButton(
+                  icon: Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: Icon(
+                      Icons.refresh,
+                      color: Colors.white,
+                      size: 35,
                     ),
                   ),
-                ),
-                duration: Duration(milliseconds: 1000),
-                builder: (ctx, value, child) {
-                  return ShaderMask(
-                    shaderCallback: (rect) {
-                      return RadialGradient(
-                          colors: [
-                            Colors.white,
-                            Colors.white,
-                            Colors.transparent,
-                            Colors.transparent
+                  onPressed: loading
+                      ? null
+                      : () async {
+                          setState(() {
+                            loading = true;
+                          });
+                          try {
+                            await Provider.of<StatsProvider>(context,
+                                    listen: false)
+                                .fetchAndSetStats();
+                          } catch (e) {
+                            createToast(
+                                "There was some error. Please try again later");
+                          } finally {
+                            setState(() {
+                              loading = false;
+                            });
+                          }
+                        })
+        ],
+      ),
+      body: loading
+          ? Center(
+              child: SpinKitFadingGrid(
+                color: Colors.blue,
+                size: 80,
+              ),
+            )
+          : TweenAnimationBuilder(
+              tween: Tween(begin: 0.0, end: 1.0),
+              child: SafeArea(
+                child: Container(
+                  child: Column(
+                    children: [
+                      CustomCard2(
+                          heading1: 'Total Users : $users',
+                          imagePath: 'assets/images/user.jpg'),
+                      CustomCard2(
+                          heading1: 'Questions : $question',
+                          imagePath: 'assets/images/question.jpeg'),
+                      CustomCard2(
+                          heading1: 'Attempts : $attempts',
+                          imagePath: 'assets/images/attempts.jpg'),
+                      CustomCard2(
+                          heading1: 'Correctly Attempted : $answered',
+                          imagePath: 'assets/images/correct_answer.jpg'),
+                      Spacer(),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        color: Colors.blue,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                child: Icon(Icons.info, color: Colors.blue),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 16),
+                                child: Text(
+                                  "This Page uses caching. It may take up-to 2 minutes to update global stats.",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                            ),
                           ],
-                          radius: value * 5,
-                          stops: [0.0, .55, .66, 1.0],
-                          center: FractionalOffset(.1, .6)
-                      ).createShader(rect);
-                    },
-                    child: child,
-                  );
-                },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              duration: Duration(milliseconds: 1000),
+              builder: (ctx, value, child) {
+                return ShaderMask(
+                  shaderCallback: (rect) {
+                    return RadialGradient(
+                            colors: [
+                              Colors.white,
+                              Colors.white,
+                              Colors.transparent,
+                              Colors.transparent
+                            ],
+                            radius: value * 5,
+                            stops: [0.0, .55, .66, 1.0],
+                            center: FractionalOffset(.1, .6))
+                        .createShader(rect);
+                  },
+                  child: child,
+                );
+              },
             ),
     );
   }

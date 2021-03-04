@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -89,9 +90,9 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 22.0,
-                color: Colors.blue,
-                fontWeight: FontWeight.w600,
+              fontSize: 22.0,
+              color: Colors.blue,
+              fontWeight: FontWeight.w600,
             ),
           ),
           description: Text(
@@ -187,8 +188,9 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 SlimyCard(
-                  color: brightness == BrightnessOption.light ?
-                  Colors.white : Colors.grey[800],
+                  color: brightness == BrightnessOption.light
+                      ? Colors.white
+                      : Colors.grey[800],
                   width: size.width * 0.9,
                   topCardHeight: size.height * 0.55,
                   bottomCardHeight: size.height * 0.15,
@@ -209,7 +211,9 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                   letterSpacing: 3,
                                   fontWeight: FontWeight.w300,
                                   fontSize: 18,
-                                  color: brightness == BrightnessOption.dark ? Colors.white : Colors.grey,
+                                  color: brightness == BrightnessOption.dark
+                                      ? Colors.white
+                                      : Colors.grey,
                                 ),
                                 textAlign: TextAlign.left,
                               ),
@@ -223,7 +227,9 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                   letterSpacing: 2,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18,
-                                  color: brightness == BrightnessOption.dark ? Colors.white : Colors.grey,
+                                  color: brightness == BrightnessOption.dark
+                                      ? Colors.white
+                                      : Colors.grey,
                                 ),
                                 textAlign: TextAlign.left,
                               ),
@@ -239,28 +245,47 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                             '${widget.questList[index - 1].location}')));
                               },
                               child: Container(
-                                height: size.height * 0.3,
-                                width: double.infinity,
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    repeat: ImageRepeat.noRepeat,
-                                    alignment: Alignment.center,
-                                    image: NetworkImage(
-                                        '${widget.questList[index - 1].location}'),
-                                    fit: BoxFit.contain,
+                                  height: size.height * 0.74,
+                                  width: double.infinity,
+                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Stack(
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl:
+                                            '${widget.questList[index - 1].location}',
+                                        placeholder: (context, url) =>
+                                            new SpinKitCircle(
+                                          color: Colors.blue,
+                                          size: 60,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            new Icon(Icons.error),
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                      Center(
+                                        child: SpinKitCircle(color: Colors.blue,),
+                                      )
+                                    ],
+                                  )
+                                  // decoration: BoxDecoration(
+                                  //   image: DecorationImage(
+                                  //     repeat: ImageRepeat.noRepeat,
+                                  //     alignment: Alignment.center,
+                                  //     image: NetworkImage(
+                                  //         '${widget.questList[index - 1].location}',),
+                                  //     fit: BoxFit.contain,
+                                  //   ),
+                                  //   color: Colors.white,
+                                  //   borderRadius: BorderRadius.circular(15),
+                                  //   boxShadow: [
+                                  //     BoxShadow(
+                                  //       color: Colors.black.withOpacity(0.1),
+                                  //       blurRadius: 10,
+                                  //       spreadRadius: 0.5,
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   ),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 10,
-                                      spreadRadius: 0.5,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
                             SizedBox(height: 20),
                             Container(
@@ -276,19 +301,30 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                                   hintStyle: TextStyle(
                                     fontSize: 14,
                                   ),
-                                  fillColor: brightness == BrightnessOption.light ? Colors.grey[200] : Colors.grey,
+                                  fillColor:
+                                      brightness == BrightnessOption.light
+                                          ? Colors.grey[200]
+                                          : Colors.grey,
                                   filled: true,
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
                                     borderSide: new BorderSide(
-                                        width: 2, color: brightness == BrightnessOption.light ? Colors.blueGrey : Colors.white60),
+                                        width: 2,
+                                        color:
+                                            brightness == BrightnessOption.light
+                                                ? Colors.blueGrey
+                                                : Colors.white60),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
                                     borderSide: new BorderSide(
-                                        width: 2, color: brightness == BrightnessOption.light ? Colors.blueGrey : Colors.white60),
+                                        width: 2,
+                                        color:
+                                            brightness == BrightnessOption.light
+                                                ? Colors.blueGrey
+                                                : Colors.white60),
                                   ),
                                 ),
                               ),
@@ -297,19 +333,18 @@ class _QuestionPageLayoutState extends State<QuestionPageLayout> {
                             Container(
                               width: 150,
                               padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-                              child:RaisedButton(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(18.0),
-                                          side: BorderSide(
-                                              color: Colors.white, width: 2)),
-                                      color: Colors.blue[600],
-                                      child:  isLoading
-                                          ? SpinKitCircle(
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(
+                                        color: Colors.white, width: 2)),
+                                color: Colors.blue[600],
+                                child: isLoading
+                                    ? SpinKitCircle(
                                         color: Colors.white,
                                         size: 30,
                                       )
-                                         : Padding(
+                                    : Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
                                           'Submit',

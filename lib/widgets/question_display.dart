@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -177,7 +178,7 @@ class _QuestionDisplayState extends State<QuestionDisplay> {
             child: SingleChildScrollView(
               child: Container(
                 margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                height: size.height * 0.62,
+                height: size.height * 0.7,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: brightness == BrightnessOption.light
@@ -240,8 +241,20 @@ class _QuestionDisplayState extends State<QuestionDisplay> {
                             ));
                           },
                           child: Container(
+                            child: CachedNetworkImage(
+                              imageUrl:
+                              '${widget.questList[index - 1].location}',
+                              placeholder: (context, url) =>
+                              new SpinKitCircle(
+                                color: Colors.blue,
+                                size: 60,
+                              ),
+                              errorWidget: (context, url, error) =>
+                              new Icon(Icons.error),
+                              fit: BoxFit.fitHeight,
+                            ),
                             margin: EdgeInsets.symmetric(vertical: 20),
-                            height: size.height * 0.3,
+                            height: size.height * 0.35 ,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius:
@@ -254,13 +267,13 @@ class _QuestionDisplayState extends State<QuestionDisplay> {
                                   spreadRadius: 0.5,
                                 ),
                               ],
-                              image: DecorationImage(
-                                repeat: ImageRepeat.noRepeat,
-                                alignment: Alignment.center,
-                                image: NetworkImage(
-                                    '${widget.questList[index - 1].location}'),
-                                fit: BoxFit.contain,
-                              ),
+                              // image: DecorationImage(
+                              //   repeat: ImageRepeat.noRepeat,
+                              //   alignment: Alignment.center,
+                              //   image: NetworkImage(
+                              //       '${widget.questList[index - 1].location}'),
+                              //   fit: BoxFit.contain,
+                              // ),
                             ),
                           ),
                         ),
