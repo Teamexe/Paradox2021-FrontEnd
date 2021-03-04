@@ -90,18 +90,11 @@ class QuestionProvider extends ChangeNotifier {
 
   Future<dynamic> checkAnswer(String answer, int level, String uid) async {
     String url = "${baseUrl}check-answer/";
-    print(
-      jsonEncode(<String, dynamic>{
-        'answer': answer,
-        'google_id': uid,
-        'level': level
-      }),
-    );
     try {
       Response response = await post(
         url,
         body: jsonEncode(<String, dynamic>{
-          'answer': answer,
+          'answer': answer.toLowerCase(),
           'google_id': uid,
           'level': level
         }),
@@ -117,7 +110,7 @@ class QuestionProvider extends ChangeNotifier {
         return null;
       }
     } catch (err) {
-      print(err);
+
       return null;
     }
 

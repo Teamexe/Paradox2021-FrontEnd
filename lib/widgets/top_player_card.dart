@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
@@ -55,18 +56,20 @@ class PlayerCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 15),
-                Align(
-                  child: Text(user.name,
+                Container(
+                  height: 60,
+                  child: Align(
+                    child: Text(
+                      user.name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.blue.withOpacity(0.85))),
-                ),
-                SizedBox(height: 5),
-                Container(
-                  child: Text('nimbus'.toUpperCase(),
-                      style: TextStyle(color: Colors.grey[400])),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.blue.withOpacity(0.85),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ),
                 SizedBox(height: 5),
                 Container(

@@ -56,7 +56,6 @@ class UserProvider extends ChangeNotifier {
     Response response = await get(url);
     if (response.statusCode == 200) {
       var userProfile = jsonDecode(response.body);
-      print(userProfile);
       this.user.referralCode = userProfile['ref_code'];
       this.user.level = userProfile['profile']['level'];
       this.user.score = userProfile['profile']['score'];
@@ -84,7 +83,7 @@ class UserProvider extends ChangeNotifier {
       }
       return false;
     } catch (e) {
-      print(e);
+
       throw Exception();
     }
   }
@@ -132,14 +131,14 @@ class UserProvider extends ChangeNotifier {
     this.user.hintLevel = 0;
     notifyListeners();
   }
+  void updateData2({int coins, bool referral = false}) {
+    this.user.coins += coins;
+    this.user.referralAvailed = referral;
+    notifyListeners();
+  }
 
   Future<dynamic> availHints() async {
     String url = "${baseUrl}avail-hints/";
-    print({
-      'google_id': FirebaseAuth.instance.currentUser.uid,
-      'level': this.user.level,
-      'hint': this.user.hintLevel + 1
-    });
     try {
       Response response = await post(url,
           body: jsonEncode(<String, dynamic>{
@@ -150,7 +149,7 @@ class UserProvider extends ChangeNotifier {
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
           });
-      print(response.body);
+
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         this.user.hintLevel = this.user.hintLevel + 1;
@@ -164,7 +163,7 @@ class UserProvider extends ChangeNotifier {
         return null;
       }
     } catch (e) {
-      print(e);
+
       createToast("There was some error. Please try again later.");
       throw Exception();
     }
@@ -181,7 +180,6 @@ class UserProvider extends ChangeNotifier {
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
           });
-      print(response.body);
     } catch (e) {}
   }
 

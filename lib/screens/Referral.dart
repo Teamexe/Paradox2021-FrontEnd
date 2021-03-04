@@ -31,14 +31,17 @@ class _ReferralScreenState extends State<ReferralScreen> {
     User user = Provider.of<UserProvider>(context, listen: true).user;
     final availReferral =
         Provider.of<ReferralProvider>(context, listen: true).availReferral;
-    print(user.referralAvailed);
-    final brightness = Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
+    final brightness =
+        Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Referral".toUpperCase(),
+        title: Text(
+          "Referral".toUpperCase(),
           style: TextStyle(
-            fontWeight: brightness == BrightnessOption.light ? FontWeight.w400 : FontWeight.w300,
+            fontWeight: brightness == BrightnessOption.light
+                ? FontWeight.w400
+                : FontWeight.w300,
             letterSpacing: 2,
           ),
         ),
@@ -68,9 +71,13 @@ class _ReferralScreenState extends State<ReferralScreen> {
                         "Avail Referral",
                         style: TextStyle(
                           fontSize: 19,
-                          fontWeight: brightness == BrightnessOption.light ? FontWeight.w500: FontWeight.w400,
+                          fontWeight: brightness == BrightnessOption.light
+                              ? FontWeight.w500
+                              : FontWeight.w400,
                           letterSpacing: 3,
-                          color: brightness == BrightnessOption.light ? Colors.blue:  Colors.white,
+                          color: brightness == BrightnessOption.light
+                              ? Colors.blue
+                              : Colors.white,
                         ),
                       ),
                     ),
@@ -108,7 +115,9 @@ class _ReferralScreenState extends State<ReferralScreen> {
                           ),
                           suffixIcon: Icon(
                             Icons.screen_share,
-                            color: brightness == BrightnessOption.light ? Colors.grey[300] : Colors.white,
+                            color: brightness == BrightnessOption.light
+                                ? Colors.grey[300]
+                                : Colors.white,
                           ),
                         ),
                       ),
@@ -140,9 +149,9 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                 final res = await availReferral(
                                     referralCodeController.text, user.uid);
                                 if (res == true) {
-                                  await Provider.of<UserProvider>(context,
-                                          listen: true)
-                                      .fetchUserDetails();
+                                  Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .updateData2(coins: 100, referral: true);
                                 }
                               }
                               setState(() {
@@ -193,9 +202,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
               height: 15,
             ),
             Container(
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                child: Divider()
-            ),
+                margin: EdgeInsets.symmetric(horizontal: 16), child: Divider()),
             SizedBox(
               height: 10,
             ),
@@ -203,9 +210,13 @@ class _ReferralScreenState extends State<ReferralScreen> {
               "Share Your Referral Code",
               style: TextStyle(
                 fontSize: 18,
-                fontWeight: brightness == BrightnessOption.light ? FontWeight.w500: FontWeight.w400,
+                fontWeight: brightness == BrightnessOption.light
+                    ? FontWeight.w500
+                    : FontWeight.w400,
                 letterSpacing: 2,
-                color: brightness == BrightnessOption.light ? Colors.blue:  Colors.white,
+                color: brightness == BrightnessOption.light
+                    ? Colors.blue
+                    : Colors.white,
               ),
             ),
             SizedBox(
@@ -227,10 +238,13 @@ class _ReferralScreenState extends State<ReferralScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 5),
                         child: Text("Your Referral Code: " + user.referralCode,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400)),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400)),
                       )),
                 ),
                 CircleAvatar(

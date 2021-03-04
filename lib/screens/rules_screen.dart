@@ -60,7 +60,7 @@ class RulesScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 FlatButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed(Home.routeName);
+                    Navigator.of(context).pop();
                   },
                   child: Container(
                       decoration: BoxDecoration(
