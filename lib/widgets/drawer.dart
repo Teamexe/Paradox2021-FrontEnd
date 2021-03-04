@@ -14,7 +14,7 @@ import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/custom_dialog.dart';
 import 'package:provider/provider.dart';
-import '../utilities/member_screen.dart';
+import '../screens/member_screen.dart';
 import 'package:paradox/utilities/privacy_policy.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/dark_mode_toggle_widget.dart';

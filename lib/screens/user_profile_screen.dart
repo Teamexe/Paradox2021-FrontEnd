@@ -50,27 +50,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   children: [
-            //     Align(
-            //       alignment: Alignment.topLeft,
-            //       child: Container(
-            //         color: Colors.blue,
-            //         width: size.width,
-            //         // padding: const EdgeInsets.all(10),
-            //         child: IconButton(
-            //           iconSize: 20,
-            //           icon: Icon(Icons.arrow_back_ios),
-            //           color: Colors.white,
-            //           onPressed: () {
-            //             Navigator.pop(context);
-            //           },
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Container(
               width: size.width,
               color: brightness == BrightnessOption.dark
