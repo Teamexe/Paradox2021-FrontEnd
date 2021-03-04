@@ -2,14 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hover_effect/hover_effect.dart';
-import 'package:paradox/providers/leaderboard_provider.dart';
-import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/models/brightness_options.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/home_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/utilities/clipper.dart';
-import 'package:provider/provider.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatelessWidget {
   static String routeName = '/sign_in';
@@ -63,6 +63,8 @@ class _SignInWidgetState extends State<SignInWidget>
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
+
     // to start the animation
     animationController.forward();
 
@@ -73,14 +75,9 @@ class _SignInWidgetState extends State<SignInWidget>
           margin: null,
           width: double.infinity,
           height: double.infinity,
-          color: Colors.blue.shade400,
-          // decoration: BoxDecoration(
-          //   gradient: LinearGradient(
-          //     begin: Alignment.topLeft,
-          //     end: Alignment.bottomRight,
-          //     colors: [Colors.red, Colors.yellow, Colors.blue, Colors.purple]
-          //   ),
-          // ),
+          color: brightness == BrightnessOption.light
+              ? Colors.blue.shade400
+              : Colors.black.withOpacity(.9),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -109,7 +106,9 @@ class _SignInWidgetState extends State<SignInWidget>
                       child: ClipPath(
                         clipper: CustomizedClipper(),
                         child: Container(
-                          color: Colors.blue,
+                          color: brightness == BrightnessOption.light
+                              ? Colors.blue
+                              : Colors.black.withOpacity(1),
                         ),
                       ),
                     ),
@@ -137,7 +136,9 @@ class _SignInWidgetState extends State<SignInWidget>
                       child: ClipPath(
                         clipper: CustomizedClipper(),
                         child: Container(
-                          color: Colors.blue[900].withAlpha(1000),
+                          color: brightness == BrightnessOption.light
+                              ? Colors.blue[900].withAlpha(1000)
+                              : Colors.black.withOpacity(1),
                         ),
                       ),
                     ),

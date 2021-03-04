@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -86,7 +87,9 @@ class _InfoScreenState extends State<InfoScreen> {
           : Colors.grey[800],
       body: load
           ? SpinKitFoldingCube(
-              color: brightness == BrightnessOption.light ? Colors.blue : Colors.white,
+              color: brightness == BrightnessOption.light
+                  ? Colors.blue
+                  : Colors.white,
             )
           : SafeArea(
               child: Container(
@@ -128,8 +131,18 @@ class _InfoScreenState extends State<InfoScreen> {
                                 autoplayDuration: Duration(seconds: 3),
                                 images: images
                                     .map((item) => Container(
-                                          child: Image.network(item.url,
-                                              fit: BoxFit.cover),
+                                          child: CachedNetworkImage(
+                                            imageUrl: item.url,
+                                            placeholder: (context, url) =>
+                                                new SpinKitCircle(
+                                              color: Colors.blue,
+                                              size: 60,
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    new Icon(Icons.error),
+                                            fit: BoxFit.fitHeight,
+                                          ),
                                         ))
                                     .toList(),
                                 onImageTap: (item) {
