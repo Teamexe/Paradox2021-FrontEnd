@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:paradox/providers/GalleryProvider.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/members_provider.dart';
 import 'package:paradox/providers/referral_provider.dart';
@@ -54,7 +55,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => QuestionProvider()),
         ChangeNotifierProvider(create: (_) => ExeMembersProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => StatsProvider())
+        ChangeNotifierProvider(create: (_) => StatsProvider()),
+        ChangeNotifierProvider(create: (_) => GalleryProvider()),
       ],
       child: Consumer<ThemeProvider>(
           builder: (BuildContext context, value, Widget child) {

@@ -5,6 +5,7 @@ import 'package:paradox/authentication/sign_in.dart';
 import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/InfoScreen.dart';
 import 'package:paradox/screens/Referral.dart';
 import 'package:paradox/screens/leaderboard_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
@@ -127,17 +128,18 @@ class AppDrawerState extends State<AppDrawer> {
                   title: Text('Information', style: textStyle),
                   dense: true,
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CustomDialogBox(
-                              'Information',
-                              'View our projects on ',
-                              'https://github.com/teamexe',
-                              '\n or visit our website ',
-                              'https://teamexe.in',
-                              brightness == BrightnessOption.light ? Colors.blue : Colors.white60);
-                        });
+                    Navigator.of(context).pushNamed(InfoScreen.routeName);
+                    // showDialog(
+                    //     context: context,
+                    //     builder: (BuildContext context) {
+                    //       return CustomDialogBox(
+                    //           'Information',
+                    //           'View our projects on ',
+                    //           'https://github.com/teamexe',
+                    //           '\n or visit our website ',
+                    //           'https://teamexe.in',
+                    //           brightness == BrightnessOption.light ? Colors.blue : Colors.white60);
+                    //     });
                   },
                 ),
                 Divider(),

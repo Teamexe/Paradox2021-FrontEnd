@@ -132,6 +132,11 @@ class UserProvider extends ChangeNotifier {
     this.user.hintLevel = 0;
     notifyListeners();
   }
+  void updateData2({int coins, bool referral = false}) {
+    this.user.coins += coins;
+    this.user.referralAvailed = referral;
+    notifyListeners();
+  }
 
   Future<dynamic> availHints() async {
     String url = "${baseUrl}avail-hints/";

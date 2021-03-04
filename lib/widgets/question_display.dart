@@ -356,6 +356,7 @@ class _QuestionDisplayState extends State<QuestionDisplay> {
                                     Navigator.of(context)
                                         .pushReplacementNamed(
                                             StageCompleted.routeName);
+                                    createToast("Correct Answer");
                                   } else {
                                     displayDialog(
                                       title: 'Correct Answer',

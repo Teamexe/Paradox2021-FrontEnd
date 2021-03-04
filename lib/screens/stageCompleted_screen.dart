@@ -1,20 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:paradox/screens/home_screen.dart';
+import 'package:paradox/models/brightness_options.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class StageCompleted extends StatelessWidget {
-static const routeName = '/stageCompletedScreen';
+  static const routeName = '/stageCompletedScreen';
+
   @override
   Widget build(BuildContext context) {
+    final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Color(0xff0083B0),
-            Color(0xff00B4DB),
-            // Color(0xff1A2980),
-          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: LinearGradient(
+              colors: brightness == BrightnessOption.light
+                  ? [
+                      Color(0xff0083B0),
+                      Color(0xff00B4DB),
+                      // Color(0xff1A2980),
+                    ]
+                  : [Colors.black54, Colors.black54],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight),
           boxShadow: [
             BoxShadow(
               color: Color(0xff0083B0),
@@ -29,9 +38,8 @@ static const routeName = '/stageCompletedScreen';
             child: Container(
               height: size.height * 0.6,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black,
@@ -52,15 +60,16 @@ static const routeName = '/stageCompletedScreen';
                   Text(
                     "  “You have completed this Stage!”",
                     textAlign: TextAlign.center,
-                    style:
-                        TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-
+                        borderRadius: BorderRadius.circular(18.0),
                       ),
                       onPressed: () {
                         Navigator.pop(context);

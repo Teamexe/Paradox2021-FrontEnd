@@ -101,7 +101,7 @@ class QuestionProvider extends ChangeNotifier {
       Response response = await post(
         url,
         body: jsonEncode(<String, dynamic>{
-          'answer': answer,
+          'answer': answer.toLowerCase(),
           'google_id': uid,
           'level': level
         }),
