@@ -21,7 +21,7 @@ class PlayerCard extends StatelessWidget {
       child: Card(
         color: themeProvider.brightness == BrightnessOption.light
             ? Colors.grey[300]
-            : Colors.grey[400],
+            : Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),

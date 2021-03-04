@@ -14,12 +14,12 @@ import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
+import 'package:paradox/screens/InfoScreen.dart';
 import 'package:paradox/screens/question_screen.dart';
 import 'package:paradox/screens/rules_screen.dart';
 import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
-import 'package:paradox/utilities/custom_dialog.dart';
 import 'package:paradox/screens/member_screen.dart';
 import 'package:paradox/utilities/type_writer_box.dart';
 import 'package:paradox/widgets/drawer.dart';
@@ -43,7 +43,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: Text(
             'Paradox',
@@ -75,10 +75,10 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
         body: load != true
             ? HomePage()
             : Center(
-                child: SpinKitFoldingCube(
-                  color: Colors.blue,
-                ),
-              ));
+          child: SpinKitFoldingCube(
+            color: Colors.blue,
+          ),
+        ));
   }
 
   @override
@@ -90,11 +90,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
 
     Future.delayed(Duration.zero, () async {
       await ApiAuthentication().userIsPresent().then((value) async => {
-            if (value)
-              {print('user already in database')}
-            else
-              {await ApiAuthentication().createUser()}
-          });
+        if (value)
+          {print('user already in database')}
+        else
+          {await ApiAuthentication().createUser()}
+      });
       Provider.of<UserProvider>(context, listen: false).assignUser(
           FirebaseAuth.instance.currentUser.uid,
           FirebaseAuth.instance.currentUser.email,
@@ -163,9 +163,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final brightness =
-        Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
-
     /// start the animation
     animationController.forward();
 
@@ -226,7 +223,7 @@ class _HomePageState extends State<HomePage>
                                 autoPlay: true,
                                 autoPlayInterval: Duration(seconds: 3),
                                 autoPlayAnimationDuration:
-                                    Duration(milliseconds: 800),
+                                Duration(milliseconds: 800),
                                 autoPlayCurve: Curves.fastOutSlowIn,
                                 pauseAutoPlayOnTouch: true,
                                 aspectRatio: 2.0,
@@ -311,12 +308,12 @@ class _HomePageState extends State<HomePage>
                         child: users.length == 0
                             ? SpinKitDualRing(color: Colors.blue)
                             : ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (ctx, index) {
-                                  return PlayerCard(users[index], index + 1);
-                                },
-                                itemCount: users.length,
-                              ),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (ctx, index) {
+                            return PlayerCard(users[index], index + 1);
+                          },
+                          itemCount: users.length,
+                        ),
                       ),
                     ],
                   ),
@@ -398,19 +395,7 @@ class _HomePageState extends State<HomePage>
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CustomDialogBox(
-                                    'Information',
-                                    'View our projects on ',
-                                    'https://github.com/teamexe',
-                                    '\n or visit our website ',
-                                    'https://teamexe.in',
-                                    brightness == BrightnessOption.light
-                                        ? Colors.blue
-                                        : Colors.white54);
-                              });
+                          Navigator.pushNamed(context, InfoScreen.routeName);
                         },
                         child: Text('Information',
                             style: TextStyle(
@@ -528,21 +513,35 @@ class _HomePageState extends State<HomePage>
 class ParadoxPlayEasy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final easyList = Provider.of<QuestionProvider>(context).easyList;
-    final level = Provider.of<UserProvider>(context).user.level;
+    final brightness =
+        Provider
+            .of<ThemeProvider>(context, listen: true)
+            .brightnessOption;
+
+    final easyList = Provider
+        .of<QuestionProvider>(context)
+        .easyList;
+    final level = Provider
+        .of<UserProvider>(context)
+        .user
+        .level;
     return GestureDetector(
       child: Container(
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          color: Colors.blue.withOpacity(0.7),
+          color: brightness == BrightnessOption.light
+              ? Colors.blue.withOpacity(.85)
+              : Colors.grey,
           child: Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            color: Colors.white,
+            color: brightness == BrightnessOption.light
+                ? Colors.lightBlue.shade100
+                : Colors.black,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -550,13 +549,19 @@ class ParadoxPlayEasy extends StatelessWidget {
                 Spacer(),
                 Align(
                   alignment: Alignment.center,
-                  child: Image.asset('assets/images/paradox_play.jpg',
-                      height: 60, width: 60),
+                  child: Image.asset('assets/images/logo.png',
+                      height: 100, width: 100),
                 ),
                 Spacer(),
+                if (brightness == BrightnessOption.dark)
+                  Divider(
+                    color: Colors.grey,
+                  ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.85),
+                    color: brightness == BrightnessOption.light
+                        ? Colors.blue.withOpacity(.85)
+                        : Colors.black,
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(10),
                         bottomRight: Radius.circular(10)),
@@ -629,22 +634,37 @@ class ParadoxPlayEasy extends StatelessWidget {
 class ParadoxPlayMedium extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final mediumList = Provider.of<QuestionProvider>(context).mediumList;
-    final easyList = Provider.of<QuestionProvider>(context).easyList;
-    final level = Provider.of<UserProvider>(context).user.level;
+    final brightness =
+        Provider
+            .of<ThemeProvider>(context, listen: true)
+            .brightnessOption;
+    final mediumList = Provider
+        .of<QuestionProvider>(context)
+        .mediumList;
+    final easyList = Provider
+        .of<QuestionProvider>(context)
+        .easyList;
+    final level = Provider
+        .of<UserProvider>(context)
+        .user
+        .level;
     return GestureDetector(
       child: Container(
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          color: Colors.blue.withOpacity(0.7),
+          color: brightness == BrightnessOption.light
+              ? Colors.blue.withOpacity(0.85)
+              : Colors.grey,
           child: Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            color: Colors.white,
+            color: brightness == BrightnessOption.light
+                ? Colors.lightBlue.shade100
+                : Colors.black,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -656,20 +676,20 @@ class ParadoxPlayMedium extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: 60,
-                        width: 60,
-                        child: Image.asset('assets/images/paradox_play.jpg',
-                            height: 60, width: 60),
+                        height: 100,
+                        width: 100,
+                        child: Image.asset('assets/images/logo.png',
+                            height: 100, width: 100),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 20),
                         child: Transform.rotate(
                           angle: pi / 3,
                           child: Container(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset('assets/images/paradox_play.jpg',
-                                height: 60, width: 60),
+                            height: 100,
+                            width: 100,
+                            child: Image.asset('assets/images/logo.png',
+                                height: 100, width: 100),
                           ),
                         ),
                       ),
@@ -677,9 +697,15 @@ class ParadoxPlayMedium extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
+                if (brightness == BrightnessOption.dark)
+                  Divider(
+                    color: Colors.grey,
+                  ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.8),
+                    color: brightness == BrightnessOption.light
+                        ? Colors.blue.withOpacity(0.85)
+                        : Colors.black,
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(10),
                         bottomRight: Radius.circular(10)),
@@ -758,15 +784,31 @@ class ParadoxPlayMedium extends StatelessWidget {
 class ParadoxPlayHard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final mediumList = Provider.of<QuestionProvider>(context).mediumList;
-    final easyList = Provider.of<QuestionProvider>(context).easyList;
-    final hardList = Provider.of<QuestionProvider>(context).hardList;
-    final level = Provider.of<UserProvider>(context).user.level;
+    final brightness =
+        Provider
+            .of<ThemeProvider>(context, listen: true)
+            .brightnessOption;
+
+    final mediumList = Provider
+        .of<QuestionProvider>(context)
+        .mediumList;
+    final easyList = Provider
+        .of<QuestionProvider>(context)
+        .easyList;
+    final hardList = Provider
+        .of<QuestionProvider>(context)
+        .hardList;
+    final level = Provider
+        .of<UserProvider>(context)
+        .user
+        .level;
     return GestureDetector(
       child: Container(
         width: double.infinity,
         child: Card(
-          color: Colors.blue.withOpacity(0.85),
+          color: brightness == BrightnessOption.light
+              ? Colors.blue.withOpacity(0.85)
+              : Colors.grey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -775,7 +817,9 @@ class ParadoxPlayHard extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            color: Colors.white,
+            color: brightness == BrightnessOption.light
+                ? Colors.lightBlue.shade100
+                : Colors.black,
             child: Column(
               children: [
                 Spacer(),
@@ -790,28 +834,28 @@ class ParadoxPlayHard extends StatelessWidget {
                         child: Transform.rotate(
                           angle: -pi / 3,
                           child: Container(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset('assets/images/paradox_play.jpg',
-                                height: 60, width: 60),
+                            height: 100,
+                            width: 100,
+                            child: Image.asset('assets/images/logo.png',
+                                height: 100, width: 100),
                           ),
                         ),
                       ),
                       Container(
-                        height: 60,
-                        width: 60,
-                        child: Image.asset('assets/images/paradox_play.jpg',
-                            height: 60, width: 60),
+                        height: 100,
+                        width: 100,
+                        child: Image.asset('assets/images/logo.png',
+                            height: 100, width: 100),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 20),
                         child: Transform.rotate(
                           angle: pi / 3,
                           child: Container(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset('assets/images/paradox_play.jpg',
-                                height: 60, width: 60),
+                            height: 100,
+                            width: 100,
+                            child: Image.asset('assets/images/logo.png',
+                                height: 100, width: 100),
                           ),
                         ),
                       ),
@@ -819,9 +863,15 @@ class ParadoxPlayHard extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
+                if (brightness == BrightnessOption.dark)
+                  Divider(
+                    color: Colors.grey,
+                  ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.85),
+                    color: brightness == BrightnessOption.light
+                        ? Colors.blue.withOpacity(0.85)
+                        : Colors.black,
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(10),
                         bottomRight: Radius.circular(10)),
