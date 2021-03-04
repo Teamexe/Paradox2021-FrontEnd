@@ -21,6 +21,7 @@ import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/screens/member_screen.dart';
+import 'package:paradox/utilities/notifications.dart';
 import 'package:paradox/utilities/type_writer_box.dart';
 import 'package:paradox/widgets/drawer.dart';
 import 'package:paradox/widgets/top_player_card.dart';
@@ -43,7 +44,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: Text(
             'Paradox',
@@ -75,10 +76,10 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
         body: load != true
             ? HomePage()
             : Center(
-          child: SpinKitFoldingCube(
-            color: Colors.blue,
-          ),
-        ));
+                child: SpinKitFoldingCube(
+                  color: Colors.blue,
+                ),
+              ));
   }
 
   @override
@@ -90,11 +91,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
 
     Future.delayed(Duration.zero, () async {
       await ApiAuthentication().userIsPresent().then((value) async => {
-        if (value)
-          {print('user already in database')}
-        else
-          {await ApiAuthentication().createUser()}
-      });
+            if (value)
+              {print('user already in database')}
+            else
+              {await ApiAuthentication().createUser()}
+          });
       Provider.of<UserProvider>(context, listen: false).assignUser(
           FirebaseAuth.instance.currentUser.uid,
           FirebaseAuth.instance.currentUser.email,
@@ -105,7 +106,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
         Provider.of<QuestionProvider>(context, listen: false).fetchHints(),
         Provider.of<UserProvider>(context, listen: false).fetchUserDetails()
       ]);
-
+      showNotification("Play Paradox 2k21", "Win exciting prizes and goodies");
       setState(() {
         load = false;
       });
@@ -208,7 +209,8 @@ class _HomePageState extends State<HomePage>
                               ),
                             ),
                             onTap: () {
-                              Navigator.pushNamed(context, RulesScreen.routeName);
+                              Navigator.pushNamed(
+                                  context, RulesScreen.routeName);
                             },
                           ),
                         ],
@@ -223,7 +225,7 @@ class _HomePageState extends State<HomePage>
                                 autoPlay: true,
                                 autoPlayInterval: Duration(seconds: 3),
                                 autoPlayAnimationDuration:
-                                Duration(milliseconds: 800),
+                                    Duration(milliseconds: 800),
                                 autoPlayCurve: Curves.fastOutSlowIn,
                                 pauseAutoPlayOnTouch: true,
                                 aspectRatio: 2.0,
@@ -308,12 +310,12 @@ class _HomePageState extends State<HomePage>
                         child: users.length == 0
                             ? SpinKitDualRing(color: Colors.blue)
                             : ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (ctx, index) {
-                            return PlayerCard(users[index], index + 1);
-                          },
-                          itemCount: users.length,
-                        ),
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (ctx, index) {
+                                  return PlayerCard(users[index], index + 1);
+                                },
+                                itemCount: users.length,
+                              ),
                       ),
                     ],
                   ),
@@ -491,16 +493,16 @@ class _HomePageState extends State<HomePage>
           return ShaderMask(
             shaderCallback: (rect) {
               return RadialGradient(
-                  colors: [
-                    Colors.white,
-                    Colors.white,
-                    Colors.transparent,
-                    Colors.transparent
-                  ],
-                  radius: value * 5,
-                  stops: [0.0, .55, .66, 1.0],
-                  center: FractionalOffset(.1, .6)
-              ).createShader(rect);
+                      colors: [
+                        Colors.white,
+                        Colors.white,
+                        Colors.transparent,
+                        Colors.transparent
+                      ],
+                      radius: value * 5,
+                      stops: [0.0, .55, .66, 1.0],
+                      center: FractionalOffset(.1, .6))
+                  .createShader(rect);
             },
             child: child,
           );
@@ -514,17 +516,10 @@ class ParadoxPlayEasy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brightness =
-        Provider
-            .of<ThemeProvider>(context, listen: true)
-            .brightnessOption;
+        Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
 
-    final easyList = Provider
-        .of<QuestionProvider>(context)
-        .easyList;
-    final level = Provider
-        .of<UserProvider>(context)
-        .user
-        .level;
+    final easyList = Provider.of<QuestionProvider>(context).easyList;
+    final level = Provider.of<UserProvider>(context).user.level;
     return GestureDetector(
       child: Container(
         child: Card(
@@ -635,19 +630,10 @@ class ParadoxPlayMedium extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brightness =
-        Provider
-            .of<ThemeProvider>(context, listen: true)
-            .brightnessOption;
-    final mediumList = Provider
-        .of<QuestionProvider>(context)
-        .mediumList;
-    final easyList = Provider
-        .of<QuestionProvider>(context)
-        .easyList;
-    final level = Provider
-        .of<UserProvider>(context)
-        .user
-        .level;
+        Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
+    final mediumList = Provider.of<QuestionProvider>(context).mediumList;
+    final easyList = Provider.of<QuestionProvider>(context).easyList;
+    final level = Provider.of<UserProvider>(context).user.level;
     return GestureDetector(
       child: Container(
         child: Card(
@@ -785,23 +771,12 @@ class ParadoxPlayHard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brightness =
-        Provider
-            .of<ThemeProvider>(context, listen: true)
-            .brightnessOption;
+        Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
 
-    final mediumList = Provider
-        .of<QuestionProvider>(context)
-        .mediumList;
-    final easyList = Provider
-        .of<QuestionProvider>(context)
-        .easyList;
-    final hardList = Provider
-        .of<QuestionProvider>(context)
-        .hardList;
-    final level = Provider
-        .of<UserProvider>(context)
-        .user
-        .level;
+    final mediumList = Provider.of<QuestionProvider>(context).mediumList;
+    final easyList = Provider.of<QuestionProvider>(context).easyList;
+    final hardList = Provider.of<QuestionProvider>(context).hardList;
+    final level = Provider.of<UserProvider>(context).user.level;
     return GestureDetector(
       child: Container(
         width: double.infinity,
