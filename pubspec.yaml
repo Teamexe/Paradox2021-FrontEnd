@@ -92,6 +92,8 @@ flutter:
     - assets/images/correct_answer.jpg
     - assets/images/hint.gif
     - assets/images/
+    - assets/images/referral_availed.gif
+    - assets/images/referral.gif
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -385,7 +385,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                 child: Icon(
                                     FontAwesomeIcons.instagram,
                                     size: 35,
-                                    color: Colors.pink.shade700
+                                    color: brightness == BrightnessOption.light ? Colors.white : Colors.pink.shade700
                                 ),
                               ),
                               onTap: () async {
