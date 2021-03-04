@@ -93,7 +93,7 @@ class AppDrawerState extends State<AppDrawer> {
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue,
-                    child: Icon(Icons.people, color: Colors.white),
+                    child: Icon(Icons.screen_share, color: Colors.white),
                   ),
                   title: Text('Referral', style: textStyle),
                   dense: true,
