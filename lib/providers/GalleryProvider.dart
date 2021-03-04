@@ -38,7 +38,7 @@ class GalleryProvider extends ChangeNotifier {
         throw Exception();
       }
     } catch (e) {
-      print(e);
+
       throw Exception();
     }
   }

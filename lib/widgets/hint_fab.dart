@@ -17,8 +17,7 @@ class HintsFab extends StatefulWidget {
 class _HintsFabState extends State<HintsFab> {
   @override
   Widget build(BuildContext context) {
-    void displayDialogforHint(
-        {String title, String imgName, String text, Color color, int level}) {
+    void displayDialogforHint({String title, String imgName, String text, Color color, int level}) {
       showDialog(
         context: context,
         builder: (context) => NetworkGiffyDialog(
@@ -69,7 +68,6 @@ class _HintsFabState extends State<HintsFab> {
         ),
       );
     }
-
     final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
     final hintList = Provider.of<QuestionProvider>(context).hintsList;
     final user = Provider.of<UserProvider>(context).user;
@@ -85,15 +83,16 @@ class _HintsFabState extends State<HintsFab> {
         scrollVisible: true,
         overlayColor: Colors.black,
         overlayOpacity: 0.7,
+
         children: [
           if (hintNumber <= 0)
             MenuItem(
-              child: Icon(Icons.lightbulb_outline, color: Colors.black),
               title: "Hint 1",
-              titleColor: Colors.black,
               subtitle: "Avail hint 1 with 20 coins",
-              subTitleColor: Colors.black,
-              backgroundColor: Colors.white,
+              child: Icon(Icons.lightbulb_outline, color: brightness == BrightnessOption.dark ? Colors.white : Colors.black,),
+              titleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              subTitleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              backgroundColor: brightness == BrightnessOption.dark ? Colors.grey[800] : Colors.white,
               onTap: () {
                 if (hintNumber != 0) {
                   createToast("Please Avail Previous Hint First.");
@@ -108,21 +107,23 @@ class _HintsFabState extends State<HintsFab> {
             ),
           if (hintNumber >= 1)
             MenuItem(
-              child: Icon(Icons.lightbulb_outline, color: Colors.black),
               title: 'Hint 1',
               subtitle: '${hintList[user.level - 1].hint1}',
-              titleColor: Colors.black,
-              subTitleColor: Colors.black,
-              backgroundColor: Colors.white,
+              child: Icon(Icons.lightbulb_outline, color: brightness == BrightnessOption.dark ? Colors.blue : Colors.blue,),
+              titleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              subTitleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              backgroundColor: brightness == BrightnessOption.dark ? Colors.grey[800] : Colors.white,
+
             ),
           if (hintNumber <= 1)
             MenuItem(
-              child: Icon(Icons.lightbulb_outline, color: Colors.black),
               title: "Hint 2",
-              titleColor: Colors.black,
               subtitle: "Avail hint 2 with 30 coins",
-              subTitleColor: Colors.black,
-              backgroundColor: Colors.white,
+              child: Icon(Icons.lightbulb_outline, color: brightness == BrightnessOption.dark ? Colors.white : Colors.black,),
+              titleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              subTitleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              backgroundColor: brightness == BrightnessOption.dark ? Colors.grey[800] : Colors.white,
+
               onTap: () {
                 if (hintNumber != 1) {
                   createToast("Please Avail Previous Hint First.");
@@ -138,21 +139,22 @@ class _HintsFabState extends State<HintsFab> {
             ),
           if (hintNumber >= 2)
             MenuItem(
-              child: Icon(Icons.lightbulb_outline, color: Colors.black),
               title: "Hint 2",
               subtitle: '${hintList[user.level - 1].hint2}',
-              titleColor: Colors.black,
-              subTitleColor: Colors.black,
-              backgroundColor: Colors.white,
+              child: Icon(Icons.lightbulb_outline, color: brightness == BrightnessOption.dark ? Colors.blue : Colors.blue,),
+              titleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              subTitleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              backgroundColor: brightness == BrightnessOption.dark ? Colors.grey[800] : Colors.white,
+
             ),
           if (hintNumber <= 2)
             MenuItem(
-              child: Icon(Icons.lightbulb_outline, color: Colors.black),
               title: "Hint 3",
-              titleColor: Colors.black,
               subtitle: "Avail hint 3 with 40 coins",
-              subTitleColor: Colors.black,
-              backgroundColor: Colors.white,
+              child: Icon(Icons.lightbulb_outline, color: brightness == BrightnessOption.dark ? Colors.white : Colors.black,),
+              titleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              subTitleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              backgroundColor: brightness == BrightnessOption.dark ? Colors.grey[800] : Colors.white,
               onTap: () {
                 if (hintNumber != 2) {
                   createToast("Please Avail Previous Hint First.");
@@ -168,12 +170,13 @@ class _HintsFabState extends State<HintsFab> {
             ),
           if (hintNumber >= 3)
             MenuItem(
-              child: Icon(Icons.lightbulb_outline, color: Colors.black),
               subtitle: '${hintList[user.level - 1].hint3}',
               title: "Hint 3",
-              titleColor: Colors.black,
-              subTitleColor: Colors.black,
-              backgroundColor: Colors.white,
+              child: Icon(Icons.lightbulb_outline, color: brightness == BrightnessOption.dark ? Colors.blue : Colors.blue,),
+              titleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              subTitleColor: brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+              backgroundColor: brightness == BrightnessOption.dark ? Colors.grey[800] : Colors.white,
+
             ),
         ],
       );

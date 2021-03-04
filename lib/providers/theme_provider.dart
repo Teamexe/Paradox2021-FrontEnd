@@ -17,7 +17,6 @@ class ThemeProvider extends ChangeNotifier {
     brightnessOption = option;
     // updating shared preferences for theme
     setDarkTheme();
-    print('Theme mode: $brightnessOption');
     notifyListeners();
   }
 
