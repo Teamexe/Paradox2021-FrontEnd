@@ -105,7 +105,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                         (widget.exeMemberProfile.name
                                 .contains('Deeksha Sharma') ||
                             widget.exeMemberProfile.name
-                                .contains('Ankit Kumar')))
+                                .contains('Ankit Choudhary')))
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
