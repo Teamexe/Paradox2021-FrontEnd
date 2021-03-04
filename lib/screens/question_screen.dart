@@ -37,7 +37,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ));
     }
     return Scaffold(
-      // resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: brightness == BrightnessOption.light ? Color(0xff0083B0) : Colors.grey[900] ,
         leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: (){

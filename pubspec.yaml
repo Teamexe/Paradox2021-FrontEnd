@@ -49,6 +49,8 @@ dependencies:
   flutter_boom_menu: ^1.0.2
   carousel_pro: ^1.0.0
   youtube_player_iframe: ^1.2.0+2
+  flutter_local_notifications: ^1.4.4+1
+
 
 
 
@@ -89,6 +91,7 @@ flutter:
     - assets/images/attempts.jpg
     - assets/images/correct_answer.jpg
     - assets/images/hint.gif
+    - assets/images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
