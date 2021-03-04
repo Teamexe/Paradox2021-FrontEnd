@@ -96,26 +96,32 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
     });
 
     Future.delayed(Duration.zero, () async {
-      await ApiAuthentication().userIsPresent().then((value) async => {
-            if (value)
-              {print('user already in database')}
-            else
-              {await ApiAuthentication().createUser()}
-          });
-      Provider.of<UserProvider>(context, listen: false).assignUser(
-          FirebaseAuth.instance.currentUser.uid,
-          FirebaseAuth.instance.currentUser.email,
-          FirebaseAuth.instance.currentUser.displayName);
-      Provider.of<UserProvider>(context, listen: false).updateUserImage();
-      await Future.wait([
-        Provider.of<QuestionProvider>(context, listen: false).fetchQuestions(),
-        Provider.of<QuestionProvider>(context, listen: false).fetchHints(),
-        Provider.of<UserProvider>(context, listen: false).fetchUserDetails()
-      ]);
-      showNotification("Play Paradox 2k21", "Win exciting prizes and goodies");
-      setState(() {
-        load = false;
-      });
+      try {
+        await ApiAuthentication().userIsPresent().then((value) async => {
+              if (value)
+                {print('user already in database')}
+              else
+                {await ApiAuthentication().createUser()}
+            });
+        Provider.of<UserProvider>(context, listen: false).assignUser(
+            FirebaseAuth.instance.currentUser.uid,
+            FirebaseAuth.instance.currentUser.email,
+            FirebaseAuth.instance.currentUser.displayName);
+        Provider.of<UserProvider>(context, listen: false).updateUserImage();
+        await Future.wait([
+          Provider.of<QuestionProvider>(context, listen: false)
+              .fetchQuestions(),
+          Provider.of<QuestionProvider>(context, listen: false).fetchHints(),
+          Provider.of<UserProvider>(context, listen: false).fetchUserDetails()
+        ]);
+        // showNotification(
+        //     "Play Paradox 2k21", "Win exciting prizes and goodies");
+        setState(() {
+          load = false;
+        });
+      } catch (e) {
+        createToast("There is some error. Please Try again later");
+      }
     });
   }
 }
