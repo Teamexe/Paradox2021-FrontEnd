@@ -397,13 +397,13 @@ class _QuestionDisplayState extends State<QuestionDisplay> {
                                             coins: body['coins'],
                                           );
                                         }
-                                        setState(() {
-                                          isLoading = false;
-                                        });
                                         Provider.of<LeaderBoardProvider>(
                                                 context)
                                             .fetchAndSetLeaderBoard();
                                       }
+                                      setState(() {
+                                        isLoading = false;
+                                      });
                                     }),
                         ),
                       ],
