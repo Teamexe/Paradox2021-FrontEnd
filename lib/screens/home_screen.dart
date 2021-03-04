@@ -6,11 +6,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/models/leaderBoardUser.dart';
 import 'package:paradox/models/user.dart' as BaseUser;
 import 'package:paradox/providers/api_authentication.dart';
 import 'package:paradox/providers/leaderboard_provider.dart';
 import 'package:paradox/providers/question_provider.dart';
+import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/providers/user_provider.dart';
 import 'package:paradox/screens/InfoScreen.dart';
 import 'package:paradox/screens/question_screen.dart';
@@ -803,32 +805,32 @@ class ParadoxPlayHard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 20, left: 10),
+                        margin: EdgeInsets.only(left: 10),
                         child: Transform.rotate(
                           angle: -pi / 3,
                           child: Container(
-                            height: 100,
-                            width: 100,
+                            height: 80,
+                            width: 80,
                             child: Image.asset('assets/images/logo.png',
-                                height: 100, width: 100),
+                                height: 80, width: 80),
                           ),
                         ),
                       ),
                       Container(
-                        height: 100,
-                        width: 100,
+                        height: 80,
+                        width: 80,
                         child: Image.asset('assets/images/logo.png',
-                            height: 100, width: 100),
+                            height: 80, width: 80),
                       ),
                       Container(
-                        margin: EdgeInsets.only(bottom: 20),
+                        margin: EdgeInsets.only(bottom: 5),
                         child: Transform.rotate(
                           angle: pi / 3,
                           child: Container(
-                            height: 100,
-                            width: 100,
+                            height: 80,
+                            width: 80,
                             child: Image.asset('assets/images/logo.png',
-                                height: 100, width: 100),
+                                height: 80, width: 80),
                           ),
                         ),
                       ),
