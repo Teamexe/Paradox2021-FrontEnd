@@ -29,7 +29,7 @@ class _LiveVideoCardState extends State<VideoCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       padding: const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
       child: ClipRRect(
           borderRadius: BorderRadius.circular(20),

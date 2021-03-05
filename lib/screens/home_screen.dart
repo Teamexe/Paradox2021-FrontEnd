@@ -66,9 +66,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                   ),
                 ),
               ),
-              onTap: () {
-                Navigator.pushNamed(context, ProfileScreen.routeName);
-              },
+              onTap: load
+                  ? null
+                  : () {
+                      Navigator.pushNamed(context, ProfileScreen.routeName);
+                    },
             ),
           ],
         ),
@@ -114,8 +116,8 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
           Provider.of<QuestionProvider>(context, listen: false).fetchHints(),
           Provider.of<UserProvider>(context, listen: false).fetchUserDetails()
         ]);
-        // showNotification(
-        //     "Play Paradox 2k21", "Win exciting prizes and goodies");
+        showNotification(
+            "Play Paradox 2k21", "Win exciting prizes and goodies");
         setState(() {
           load = false;
         });
@@ -201,11 +203,10 @@ class _HomePageState extends State<HomePage>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 180,
-                            height: 50,
-                            margin: EdgeInsets.only(left: 10, top: 10),
-                            child: TypeWriterBox('Paradox'),
-                          ),
+                              width: 180,
+                              height: 50,
+                              margin: EdgeInsets.only(left: 10, top: 10),
+                              child: TypeWriterBox('Paradox')),
                           GestureDetector(
                             child: Container(
                               height: 45,
@@ -821,28 +822,28 @@ class ParadoxPlayHard extends StatelessWidget {
                         child: Transform.rotate(
                           angle: -pi / 3,
                           child: Container(
-                            height: 80,
-                            width: 80,
+                            height: 100,
+                            width: 100,
                             child: Image.asset('assets/images/logo.png',
-                                height: 80, width: 80),
+                                height: 100, width: 100),
                           ),
                         ),
                       ),
                       Container(
-                        height: 80,
-                        width: 80,
+                        height: 100,
+                        width: 100,
                         child: Image.asset('assets/images/logo.png',
-                            height: 80, width: 80),
+                            height: 100, width: 100),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 5),
                         child: Transform.rotate(
                           angle: pi / 3,
                           child: Container(
-                            height: 80,
-                            width: 80,
+                            height: 100,
+                            width: 100,
                             child: Image.asset('assets/images/logo.png',
-                                height: 80, width: 80),
+                                height: 100, width: 100),
                           ),
                         ),
                       ),

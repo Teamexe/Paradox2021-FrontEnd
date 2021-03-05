@@ -94,53 +94,22 @@ class _StatsScreenState extends State<StatsScreen> {
           : TweenAnimationBuilder(
               tween: Tween(begin: 0.0, end: 1.0),
               child: SafeArea(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        CustomCard2(
-                            heading1: 'Total Users : $users',
-                            imagePath: 'assets/images/user.jpg'),
-                        CustomCard2(
-                            heading1: 'Questions : $question',
-                            imagePath: 'assets/images/question.jpeg'),
-                        CustomCard2(
-                            heading1: 'Attempts : $attempts',
-                            imagePath: 'assets/images/attempts.jpg'),
-                        CustomCard2(
-                            heading1: 'Correctly Attempted : $answered',
-                            imagePath: 'assets/images/correct_answer.jpg'),
-                        Spacer(),
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          color: brightness == BrightnessOption.light ? Colors.blue : Colors.grey[900],
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: Icon(Icons.info, color: brightness == BrightnessOption.light ? Colors.blue : Colors.grey[900]),
-                                ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 16),
-                                child: Text(
-                                  "This Page uses caching. It may take up-to 2 minutes to update global stats.",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CustomCard2(
+                          heading1: 'Total Users : $users',
+                          imagePath: 'assets/images/user.jpg'),
+                      CustomCard2(
+                          heading1: 'Questions : $question',
+                          imagePath: 'assets/images/question.jpeg'),
+                      CustomCard2(
+                          heading1: 'Attempts : $attempts',
+                          imagePath: 'assets/images/attempts.jpg'),
+                      CustomCard2(
+                          heading1: 'Correctly Attempted : $answered',
+                          imagePath: 'assets/images/correct_answer.jpg'),
                     ],
                   ),
                 ),

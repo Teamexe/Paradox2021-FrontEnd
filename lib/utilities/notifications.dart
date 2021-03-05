@@ -31,9 +31,9 @@ Future showNotification(String title, String subtitle) async {
     'your channel description',
     importance: Importance.Max,
     priority: Priority.High,
-    color: Colors.red,
+    color: Colors.blue,
     enableLights: true,
-    largeIcon: DrawableResourceAndroidBitmap("launcher_icons"),
+    largeIcon: DrawableResourceAndroidBitmap('launcher_icons'),
     styleInformation: MediaStyleInformation(),
   );
   var iOSPlatformChannelSpecifics = new IOSNotificationDetails();

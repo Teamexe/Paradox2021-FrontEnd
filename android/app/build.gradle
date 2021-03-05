@@ -54,7 +54,14 @@ android {
     }
     buildTypes {
         release {
+
             signingConfig signingConfigs.release
+            minifyEnabled false
+
+            // Enables resource shrinking, which is performed by the
+            // Android Gradle plugin.
+            shrinkResources false
+
         }
     }
 

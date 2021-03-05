@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:paradox/models/brightness_options.dart';
+import 'package:paradox/providers/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:supercharged/supercharged.dart';
 
@@ -14,6 +17,7 @@ class TypeWriterText extends StatefulWidget {
 class _TypeWriterTextState extends State<TypeWriterText> {
   @override
   Widget build(BuildContext context) {
+    final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
     return PlayAnimation<int>(
       duration: 1000.milliseconds,
       delay: 1000.milliseconds,
@@ -23,7 +27,7 @@ class _TypeWriterTextState extends State<TypeWriterText> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(widget.text.substring(0, textLength),
-              style: TextStyle(letterSpacing: 2, fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white)),
+              style: TextStyle(letterSpacing: 2, fontSize: 20, fontWeight: FontWeight.w400, color: brightness == BrightnessOption.light ? Colors.blue: Colors.white)),
             // blinkingCursor(),
           ],
         );
