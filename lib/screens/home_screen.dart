@@ -528,9 +528,7 @@ class _HomePageState extends State<HomePage>
 class ParadoxPlayEasy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final brightness =
-        Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
-
+    final brightness = Provider.of<ThemeProvider>(context, listen: true).brightnessOption;
     final easyList = Provider.of<QuestionProvider>(context).easyList;
     final level = Provider.of<UserProvider>(context).user.level;
     return GestureDetector(
@@ -823,7 +821,7 @@ class ParadoxPlayHard extends StatelessWidget {
                           angle: -pi / 3,
                           child: Container(
                             height: 100,
-                            width: 100,
+                            width: 75,
                             child: Image.asset('assets/images/logo.png',
                                 height: 100, width: 100),
                           ),
@@ -831,7 +829,7 @@ class ParadoxPlayHard extends StatelessWidget {
                       ),
                       Container(
                         height: 100,
-                        width: 100,
+                        width: 75,
                         child: Image.asset('assets/images/logo.png',
                             height: 100, width: 100),
                       ),
@@ -841,7 +839,7 @@ class ParadoxPlayHard extends StatelessWidget {
                           angle: pi / 3,
                           child: Container(
                             height: 100,
-                            width: 100,
+                            width: 75,
                             child: Image.asset('assets/images/logo.png',
                                 height: 100, width: 100),
                           ),
