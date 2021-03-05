@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/GalleryProvider.dart';
 import 'package:paradox/providers/theme_provider.dart';
+import 'package:paradox/screens/image_gallery.dart';
 import 'package:paradox/screens/photo_view.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/widgets/video_card.dart';
@@ -129,7 +130,7 @@ class _InfoScreenState extends State<InfoScreen> {
                             borderRadius: BorderRadius.circular(20),
                             child: Carousel(
                                 dotSize: 4.0,
-                                autoplayDuration: Duration(seconds: 3),
+                                autoplayDuration: Duration(seconds: 5),
                                 images: images
                                     .map((item) => Container(
                                           child: CachedNetworkImage(
@@ -148,8 +149,10 @@ class _InfoScreenState extends State<InfoScreen> {
                                     .toList(),
                                 onImageTap: (item) {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (ctx) => ExpandedImageView(
-                                          image: images[item].url)));
+                                      builder: (ctx) =>
+                                          ExpandedImageGalleryView(
+                                              images: images,
+                                              initialPage: item)));
                                 }),
                           ),
                         ),
@@ -161,8 +164,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           margin: EdgeInsets.symmetric(horizontal: 25),
                           child: Divider(),
                         ),
-                      if (images.length != 0)
-                        SizedBox(height: 5),
+                      if (images.length != 0) SizedBox(height: 5),
                       if (videos.length != 0)
                         Center(
                           child: Text(
@@ -194,8 +196,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           margin: EdgeInsets.symmetric(horizontal: 25),
                           child: Divider(),
                         ),
-                      if (images.length != 0)
-                        SizedBox(height: 5),
+                      if (images.length != 0) SizedBox(height: 5),
                       Text(title,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
@@ -309,16 +310,20 @@ class _InfoScreenState extends State<InfoScreen> {
                       SizedBox(height: 30),
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        color: brightness == BrightnessOption.light ? Colors.blue: Colors.grey[900],
+                        color: brightness == BrightnessOption.light
+                            ? Colors.blue
+                            : Colors.grey[900],
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             GestureDetector(
                               child: Container(
                                 child: Icon(
-                                    FontAwesomeIcons.github,
-                                    size: 32,
-                                    color: brightness == BrightnessOption.light ? Colors.black45: Colors.grey,
+                                  FontAwesomeIcons.github,
+                                  size: 32,
+                                  color: brightness == BrightnessOption.light
+                                      ? Colors.black45
+                                      : Colors.grey,
                                 ),
                               ),
                               onTap: () async {
@@ -331,11 +336,11 @@ class _InfoScreenState extends State<InfoScreen> {
                             ),
                             GestureDetector(
                               child: Container(
-                                child: Icon(
-                                  FontAwesomeIcons.globeAsia,
-                                  size: 32,
-                                  color: brightness == BrightnessOption.light ? Colors.white70: Colors.grey[600]
-                                ),
+                                child: Icon(FontAwesomeIcons.globeAsia,
+                                    size: 32,
+                                    color: brightness == BrightnessOption.light
+                                        ? Colors.white70
+                                        : Colors.grey[600]),
                               ),
                               onTap: () async {
                                 if (await canLaunch(url2)) {
@@ -347,11 +352,11 @@ class _InfoScreenState extends State<InfoScreen> {
                             ),
                             GestureDetector(
                               child: Container(
-                                child: Icon(
-                                    Icons.mail_outline_rounded,
+                                child: Icon(Icons.mail_outline_rounded,
                                     size: 40,
-                                    color: brightness == BrightnessOption.light ? Colors.grey[300]: Colors.blue
-                                ),
+                                    color: brightness == BrightnessOption.light
+                                        ? Colors.grey[300]
+                                        : Colors.blue),
                               ),
                               onTap: () async {
                                 if (await canLaunch(
@@ -364,11 +369,11 @@ class _InfoScreenState extends State<InfoScreen> {
                             ),
                             GestureDetector(
                               child: Container(
-                                child: Icon(
-                                    FontAwesomeIcons.wpforms,
+                                child: Icon(FontAwesomeIcons.wpforms,
                                     size: 32,
-                                    color: brightness == BrightnessOption.light ? Colors.blue.shade200: Colors.blue
-                                ),
+                                    color: brightness == BrightnessOption.light
+                                        ? Colors.blue.shade200
+                                        : Colors.blue),
                               ),
                               onTap: () async {
                                 if (await canLaunch(
@@ -382,11 +387,11 @@ class _InfoScreenState extends State<InfoScreen> {
                             ),
                             GestureDetector(
                               child: Container(
-                                child: Icon(
-                                    FontAwesomeIcons.instagram,
+                                child: Icon(FontAwesomeIcons.instagram,
                                     size: 35,
-                                    color: brightness == BrightnessOption.light ? Colors.white : Colors.pink.shade700
-                                ),
+                                    color: brightness == BrightnessOption.light
+                                        ? Colors.white
+                                        : Colors.pink.shade700),
                               ),
                               onTap: () async {
                                 if (await canLaunch(
