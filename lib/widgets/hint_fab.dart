@@ -78,7 +78,9 @@ class _HintsFabState extends State<HintsFab> {
     return Consumer<UserProvider>(builder: (context, provider, _) {
       int hintNumber = provider.user.hintLevel;
       return BoomMenu(
-
+       elevation: 8,
+        marginBottom: 10,
+        marginRight: 10,
         foregroundColor:
         brightness == BrightnessOption.dark ? Colors.white : Colors.black,
         backgroundColor:
@@ -127,7 +129,7 @@ class _HintsFabState extends State<HintsFab> {
               child: Row(
                 children: [
                   Icon(
-                    Icons.lightbulb_outline,
+                    Icons.wb_incandescent_outlined,
                     color: brightness == BrightnessOption.dark
                         ? Colors.blue
                         : Colors.blue,
@@ -194,7 +196,7 @@ class _HintsFabState extends State<HintsFab> {
               child: Row(
                 children: [
                   Icon(
-                    Icons.lightbulb_outline,
+                    Icons.wb_incandescent_outlined,
                     color: brightness == BrightnessOption.dark
                         ? Colors.blue
                         : Colors.blue,
@@ -260,7 +262,7 @@ class _HintsFabState extends State<HintsFab> {
               child: Row(
                 children: [
                   Icon(
-                    Icons.lightbulb_outline,
+                    Icons.wb_incandescent_outlined,
                     color: brightness == BrightnessOption.dark
                         ? Colors.blue
                         : Colors.blue,

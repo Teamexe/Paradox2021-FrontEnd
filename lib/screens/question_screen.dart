@@ -8,6 +8,7 @@ import 'package:paradox/utilities/myBehaviour.dart';
 import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/widgets/hint_fab.dart';
 import 'package:paradox/widgets/question_display.dart';
+import 'package:paradox/widgets/user_coins_Score.dart';
 import 'package:provider/provider.dart';
 import '../widgets/question_screen_layout.dart';
 
@@ -46,6 +47,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
             onPressed: () {
               Navigator.pop(context);
             }),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.apps_sharp),
+              onPressed: () {
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (_) => UserStats(),
+                );
+              })
+        ],
         elevation: 0,
       ),
       body: ScrollConfiguration(
@@ -61,7 +73,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   ? Color(0xff00B4DB)
                   : Colors.grey[900],
               // Color(0xff1A2980),
-            ], begin: Alignment.topCenter, end: Alignment.bottomRight),
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
             boxShadow: [
               BoxShadow(
                 color: Color(0xff0083B0),
