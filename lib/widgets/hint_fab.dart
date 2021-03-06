@@ -1,3 +1,4 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -77,219 +78,225 @@ class _HintsFabState extends State<HintsFab> {
     final user = Provider.of<UserProvider>(context).user;
     return Consumer<UserProvider>(builder: (context, provider, _) {
       int hintNumber = provider.user.hintLevel;
-      return BoomMenu(
-       elevation: 8,
-        marginBottom: 10,
-        marginRight: 10,
-        foregroundColor:
-        brightness == BrightnessOption.dark ? Colors.white : Colors.black,
-        backgroundColor:
-        brightness == BrightnessOption.dark ? Colors.black : Colors.white,
-        animatedIcon: AnimatedIcons.menu_close,
-        animatedIconTheme: IconThemeData(size: 22.0),
-        scrollVisible: true,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.7,
-        children: [
-          if (hintNumber <= 0)
-            MenuItem(
-              title: "Hint 1",
-              subtitle: "Avail hint 1 with 20 coins",
-              child: Icon(
-                Icons.lightbulb_outline,
-                color: brightness == BrightnessOption.dark
-                    ? Colors.white
-                    : Colors.black,
-              ),
-              titleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              subTitleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              backgroundColor: brightness == BrightnessOption.dark
-                  ? Colors.grey[800]
-                  : Colors.white,
-              onTap: () {
-                if (hintNumber != 0) {
-                  createToast("Please Avail Previous Hint First.");
-                  return;
-                }
-                displayDialogforHint(
-                    title: 'Are you sure you want to Retrieve hint 1?',
-                    imgName: 'hint.gif',
-                    text: 'Yes',
-                    color: Colors.red);
-              },
-            ),
-          if (hintNumber >= 1)
-            MenuItem(
-              title: "",
-              subtitle: '',
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.wb_incandescent_outlined,
+      return AbsorbPointer(
+        absorbing: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? true : false,
+        child: Opacity(
+          opacity: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? 0.2 : 1,
+          child: BoomMenu(
+           elevation: 8,
+            marginBottom: 10,
+            marginRight: 10,
+            foregroundColor:
+            brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+            backgroundColor:
+            brightness == BrightnessOption.dark ? Colors.black : Colors.white,
+            animatedIcon: AnimatedIcons.menu_close,
+            animatedIconTheme: IconThemeData(size: 22.0),
+            scrollVisible: true,
+            overlayColor: Colors.black,
+            overlayOpacity: 0.7,
+            children: [
+              if (hintNumber <= 0)
+                MenuItem(
+                  title: "Hint 1",
+                  subtitle: "Avail hint 1 with 20 coins",
+                  child: Icon(
+                    Icons.lightbulb_outline,
                     color: brightness == BrightnessOption.dark
-                        ? Colors.blue
-                        : Colors.blue,
+                        ? Colors.white
+                        : Colors.black,
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.65,
-                    child: Text(
-                      '${hintList[user.level - 1].hint1}',
-                      maxLines: 2,
+                  titleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  subTitleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  backgroundColor: brightness == BrightnessOption.dark
+                      ? Colors.grey[800]
+                      : Colors.white,
+                  onTap: () {
+                    if (hintNumber != 0) {
+                      createToast("Please Avail Previous Hint First.");
+                      return;
+                    }
+                    displayDialogforHint(
+                        title: 'Are you sure you want to Retrieve hint 1?',
+                        imgName: 'hint.gif',
+                        text: 'Yes',
+                        color: Colors.red);
+                  },
+                ),
+              if (hintNumber >= 1)
+                MenuItem(
+                  title: "",
+                  subtitle: '',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.wb_incandescent_outlined,
+                        color: brightness == BrightnessOption.dark
+                            ? Colors.blue
+                            : Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        child: Text(
+                          '${hintList[user.level - 1].hint1}',
+                          maxLines: 2,
 
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              titleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              subTitleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              backgroundColor: brightness == BrightnessOption.dark
-                  ? Colors.grey[800]
-                  : Colors.white,
-            ),
-          if (hintNumber <= 1)
-            MenuItem(
-              title: "Hint 2",
-              subtitle: "Avail hint 2 with 30 coins",
-              child: Icon(
-                Icons.lightbulb_outline,
-                color: brightness == BrightnessOption.dark
-                    ? Colors.white
-                    : Colors.black,
-              ),
-              titleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              subTitleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              backgroundColor: brightness == BrightnessOption.dark
-                  ? Colors.grey[800]
-                  : Colors.white,
-              onTap: () {
-                if (hintNumber != 1) {
-                  createToast("Please Avail Previous Hint First.");
-                  return;
-                }
-                displayDialogforHint(
-                  title: 'Are you sure you want to Retrieve hint 2?',
-                  imgName: 'wrong.gif',
-                  text: 'Yes',
-                  color: Colors.red,
-                );
-              },
-            ),
-          if (hintNumber >= 2)
-            MenuItem(
-              title: "",
-              subtitle: '',
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.wb_incandescent_outlined,
+                  titleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  subTitleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  backgroundColor: brightness == BrightnessOption.dark
+                      ? Colors.grey[800]
+                      : Colors.white,
+                ),
+              if (hintNumber <= 1)
+                MenuItem(
+                  title: "Hint 2",
+                  subtitle: "Avail hint 2 with 30 coins",
+                  child: Icon(
+                    Icons.lightbulb_outline,
                     color: brightness == BrightnessOption.dark
-                        ? Colors.blue
-                        : Colors.blue,
+                        ? Colors.white
+                        : Colors.black,
                   ),
-                  SizedBox(
-                    width: 10,
+                  titleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  subTitleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  backgroundColor: brightness == BrightnessOption.dark
+                      ? Colors.grey[800]
+                      : Colors.white,
+                  onTap: () {
+                    if (hintNumber != 1) {
+                      createToast("Please Avail Previous Hint First.");
+                      return;
+                    }
+                    displayDialogforHint(
+                      title: 'Are you sure you want to Retrieve hint 2?',
+                      imgName: 'wrong.gif',
+                      text: 'Yes',
+                      color: Colors.red,
+                    );
+                  },
+                ),
+              if (hintNumber >= 2)
+                MenuItem(
+                  title: "",
+                  subtitle: '',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.wb_incandescent_outlined,
+                        color: brightness == BrightnessOption.dark
+                            ? Colors.blue
+                            : Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        child: Text(
+                          '${hintList[user.level - 1].hint2}',
+                          maxLines: 2,
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.65,
-                    child: Text(
-                      '${hintList[user.level - 1].hint2}',
-                      maxLines: 2,
-                    ),
-                  ),
-                ],
-              ),
-              titleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              subTitleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              backgroundColor: brightness == BrightnessOption.dark
-                  ? Colors.grey[800]
-                  : Colors.white,
-            ),
-          if (hintNumber <= 2)
-            MenuItem(
-              title: "Hint 3",
-              subtitle: "Avail hint 3 with 40 coins",
-              child: Icon(
-                Icons.lightbulb_outline,
-                color: brightness == BrightnessOption.dark
-                    ? Colors.white
-                    : Colors.black,
-              ),
-              titleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              subTitleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              backgroundColor: brightness == BrightnessOption.dark
-                  ? Colors.grey[800]
-                  : Colors.white,
-              onTap: () {
-                if (hintNumber != 2) {
-                  createToast("Please Avail Previous Hint First.");
-                  return;
-                }
-                displayDialogforHint(
-                  title: 'Are you sure you want to Retrieve hint 3?',
-                  imgName: 'wrong.gif',
-                  text: 'Yes',
-                  color: Colors.red,
-                );
-              },
-            ),
-          if (hintNumber >= 3)
-            MenuItem(
-              title: "",
-              subtitle: '',
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.wb_incandescent_outlined,
+                  titleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  subTitleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  backgroundColor: brightness == BrightnessOption.dark
+                      ? Colors.grey[800]
+                      : Colors.white,
+                ),
+              if (hintNumber <= 2)
+                MenuItem(
+                  title: "Hint 3",
+                  subtitle: "Avail hint 3 with 40 coins",
+                  child: Icon(
+                    Icons.lightbulb_outline,
                     color: brightness == BrightnessOption.dark
-                        ? Colors.blue
-                        : Colors.blue,
+                        ? Colors.white
+                        : Colors.black,
                   ),
-                  SizedBox(
-                    width: 10,
+                  titleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  subTitleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  backgroundColor: brightness == BrightnessOption.dark
+                      ? Colors.grey[800]
+                      : Colors.white,
+                  onTap: () {
+                    if (hintNumber != 2) {
+                      createToast("Please Avail Previous Hint First.");
+                      return;
+                    }
+                    displayDialogforHint(
+                      title: 'Are you sure you want to Retrieve hint 3?',
+                      imgName: 'wrong.gif',
+                      text: 'Yes',
+                      color: Colors.red,
+                    );
+                  },
+                ),
+              if (hintNumber >= 3)
+                MenuItem(
+                  title: "",
+                  subtitle: '',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.wb_incandescent_outlined,
+                        color: brightness == BrightnessOption.dark
+                            ? Colors.blue
+                            : Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        child: Text(
+                          '${hintList[user.level - 1].hint3}',
+                          maxLines: 2,
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.65,
-                    child: Text(
-                      '${hintList[user.level - 1].hint3}',
-                      maxLines: 2,
-                    ),
-                  ),
-                ],
-              ),
-              titleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              subTitleColor: brightness == BrightnessOption.dark
-                  ? Colors.white
-                  : Colors.black,
-              backgroundColor: brightness == BrightnessOption.dark
-                  ? Colors.grey[800]
-                  : Colors.white,
-            ),
-        ],
+                  titleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  subTitleColor: brightness == BrightnessOption.dark
+                      ? Colors.white
+                      : Colors.black,
+                  backgroundColor: brightness == BrightnessOption.dark
+                      ? Colors.grey[800]
+                      : Colors.white,
+                ),
+            ],
+          ),
+        ),
       );
     });
   }

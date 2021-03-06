@@ -1,7 +1,9 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/theme_provider.dart';
+import 'package:paradox/widgets/no_data_connection.dart';
 import 'package:provider/provider.dart';
 
 String privacyPolicy = '''
@@ -80,42 +82,62 @@ class PrivacyPolicyWidget extends StatelessWidget {
           ),
         ),
         automaticallyImplyLeading: false,
-        leading: Container(
-          padding: const EdgeInsets.all(10),
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.pop(context);
-            },
+        leading: AbsorbPointer(
+          absorbing: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? true : false,
+          child: Opacity(
+            opacity: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? 0.2 : 1,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
           ),
         ),
       ),
       backgroundColor: brightness == BrightnessOption.light ? Colors.white : Colors.grey[850],
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TweenAnimationBuilder(
-          tween: Tween(begin: 0.0, end: 1.0),
-          child: SafeArea(child: Markdown(data: privacyPolicy)),
-          duration: Duration(milliseconds: 1000),
-          builder: (ctx, value, child) {
-            return ShaderMask(
-                shaderCallback: (rect) {
-                  return RadialGradient(
-                          colors: [
-                            Colors.white,
-                            Colors.white,
-                            Colors.transparent,
-                            Colors.transparent
-                          ],
-                          radius: value * 5,
-                          stops: [0.0, .55, .66, 1.0],
-                          center: FractionalOffset(.1, .9))
-                      .createShader(rect);
-                },
-                child: child);
-          },
-        ),
+      body: Stack(
+        children: [
+          AbsorbPointer(
+            absorbing: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? true : false,
+            child: Opacity(
+              opacity: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? 0.2 : 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TweenAnimationBuilder(
+                  tween: Tween(begin: 0.0, end: 1.0),
+                  child: SafeArea(child: Markdown(data: privacyPolicy)),
+                  duration: Duration(milliseconds: 1000),
+                  builder: (ctx, value, child) {
+                    return ShaderMask(
+                        shaderCallback: (rect) {
+                          return RadialGradient(
+                                  colors: [
+                                    Colors.white,
+                                    Colors.white,
+                                    Colors.transparent,
+                                    Colors.transparent
+                                  ],
+                                  radius: value * 5,
+                                  stops: [0.0, .55, .66, 1.0],
+                                  center: FractionalOffset(.1, .9))
+                              .createShader(rect);
+                        },
+                        child: child);
+                  },
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected,
+            child: NoDataConnectionWidget(),
+          ),
+        ],
       ),
     );
   }

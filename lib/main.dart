@@ -1,3 +1,4 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -60,29 +61,35 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Consumer<ThemeProvider>(
           builder: (BuildContext context, value, Widget child) {
-        return MaterialApp(
-          title: 'Paradox',
-          theme: ThemeData(
-            brightness: brightness(context),
-            accentColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
+        return StreamProvider<DataConnectionStatus>(
+          create: (_) {
+            return DataConnectionChecker().onStatusChange;
+          },
+          child: MaterialApp(
+            title: 'Paradox',
+            theme: ThemeData(
+              brightness: brightness(context),
+              accentColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              primarySwatch: Colors.blue,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            home: StreamBuilder(
+              stream: FirebaseAuth.instance.onAuthStateChanged,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  Provider.of<ThemeProvider>(context, listen: true).brightness;
+                  Provider.of<DataConnectionStatus>(context, listen: true);
+                  return Home();
+                } else {
+                  return SignIn();
+                }
+              },
+            ),
+            // QuestionScreen(),
+            routes: routes,
+            debugShowCheckedModeBanner: false,
           ),
-          home: StreamBuilder(
-            stream: FirebaseAuth.instance.onAuthStateChanged,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                Provider.of<ThemeProvider>(context, listen: true).brightness;
-                return Home();
-              } else {
-                return SignIn();
-              }
-            },
-          ),
-          // QuestionScreen(),
-          routes: routes,
-          debugShowCheckedModeBanner: false,
         );
       }),
     );

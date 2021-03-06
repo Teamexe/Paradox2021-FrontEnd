@@ -50,6 +50,9 @@ dependencies:
   carousel_pro: ^1.0.0
   youtube_player_iframe: ^1.2.0+2
   flutter_local_notifications: ^1.4.4+1
+  data_connection_checker: ^0.3.4
+  system_shortcuts: ^1.0.0
+  app_settings: ^4.1.0
 
 
 
@@ -94,6 +97,7 @@ flutter:
     - assets/images/
     - assets/images/referral_availed.gif
     - assets/images/referral.gif
+    - assets/images/internet.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
