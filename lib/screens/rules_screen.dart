@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/screens/home_screen.dart';
+import 'package:paradox/screens/question_screen.dart';
 import 'package:provider/provider.dart';
 
 class RulesScreen extends StatelessWidget {
@@ -60,7 +61,7 @@ class RulesScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 FlatButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(Home.routeName);
+                    Navigator.of(context).pushReplacementNamed(QuestionScreen.routeName);
                   },
                   child: Container(
                       decoration: BoxDecoration(
