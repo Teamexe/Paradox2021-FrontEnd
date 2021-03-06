@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -21,6 +22,7 @@ import 'package:paradox/screens/stageCompleted_screen.dart';
 import 'package:paradox/screens/user_profile_screen.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/screens/member_screen.dart';
+import 'package:paradox/widgets/no_data_connection.dart';
 import 'package:paradox/utilities/notifications.dart';
 import 'package:paradox/utilities/type_writer_box.dart';
 import 'package:paradox/widgets/drawer.dart';
@@ -43,6 +45,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         // resizeToAvoidBottomPadding: false,
         appBar: AppBar(
@@ -54,23 +57,29 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
             ),
           ),
           actions: [
-            GestureDetector(
-              child: Container(
-                padding: EdgeInsets.all(10),
+            AbsorbPointer(
+              absorbing: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? true : false,
+              child: GestureDetector(
+                onTap: load
+                    ? null
+                    : () {
+                        Navigator.pushNamed(context, ProfileScreen.routeName);
+                      },
                 child: Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: Image(
-                      image: NetworkImage(UserProvider().getUserProfileImage()),
+                  padding: EdgeInsets.all(10),
+                  child: Opacity(
+                    opacity: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? 0.2 : 1,
+                    child: Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: Image(
+                          image: loadUserImage,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-              onTap: load
-                  ? null
-                  : () {
-                      Navigator.pushNamed(context, ProfileScreen.routeName);
-                    },
             ),
           ],
         ),
@@ -81,13 +90,8 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
                 ),
               )
             : AppDrawer(),
-        body: load != true
-            ? HomePage()
-            : Center(
-                child: SpinKitFoldingCube(
-                  color: Colors.blue,
-                ),
-              ));
+        body:  _buildBody()
+    );
   }
 
   @override
@@ -97,14 +101,18 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
       load = true;
     });
 
+    loadData();
+  }
+
+  void loadData() {
     Future.delayed(Duration.zero, () async {
       try {
         await ApiAuthentication().userIsPresent().then((value) async => {
-              if (value)
-                {print('user already in database')}
-              else
-                {await ApiAuthentication().createUser()}
-            });
+          if (value)
+            {print('user already in database')}
+          else
+            {await ApiAuthentication().createUser()}
+        });
         Provider.of<UserProvider>(context, listen: false).assignUser(
             FirebaseAuth.instance.currentUser.uid,
             FirebaseAuth.instance.currentUser.email,
@@ -116,8 +124,8 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
           Provider.of<QuestionProvider>(context, listen: false).fetchHints(),
           Provider.of<UserProvider>(context, listen: false).fetchUserDetails()
         ]);
-        showNotification(
-            "Play Paradox 2k21", "Win exciting prizes and goodies");
+        // showNotification(
+        //     "Play Paradox 2k21", "Win exciting prizes and goodies");
         setState(() {
           load = false;
         });
@@ -125,6 +133,26 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin<Home> {
         createToast("There is some error. Please Try again later");
       }
     });
+  }
+
+  Widget _buildBody() {
+    loadData();
+    if (load != true) {
+      loadUserImage;
+      return HomePage();
+    }
+    else if (Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected)
+      return NoDataConnectionWidget();
+    loadUserImage;
+    return Center(
+        child: SpinKitFoldingCube(
+          color: Colors.blue,
+        )
+    );
+  }
+
+  get loadUserImage {
+    return NetworkImage(UserProvider().getUserProfileImage());
   }
 }
 
@@ -188,318 +216,332 @@ class _HomePageState extends State<HomePage>
     return SafeArea(
       child: TweenAnimationBuilder(
         tween: Tween(begin: 0.0, end: 1.0),
-        child: SingleChildScrollView(
-          child: Container(
-            padding: null,
-            margin: null,
-            child: Column(
-              children: [
-                Container(
-                  // margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              width: 180,
-                              height: 50,
-                              margin: EdgeInsets.only(left: 10, top: 10),
-                              child: TypeWriterBox('Paradox')),
-                          GestureDetector(
-                            child: Container(
-                              height: 45,
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.all(5),
-                              margin: EdgeInsets.only(top: 10, right: 10),
-                              child: ScaleTransition(
+        child: Stack(
+          children: [
+            Opacity(
+              opacity: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? 0.2 : 1,
+              child: AbsorbPointer(
+                absorbing: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? true : false,
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: null,
+                    margin: null,
+                    child: Column(
+                      children: [
+                        Container(
+                          // margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      width: 180,
+                                      height: 50,
+                                      margin: EdgeInsets.only(left: 10, top: 10),
+                                      child: TypeWriterBox('Paradox')),
+                                  GestureDetector(
+                                    child: Container(
+                                      height: 45,
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.all(5),
+                                      margin: EdgeInsets.only(top: 10, right: 10),
+                                      child: ScaleTransition(
+                                        scale: scaleAnimation,
+                                        child: Text('View Rules',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.blue.withOpacity(0.85))),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, RulesScreen.routeName);
+                                    },
+                                  ),
+                                ],
+                              ),
+                              ScaleTransition(
                                 scale: scaleAnimation,
-                                child: Text('View Rules',
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 16),
+                                  child: CarouselSlider(
+                                    options: CarouselOptions(
+                                        height: 230,
+                                        autoPlay: true,
+                                        autoPlayInterval: Duration(seconds: 3),
+                                        autoPlayAnimationDuration:
+                                            Duration(milliseconds: 800),
+                                        autoPlayCurve: Curves.fastOutSlowIn,
+                                        pauseAutoPlayOnTouch: true,
+                                        aspectRatio: 2.0,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            _currentIndex = index;
+                                          });
+                                        }),
+                                    items: itemList.map((paradoxCard) {
+                                      return Builder(builder: (BuildContext context) {
+                                        return Container(
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Transform.scale(
+                                            scale: 1,
+                                            child: paradoxCard,
+                                          ),
+                                        );
+                                      });
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                              ScaleTransition(
+                                scale: scaleAnimation,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: map(itemList, (index, dot) {
+                                    return Container(
+                                      width: 10,
+                                      height: 10,
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 2),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: _currentIndex == index
+                                            ? Colors.blue.withOpacity(0.7)
+                                            : Colors.grey.withOpacity(0.55),
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              ScaleTransition(
+                                scale: scaleAnimation,
+                                child: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 16),
+                                    child: Divider()),
+                              ),
+                              SizedBox(height: 15),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      width: 200,
+                                      height: 50,
+                                      child: TypeWriterBox('Top Players'),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(right: 10),
+                                    height: 45,
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.all(5),
+                                    child: ScaleTransition(
+                                      scale: scaleAnimation,
+                                      child: Text('nimbus'.toUpperCase(),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.blue.withOpacity(0.85))),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              Container(
+                                height: 250,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                child: users.length == 0
+                                    ? SpinKitDualRing(color: Colors.blue)
+                                    : ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (ctx, index) {
+                                          return PlayerCard(users[index], index + 1);
+                                        },
+                                        itemCount: users.length,
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        ScaleTransition(
+                          scale: scaleAnimation,
+                          child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 16),
+                              child: Divider()),
+                        ),
+                        SizedBox(height: 8),
+                        Container(
+                          child: Text('Use referral code',
+                              style: TextStyle(
+                                  color: Colors.blue.withOpacity(0.8),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400)),
+                        ),
+                        SizedBox(height: 13),
+                        ScaleTransition(
+                          scale: scaleAnimation,
+                          child: Container(
+                            // margin: EdgeInsets.symmetric(horizontal: 10),
+                            color: Colors.blue.withOpacity(0.84),
+                            height: 40,
+                            alignment: Alignment.center,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      child: Text(
+                                          'Your referral code is: ${user.referralCode}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 16))),
+                                  FlatButton(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onPressed: () {
+                                      Share.share(
+                                          'Download Paradox from https://play.google.com/store/apps/details?id=com.exe.paradoxplay and use my referral code: ${user.referralCode} and earn 50 coins.');
+                                    },
+                                    child: Text('Share'.toUpperCase(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 7),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Spacer(),
+                              FlatButton(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, MemberScreen.routeName);
+                                },
+                                child: Text('Members',
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 17,
+                                        letterSpacing: 2,
+                                        fontWeight: FontWeight.w400,
                                         color: Colors.blue.withOpacity(0.85))),
                               ),
-                            ),
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, RulesScreen.routeName);
-                            },
-                          ),
-                        ],
-                      ),
-                      ScaleTransition(
-                        scale: scaleAnimation,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 16),
-                          child: CarouselSlider(
-                            options: CarouselOptions(
-                                height: 230,
-                                autoPlay: true,
-                                autoPlayInterval: Duration(seconds: 3),
-                                autoPlayAnimationDuration:
-                                    Duration(milliseconds: 800),
-                                autoPlayCurve: Curves.fastOutSlowIn,
-                                pauseAutoPlayOnTouch: true,
-                                aspectRatio: 2.0,
-                                onPageChanged: (index, reason) {
-                                  setState(() {
-                                    _currentIndex = index;
-                                  });
-                                }),
-                            items: itemList.map((paradoxCard) {
-                              return Builder(builder: (BuildContext context) {
-                                return Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Transform.scale(
-                                    scale: 1,
-                                    child: paradoxCard,
-                                  ),
-                                );
-                              });
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                      ScaleTransition(
-                        scale: scaleAnimation,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: map(itemList, (index, dot) {
-                            return Container(
-                              width: 10,
-                              height: 10,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 2),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _currentIndex == index
-                                    ? Colors.blue.withOpacity(0.7)
-                                    : Colors.grey.withOpacity(0.55),
+                              FlatButton(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, InfoScreen.routeName);
+                                },
+                                child: Text('Information',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        letterSpacing: 2,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.blue.withOpacity(0.85))),
                               ),
-                            );
-                          }),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      ScaleTransition(
-                        scale: scaleAnimation,
-                        child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 16),
-                            child: Divider()),
-                      ),
-                      SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                              margin: EdgeInsets.only(left: 10),
-                              width: 200,
-                              height: 50,
-                              child: TypeWriterBox('Top Players'),
-                            ),
+                              Spacer(),
+                            ],
                           ),
-                          Container(
-                            margin: EdgeInsets.only(right: 10),
-                            height: 45,
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 50,
+                          color: Colors.blue.withOpacity(0.85),
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
                             alignment: Alignment.center,
-                            padding: EdgeInsets.all(5),
-                            child: ScaleTransition(
-                              scale: scaleAnimation,
-                              child: Text('nimbus'.toUpperCase(),
+                            child: RichText(
+                              text: TextSpan(
                                   style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.blue.withOpacity(0.85))),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Container(
-                        height: 250,
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        child: users.length == 0
-                            ? SpinKitDualRing(color: Colors.blue)
-                            : ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (ctx, index) {
-                                  return PlayerCard(users[index], index + 1);
-                                },
-                                itemCount: users.length,
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 5),
-                ScaleTransition(
-                  scale: scaleAnimation,
-                  child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 16),
-                      child: Divider()),
-                ),
-                SizedBox(height: 8),
-                Container(
-                  child: Text('Use referral code',
-                      style: TextStyle(
-                          color: Colors.blue.withOpacity(0.8),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400)),
-                ),
-                SizedBox(height: 13),
-                ScaleTransition(
-                  scale: scaleAnimation,
-                  child: Container(
-                    // margin: EdgeInsets.symmetric(horizontal: 10),
-                    color: Colors.blue.withOpacity(0.84),
-                    height: 40,
-                    alignment: Alignment.center,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(left: 10),
-                              child: Text(
-                                  'Your referral code is: ${user.referralCode}',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16))),
-                          FlatButton(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onPressed: () {
-                              Share.share(
-                                  'Download Paradox from https://play.google.com/store/apps/details?id=com.exe.paradoxplay and use my referral code: ${user.referralCode} and earn 50 coins.');
-                            },
-                            child: Text('Share'.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
+                                    fontSize: 18,
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16)),
+                                    fontWeight: FontWeight.w300,
+                                    letterSpacing: 2,
+                                  ),
+                                  children: [
+                                    TextSpan(text: 'Made with '),
+                                    TextSpan(
+                                        text: String.fromCharCode(0x2665),
+                                        style: TextStyle(fontFamily: 'Material Icons')),
+                                    TextSpan(text: ' by '),
+                                    TextSpan(
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          if (await canLaunch('https://teamexe.in')) {
+                                            launch('https://teamexe.in');
+                                          } else {
+                                            throw 'Could not launch https://teamexe.in';
+                                          }
+                                        },
+                                      text: 'Team .E',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.lightBlue[900].withAlpha(1000),
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          if (await canLaunch('https://teamexe.in')) {
+                                            launch('https://teamexe.in');
+                                          } else {
+                                            throw 'Could not launch https://teamexe.in';
+                                          }
+                                        },
+                                      text: 'X',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.lightBlue[100],
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          if (await canLaunch('https://teamexe.in')) {
+                                            launch('https://teamexe.in');
+                                          } else {
+                                            throw 'Could not launch https://teamexe.in';
+                                          }
+                                        },
+                                      text: 'E',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.lightBlue[900].withAlpha(1000),
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ]),
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                SizedBox(height: 7),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Spacer(),
-                      FlatButton(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onPressed: () {
-                          Navigator.pushNamed(context, MemberScreen.routeName);
-                        },
-                        child: Text('Members',
-                            style: TextStyle(
-                                fontSize: 17,
-                                letterSpacing: 2,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.blue.withOpacity(0.85))),
-                      ),
-                      FlatButton(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onPressed: () {
-                          Navigator.pushNamed(context, InfoScreen.routeName);
-                        },
-                        child: Text('Information',
-                            style: TextStyle(
-                                fontSize: 17,
-                                letterSpacing: 2,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.blue.withOpacity(0.85))),
-                      ),
-                      Spacer(),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  height: 50,
-                  color: Colors.blue.withOpacity(0.85),
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: RichText(
-                      text: TextSpan(
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300,
-                            letterSpacing: 2,
-                          ),
-                          children: [
-                            TextSpan(text: 'Made with '),
-                            TextSpan(
-                                text: String.fromCharCode(0x2665),
-                                style: TextStyle(fontFamily: 'Material Icons')),
-                            TextSpan(text: ' by '),
-                            TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  if (await canLaunch('https://teamexe.in')) {
-                                    launch('https://teamexe.in');
-                                  } else {
-                                    throw 'Could not launch https://teamexe.in';
-                                  }
-                                },
-                              text: 'Team .E',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.lightBlue[900].withAlpha(1000),
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  if (await canLaunch('https://teamexe.in')) {
-                                    launch('https://teamexe.in');
-                                  } else {
-                                    throw 'Could not launch https://teamexe.in';
-                                  }
-                                },
-                              text: 'X',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.lightBlue[100],
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  if (await canLaunch('https://teamexe.in')) {
-                                    launch('https://teamexe.in');
-                                  } else {
-                                    throw 'Could not launch https://teamexe.in';
-                                  }
-                                },
-                              text: 'E',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.lightBlue[900].withAlpha(1000),
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ]),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            Visibility(
+                visible: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected,
+                child: NoDataConnectionWidget(),
+            ),
+          ],
         ),
         duration: Duration(milliseconds: 1000),
         builder: (ctx, value, child) {

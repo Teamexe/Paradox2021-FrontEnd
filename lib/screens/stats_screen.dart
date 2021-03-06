@@ -1,3 +1,4 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:paradox/models/brightness_options.dart';
@@ -5,6 +6,7 @@ import 'package:paradox/providers/stats_provider.dart';
 import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/utilities/Toast.dart';
 import 'package:paradox/widgets/customCard.dart';
+import 'package:paradox/widgets/no_data_connection.dart';
 import 'package:provider/provider.dart';
 
 class StatsScreen extends StatefulWidget {
@@ -36,14 +38,20 @@ class _StatsScreenState extends State<StatsScreen> {
           ),
         ),
         automaticallyImplyLeading: false,
-        leading: Container(
-          padding: const EdgeInsets.all(10),
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.pop(context);
-            },
+        leading: AbsorbPointer(
+          absorbing: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? true : false,
+          child: Opacity(
+            opacity: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? 0.2 : 1,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
           ),
         ),
         actions: [
@@ -54,34 +62,40 @@ class _StatsScreenState extends State<StatsScreen> {
                     size: 35,
                   ),
                 )
-              : IconButton(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: Icon(
-                      Icons.refresh,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                  ),
-                  onPressed: loading
-                      ? null
-                      : () async {
-                          setState(() {
-                            loading = true;
-                          });
-                          try {
-                            await Provider.of<StatsProvider>(context,
-                                    listen: false)
-                                .fetchAndSetStats();
-                          } catch (e) {
-                            createToast(
-                                "There was some error. Please try again later");
-                          } finally {
-                            setState(() {
-                              loading = false;
-                            });
-                          }
-                        })
+              : AbsorbPointer(
+                absorbing: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? true : false,
+                child: Opacity(
+                  opacity: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? 0.2 : 1,
+                  child: IconButton(
+                      icon: Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: Icon(
+                          Icons.refresh,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                      ),
+                      onPressed: loading
+                          ? null
+                          : () async {
+                              setState(() {
+                                loading = true;
+                              });
+                              try {
+                                await Provider.of<StatsProvider>(context,
+                                        listen: false)
+                                    .fetchAndSetStats();
+                              } catch (e) {
+                                createToast(
+                                    "There was some error. Please try again later");
+                              } finally {
+                                setState(() {
+                                  loading = false;
+                                });
+                              }
+                            }),
+                ),
+              )
         ],
       ),
       body: loading
@@ -91,49 +105,63 @@ class _StatsScreenState extends State<StatsScreen> {
                 size: 80,
               ),
             )
-          : TweenAnimationBuilder(
-              tween: Tween(begin: 0.0, end: 1.0),
-              child: SafeArea(
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CustomCard2(
-                          heading1: 'Total Users : $users',
-                          imagePath: 'assets/images/user.jpg'),
-                      CustomCard2(
-                          heading1: 'Questions : $question',
-                          imagePath: 'assets/images/question.jpeg'),
-                      CustomCard2(
-                          heading1: 'Attempts : $attempts',
-                          imagePath: 'assets/images/attempts.jpg'),
-                      CustomCard2(
-                          heading1: 'Correctly Attempted : $answered',
-                          imagePath: 'assets/images/correct_answer.jpg'),
-                    ],
-                  ),
+          : Stack(
+            children: [
+              AbsorbPointer(
+                absorbing: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? true : false,
+                child: Opacity(
+                  opacity: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected ? 0.2 : 1,
+                  child: TweenAnimationBuilder(
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      child: SafeArea(
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CustomCard2(
+                                  heading1: 'Total Users : $users',
+                                  imagePath: 'assets/images/user.jpg'),
+                              CustomCard2(
+                                  heading1: 'Questions : $question',
+                                  imagePath: 'assets/images/question.jpeg'),
+                              CustomCard2(
+                                  heading1: 'Attempts : $attempts',
+                                  imagePath: 'assets/images/attempts.jpg'),
+                              CustomCard2(
+                                  heading1: 'Correctly Attempted : $answered',
+                                  imagePath: 'assets/images/correct_answer.jpg'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      duration: Duration(milliseconds: 1000),
+                      builder: (ctx, value, child) {
+                        return ShaderMask(
+                          shaderCallback: (rect) {
+                            return RadialGradient(
+                                    colors: [
+                                      Colors.white,
+                                      Colors.white,
+                                      Colors.transparent,
+                                      Colors.transparent
+                                    ],
+                                    radius: value * 5,
+                                    stops: [0.0, .55, .66, 1.0],
+                                    center: FractionalOffset(.1, .6))
+                                .createShader(rect);
+                          },
+                          child: child,
+                        );
+                      },
+                    ),
                 ),
               ),
-              duration: Duration(milliseconds: 1000),
-              builder: (ctx, value, child) {
-                return ShaderMask(
-                  shaderCallback: (rect) {
-                    return RadialGradient(
-                            colors: [
-                              Colors.white,
-                              Colors.white,
-                              Colors.transparent,
-                              Colors.transparent
-                            ],
-                            radius: value * 5,
-                            stops: [0.0, .55, .66, 1.0],
-                            center: FractionalOffset(.1, .6))
-                        .createShader(rect);
-                  },
-                  child: child,
-                );
-              },
-            ),
+              Visibility(
+                visible: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected,
+                child: NoDataConnectionWidget(),
+              ),
+            ],
+          ),
     );
   }
 
