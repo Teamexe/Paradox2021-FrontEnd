@@ -19,6 +19,7 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
+
   @override
   Widget build(BuildContext context) {
     final questList = Provider.of<QuestionProvider>(context).questionList;
@@ -33,15 +34,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
     if (loading == false || loadingHints == false || loadedUser == false) {
       return Center(
           child: Container(
-            child: Text("Loading"),
-          ));
+        child: Text("Loading"),
+      ));
     }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: brightness == BrightnessOption.light ? Color(0xff0083B0) : Colors.grey[900] ,
-        leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: (){
-          Navigator.pop(context);
-        }),
+        backgroundColor: brightness == BrightnessOption.light
+            ? Color(0xff0083B0)
+            : Colors.grey[900],
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
         elevation: 0,
       ),
       body: ScrollConfiguration(
@@ -50,8 +55,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
           height: MediaQuery.of(context).size.height * 1,
           decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-              brightness == BrightnessOption.light ? Color(0xff0083B0) : Colors.grey[900],
-              brightness == BrightnessOption.light ? Color(0xff00B4DB) : Colors.grey[900],
+              brightness == BrightnessOption.light
+                  ? Color(0xff0083B0)
+                  : Colors.grey[900],
+              brightness == BrightnessOption.light
+                  ? Color(0xff00B4DB)
+                  : Colors.grey[900],
               // Color(0xff1A2980),
             ], begin: Alignment.topCenter, end: Alignment.bottomRight),
             boxShadow: [
@@ -64,15 +73,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
           ),
           child: questList.isEmpty
               ? SpinKitCircle(
-            color: Colors.white,
-          )
+                  color: Colors.white,
+                )
               : QuestionDisplay(
-            questList: questList,
-            level: level,
-          ),
+                  questList: questList,
+                  level: level,
+                ),
         ),
       ),
-    floatingActionButton: HintsFab(),
+      floatingActionButton: HintsFab(),
     );
   }
 }
