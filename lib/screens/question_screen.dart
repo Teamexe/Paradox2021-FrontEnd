@@ -19,9 +19,9 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
-
   @override
   Widget build(BuildContext context) {
+    GlobalKey globalKey = new GlobalKey();
     final questList = Provider.of<QuestionProvider>(context).questionList;
     final loading = Provider.of<QuestionProvider>(context).loaded;
     final loadingHints = Provider.of<QuestionProvider>(context).loadedHints;
@@ -29,8 +29,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
     final loadedUser = Provider.of<UserProvider>(context).loadedProfile;
     final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
 
-    print(Provider.of<UserProvider>(context).user.hintLevel);
-    print(questList);
     if (loading == false || loadingHints == false || loadedUser == false) {
       return Center(
           child: Container(
@@ -38,6 +36,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
       ));
     }
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
         backgroundColor: brightness == BrightnessOption.light
             ? Color(0xff0083B0)

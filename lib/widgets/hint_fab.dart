@@ -39,9 +39,9 @@ class _HintsFabState extends State<HintsFab> {
           buttonCancelColor: color,
           entryAnimation: EntryAnimation.RIGHT,
           buttonCancelText:
-              Text("No", style: TextStyle(color: Colors.white, fontSize: 18)),
+          Text("No", style: TextStyle(color: Colors.white, fontSize: 18)),
           buttonOkText:
-              Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
+          Text(text, style: TextStyle(color: Colors.white, fontSize: 18)),
           onCancelButtonPressed: () {
             Navigator.of(context).pop();
           },
@@ -50,12 +50,12 @@ class _HintsFabState extends State<HintsFab> {
                 barrierDismissible: false,
                 context: context,
                 builder: (context) => SpinKitFadingGrid(
-                      color: Colors.blue,
-                    ));
+                  color: Colors.blue,
+                ));
             try {
               final resp =
-                  await Provider.of<UserProvider>(context, listen: false)
-                      .availHints();
+              await Provider.of<UserProvider>(context, listen: false)
+                  .availHints();
               if (resp == true) {
                 createToast("Hint successfully availed");
               }
@@ -80,9 +80,9 @@ class _HintsFabState extends State<HintsFab> {
       return BoomMenu(
 
         foregroundColor:
-            brightness == BrightnessOption.dark ? Colors.white : Colors.black,
+        brightness == BrightnessOption.dark ? Colors.white : Colors.black,
         backgroundColor:
-            brightness == BrightnessOption.dark ? Colors.black : Colors.white,
+        brightness == BrightnessOption.dark ? Colors.black : Colors.white,
         animatedIcon: AnimatedIcons.menu_close,
         animatedIconTheme: IconThemeData(size: 22.0),
         scrollVisible: true,
