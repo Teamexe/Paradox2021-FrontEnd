@@ -243,18 +243,17 @@ class _QuestionDisplayState extends State<QuestionDisplay> {
                           child: Container(
                             child: CachedNetworkImage(
                               imageUrl:
-                              '${widget.questList[index - 1].location}',
-                              placeholder: (context, url) =>
-                              new SpinKitCircle(
+                                  '${widget.questList[index - 1].location}',
+                              placeholder: (context, url) => new SpinKitCircle(
                                 color: Colors.blue,
                                 size: 60,
                               ),
                               errorWidget: (context, url, error) =>
-                              new Icon(Icons.error),
+                                  new Icon(Icons.error),
                               fit: BoxFit.fitHeight,
                             ),
                             margin: EdgeInsets.symmetric(vertical: 20),
-                            height: size.height * 0.35 ,
+                            height: size.height * 0.35,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius:
@@ -389,14 +388,13 @@ class _QuestionDisplayState extends State<QuestionDisplay> {
                                               color: Colors.green,
                                             );
                                           }
-
-                                          Provider.of<UserProvider>(context,
-                                                  listen: false)
-                                              .updateData(
-                                            level: body['level'],
-                                            coins: body['coins'],
-                                          );
                                         }
+                                        Provider.of<UserProvider>(context,
+                                                listen: false)
+                                            .updateData(
+                                          level: body['level'],
+                                          coins: body['coins'],
+                                        );
                                         Provider.of<LeaderBoardProvider>(
                                                 context)
                                             .fetchAndSetLeaderBoard();
