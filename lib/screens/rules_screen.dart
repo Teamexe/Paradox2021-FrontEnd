@@ -4,6 +4,7 @@ import 'package:paradox/models/brightness_options.dart';
 import 'package:paradox/providers/theme_provider.dart';
 import 'package:paradox/screens/home_screen.dart';
 import 'package:paradox/widgets/no_data_connection.dart';
+import 'package:paradox/screens/question_screen.dart';
 import 'package:provider/provider.dart';
 
 class RulesScreen extends StatelessWidget {
@@ -111,14 +112,31 @@ class RulesScreen extends StatelessWidget {
                     },
                   ),
                 ),
-              ),
+              ),),
+                SizedBox(height: 20),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed(QuestionScreen.routeName);
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                        child: Text('Let\'s Play',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w400, letterSpacing: 2)),
+                      )),
+                ),
+                SizedBox(height: 40),
+                Visibility(
+                  visible: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected,
+                  child: NoDataConnectionWidget(),
+                ),
+              ],
             ),
-            Visibility(
-              visible: Provider.of<DataConnectionStatus>(context) == DataConnectionStatus.disconnected,
-              child: NoDataConnectionWidget(),
-            ),
-          ],
-        )
-    );
+          );
   }
 }

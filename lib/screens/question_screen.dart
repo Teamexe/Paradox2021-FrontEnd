@@ -10,6 +10,7 @@ import 'package:paradox/providers/question_provider.dart';
 import 'package:paradox/widgets/hint_fab.dart';
 import 'package:paradox/widgets/no_data_connection.dart';
 import 'package:paradox/widgets/question_display.dart';
+import 'package:paradox/widgets/user_coins_Score.dart';
 import 'package:provider/provider.dart';
 
 class QuestionScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class QuestionScreen extends StatefulWidget {
 class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
+    GlobalKey globalKey = new GlobalKey();
     final questList = Provider.of<QuestionProvider>(context).questionList;
     final loading = Provider.of<QuestionProvider>(context).loaded;
     final loadingHints = Provider.of<QuestionProvider>(context).loadedHints;
@@ -29,15 +31,14 @@ class _QuestionScreenState extends State<QuestionScreen> {
     final loadedUser = Provider.of<UserProvider>(context).loadedProfile;
     final brightness = Provider.of<ThemeProvider>(context).brightnessOption;
 
-    print(Provider.of<UserProvider>(context).user.hintLevel);
-    print(questList);
     if (loading == false || loadingHints == false || loadedUser == false) {
       return Center(
           child: Container(
             child: Text("Loading"),
-          ));
+      ));
     }
     return Scaffold(
+      key: globalKey,
       appBar: AppBar(
         backgroundColor: brightness == BrightnessOption.light ? Color(0xff0083B0) : Colors.grey[900] ,
         leading: AbsorbPointer(
@@ -49,6 +50,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
             }),
           ),
         ),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.apps_sharp),
+              onPressed: () {
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (_) => UserStats(),
+                );
+              })
+        ],
         elevation: 0,
       ),
       body: Stack(
