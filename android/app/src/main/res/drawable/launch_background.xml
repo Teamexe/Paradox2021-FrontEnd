@@ -4,13 +4,13 @@
     <item android:drawable="@android:color/holo_blue_bright" />
 
     <!-- You can insert your own image assets here -->
-    <item>
-        <bitmap
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:src="@drawable/launch_image" />
+<!--    <item>-->
+<!--        <bitmap-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:src="@drawable/launcher_icons" />-->
 <!--        <bitmap-->
 <!--            android:gravity="center"-->
 <!--            android:src="@drawable/splash_screen" />-->
-    </item>
+<!--    </item>-->
 </layer-list>
